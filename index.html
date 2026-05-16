@@ -149,14 +149,15 @@ body {
 
 /* Week card */
 .wk {
-  border: 1px solid var(--border);
+  border: 1px solid var(--border)66;
   border-radius: var(--r);
   background: var(--surface);
   margin-bottom: 6px;
   overflow: hidden; transition: border-color .2s;
 }
 .wk.current { border-color: var(--accent)88; }
-.wk.done-all { background: #0d1f10; border-color: #1e3d22; opacity: .75; }
+.wk.done-all { background: #0e2d18; border-color: var(--reformat)55; opacity: .85; }
+.wk.done-all .wk-head { background: #0e2d18; }
 
 /* Week header tap area */
 .wk-head {
@@ -244,7 +245,7 @@ body {
   min-height: 44px; transition: opacity .2s;
 }
 .task:last-of-type { border-bottom: none; }
-.task.done { opacity: 1; background: #0d2016; border-left: 2px solid #1a4a28; }
+.task.done { opacity: 1; background: #0e2d18; border: 1px solid var(--reformat)55; border-bottom: 1px solid var(--reformat)33; }
 
 .task-cb {
   width: 20px; height: 20px; flex-shrink: 0;
