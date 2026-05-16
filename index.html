@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio Planning — HJ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0c0c0b;
+  --surface: #131312;
+  --surface2: #1a1a18;
+  --border: #252523;
+  --border2: #333330;
+  --text: #e8e4dc;
+  --text2: #9a9690;
+  --text3: #5a5854;
+  --setup: #6b7280;
+  --setup-bg: #1c1e22;
+  --reformat: #22c55e;
+  --reformat-bg: #0d1f14;
+  --nouveau: #60a5fa;
+  --nouveau-bg: #0d1521;
+  --finitions: #fbbf24;
+  --finitions-bg: #1f1a0d;
+  --conges: #4b4a48;
+  --conges-bg: #131312;
+  --vol1: #c084fc;
+  --vol2: #34d399;
+  --vol3: #fb923c;
+  --accent: #e8d5a3;
+  --radius: 6px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+header {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 56px;
+}
+.logo {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; letter-spacing: .12em;
+  color: var(--text2); text-transform: uppercase;
+}
+.logo span { color: var(--accent); }
+
+.tabs { display: flex; gap: 2px; }
+.tab-btn {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  letter-spacing: .1em; text-transform: uppercase;
+  padding: 6px 16px; border: 1px solid transparent;
+  background: none; color: var(--text3); cursor: pointer;
+  border-radius: var(--radius); transition: all .15s;
+}
+.tab-btn.active {
+  color: var(--text); background: var(--surface2);
+  border-color: var(--border2);
+}
+.tab-btn:hover:not(.active) { color: var(--text2); }
+
+.global-progress {
+  display: flex; align-items: center; gap: 10px;
+}
+.global-progress-bar {
+  width: 120px; height: 3px;
+  background: var(--border2); border-radius: 2px; overflow: hidden;
+}
+.global-progress-fill {
+  height: 100%; background: var(--accent); border-radius: 2px;
+  transition: width .4s ease;
+}
+.global-progress-label {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  color: var(--text3); letter-spacing: .06em;
+}
+
+/* ── TABS CONTENT ── */
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* ── PLANNING TAB ── */
+#tab-planning {
+  max-width: 860px; margin: 0 auto;
+  padding: 32px 24px 80px;
+}
+
+.week-entry { margin-bottom: 10px; }
+
+/* Congés block */
+.conges-block {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--conges-bg);
+  padding: 14px 20px;
+  display: flex; align-items: center; gap: 16px;
+  opacity: .65;
+}
+.conges-icon { font-size: 18px; }
+.conges-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--conges); letter-spacing: .1em; text-transform: uppercase; }
+.conges-dates { font-size: 13px; color: var(--text2); }
+
+/* Week card */
+.week-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  overflow: hidden;
+  transition: border-color .2s;
+}
+.week-card:hover { border-color: var(--border2); }
+.week-card.completed { opacity: .55; }
+.week-card.current { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent)22; }
+
+.week-header {
+  padding: 16px 20px;
+  cursor: pointer;
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+  user-select: none;
+}
+.week-header:hover { background: var(--surface2); }
+
+.week-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+.week-num {
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  color: var(--text3); letter-spacing: .08em; min-width: 32px;
+}
+.type-badge, .vol-badge {
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  letter-spacing: .1em; text-transform: uppercase;
+  padding: 2px 8px; border-radius: 3px;
+}
+.type-setup    { background: var(--setup-bg);    color: var(--setup);    border: 1px solid var(--setup)44; }
+.type-reformat { background: var(--reformat-bg); color: var(--reformat); border: 1px solid var(--reformat)44; }
+.type-nouveau  { background: var(--nouveau-bg);  color: var(--nouveau);  border: 1px solid var(--nouveau)44; }
+.type-finitions{ background: var(--finitions-bg);color: var(--finitions);border: 1px solid var(--finitions)44; }
+.vol1-badge { background: #1e1229; color: var(--vol1); border: 1px solid var(--vol1)44; }
+.vol2-badge { background: #0d1f19; color: var(--vol2); border: 1px solid var(--vol2)44; }
+.vol3-badge { background: #1f1509; color: var(--vol3); border: 1px solid var(--vol3)44; }
+
+.week-title-group { flex: 1; }
+.week-title {
+  font-size: 16px; font-weight: 400; color: var(--text);
+  line-height: 1.3; margin-bottom: 3px;
+}
+.week-subtitle {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  color: var(--text3); letter-spacing: .06em;
+}
+
+.week-right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.week-pages {
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  color: var(--text3);
+}
+.week-progress-mini {
+  display: flex; align-items: center; gap: 6px;
+}
+.week-progress-bar {
+  width: 60px; height: 2px;
+  background: var(--border2); border-radius: 1px; overflow: hidden;
+}
+.week-progress-fill {
+  height: 100%; border-radius: 1px;
+  transition: width .3s ease;
+}
+.reformat .week-progress-fill { background: var(--reformat); }
+.nouveau  .week-progress-fill { background: var(--nouveau); }
+.setup    .week-progress-fill { background: var(--setup); }
+.finitions .week-progress-fill { background: var(--finitions); }
+
+.week-progress-pct {
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  color: var(--text3); min-width: 28px; text-align: right;
+}
+.chevron {
+  color: var(--text3); font-size: 12px;
+  transition: transform .2s; margin-left: 4px;
+}
+.week-card.open .chevron { transform: rotate(180deg); }
+
+/* Tasks */
+.tasks-panel {
+  display: none; padding: 0 20px 16px;
+  border-top: 1px solid var(--border);
+}
+.week-card.open .tasks-panel { display: block; }
+
+.section-label {
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  color: var(--text3); letter-spacing: .12em; text-transform: uppercase;
+  padding: 12px 0 8px; border-bottom: 1px solid var(--border);
+  margin-bottom: 8px;
+}
+
+.task-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+  transition: opacity .2s;
+}
+.task-item:last-child { border-bottom: none; }
+.task-item.done { opacity: .45; }
+
+.task-check {
+  width: 16px; height: 16px; flex-shrink: 0;
+  border: 1px solid var(--border2);
+  border-radius: 3px; margin-top: 2px;
+  cursor: pointer; appearance: none;
+  background: var(--surface);
+  position: relative; transition: all .15s;
+}
+.task-check:checked {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.task-check:checked::after {
+  content: '✓';
+  position: absolute; top: -1px; left: 2px;
+  font-size: 11px; color: var(--bg); font-weight: bold;
+}
+.task-text {
+  font-size: 14px; color: var(--text); line-height: 1.5;
+  flex: 1;
+}
+.task-item.done .task-text {
+  text-decoration: line-through; color: var(--text3);
+}
+.task-note {
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  color: var(--finitions); letter-spacing: .06em; margin-top: 2px;
+}
+.task-jalon {
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  color: var(--reformat); letter-spacing: .06em;
+}
+
+/* Notes block */
+.week-note {
+  margin-top: 12px; padding: 10px 14px;
+  background: var(--surface2); border-radius: var(--radius);
+  border-left: 2px solid var(--border2);
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  color: var(--text2); line-height: 1.7;
+}
+.week-note.warning { border-left-color: var(--finitions); }
+.week-note.success { border-left-color: var(--reformat); }
+
+/* ── VOLUMES TAB ── */
+#tab-volumes {
+  max-width: 860px; margin: 0 auto;
+  padding: 32px 24px 80px;
+}
+
+.volumes-header {
+  margin-bottom: 32px;
+}
+.volumes-header h2 {
+  font-size: 28px; font-weight: 300; font-style: italic;
+  color: var(--text); letter-spacing: -.01em; margin-bottom: 6px;
+}
+.volumes-header p {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  color: var(--text3); letter-spacing: .08em;
+}
+
+.vol-summary {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+  margin-bottom: 32px;
+}
+.vol-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 20px;
+}
+.vol-card-label {
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  letter-spacing: .12em; text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.vol-card.v1 .vol-card-label { color: var(--vol1); }
+.vol-card.v2 .vol-card-label { color: var(--vol2); }
+.vol-card.v3 .vol-card-label { color: var(--vol3); }
+.vol-card-title {
+  font-size: 20px; font-weight: 300; font-style: italic;
+  margin-bottom: 16px; color: var(--text);
+}
+.vol-bar-container {
+  margin-bottom: 8px;
+}
+.vol-bar-track {
+  width: 100%; height: 6px;
+  background: var(--border2); border-radius: 3px; overflow: hidden;
+  margin-bottom: 6px;
+}
+.vol-bar-fill {
+  height: 100%; border-radius: 3px;
+  transition: width .5s ease;
+}
+.v1 .vol-bar-fill { background: var(--vol1); }
+.v2 .vol-bar-fill { background: var(--vol2); }
+.v3 .vol-bar-fill { background: var(--vol3); }
+.vol-bar-nums {
+  display: flex; justify-content: space-between;
+  font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text3);
+}
+.vol-bar-nums .pages { color: var(--text); font-size: 13px; }
+.vol-marge {
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  color: var(--text3); margin-top: 6px;
+}
+.vol-marge span { color: var(--reformat); }
+
+/* Detail tables */
+.vol-detail {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  margin-bottom: 16px; overflow: hidden;
+}
+.vol-detail-header {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.vol-detail-header h3 {
+  font-size: 16px; font-weight: 400;
+  display: flex; align-items: center; gap: 10px;
+}
+.vol-detail-pages {
+  font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text3);
+}
+.section-group { border-bottom: 1px solid var(--border); }
+.section-group:last-child { border-bottom: none; }
+.section-group-header {
+  padding: 10px 20px;
+  background: var(--surface2);
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  color: var(--text2); letter-spacing: .08em; text-transform: uppercase;
+}
+.section-group-header .sec-pages {
+  color: var(--text3);
+}
+.project-row {
+  padding: 8px 20px 8px 32px;
+  display: flex; justify-content: space-between; align-items: center;
+  border-top: 1px solid var(--border);
+  font-size: 14px;
+}
+.project-row:first-of-type { border-top-color: transparent; }
+.project-pages {
+  font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text3);
+  flex-shrink: 0;
+}
+.project-semaine {
+  font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text3);
+  flex-shrink: 0; margin-right: 12px;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Portfolio Planning <span>·</span> HJ</div>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('planning')">📅 Planning</button>
+    <button class="tab-btn" onclick="switchTab('volumes')">📊 Volumes</button>
+  </div>
+  <div class="global-progress">
+    <div class="global-progress-bar"><div class="global-progress-fill" id="global-fill" style="width:0%"></div></div>
+    <span class="global-progress-label" id="global-label">0 / 0</span>
+  </div>
+</header>
+
+<div class="tab-content active" id="tab-planning">
+  <div id="planning-container"></div>
+</div>
+
+<div class="tab-content" id="tab-volumes">
+  <div id="volumes-container"></div>
+</div>
+
+<script>
+// ── DATA ────────────────────────────────────────────────────────────────────
+
+const PLANNING = [
+  {
+    id: 's01', week: 'S01', dates: '18–24 mai 2026',
+    type: 'setup', volClass: '', volLabel: '', section: 'Fondations',
+    pages: null,
+    title: 'SETUP — Gabarit Lulu 216×216 mm',
+    subtitle: 'Fondations InDesign · 3 fichiers Book',
+    note: { type: 'warning', text: '⚠️ Cette semaine doit être validée AVANT toute mise en page. C\'est le socle de tout le projet.' },
+    tasks: [
+      { id: 's01-01', text: 'Télécharger le template officiel Lulu 216×216 mm (avec guides préconfigurés)' },
+      { id: 's01-02', text: 'Créer le fichier InDesign Vol.1 — Formation (gabarit 216×216 mm, fond perdu 3,175 mm, marges 12,7 mm, gouttière intérieure 6-8 mm)' },
+      { id: 's01-03', text: 'Créer le fichier InDesign Vol.2 — Practice (mêmes réglages)' },
+      { id: 's01-04', text: 'Créer le fichier InDesign Vol.3 — Image (mêmes réglages)' },
+      { id: 's01-05', text: 'Configurer les styles de paragraphes dans les 3 fichiers : titres H1/H2, corps de texte, légendes, numéros de page' },
+      { id: 's01-06', text: 'Configurer les master pages dans les 3 fichiers (numérotation, en-têtes de chapitre, fond perdu)' },
+      { id: 's01-07', text: 'Réaliser une page test avec un document existant et vérifier le preflight : 300 DPI min, export CMJN, fond perdu actif' },
+      { id: 's01-08', text: '✅ Valider le gabarit avec une impression test virtuelle (aperçu Lulu) — NE PAS commencer S02 sans cette validation' },
+    ]
+  },
+  { id: 'conges1', type: 'conges', dates: '25 mai – 7 juin 2026', label: '2 semaines · hors planning' },
+  {
+    id: 's02', week: 'S02', dates: '8–14 juin 2026',
+    type: 'reformat', volClass: 'vol1-badge', volLabel: 'Vol.1 — Formation', section: 'Architecture école',
+    pages: '32p',
+    title: 'REFORMAT — Architecture école · Lot 1',
+    subtitle: '6 projets · Adjust Layout InDesign + ajustements manuels',
+    note: { type: '', text: 'Lot 1 des 10 projets d\'architecture école. Utiliser "Adjust Layout" d\'InDesign comme première passe, puis corriger manuellement les débordements et repositionnements de dessins techniques.' },
+    tasks: [
+      { id: 's02-01', text: 'Maison Individuelle (4p) — Adjust Layout + repositionnements manuels + vérification marges' },
+      { id: 's02-02', text: 'FAV (4p) — Adjust Layout + repositionnements manuels + vérification marges' },
+      { id: 's02-03', text: 'Habitat Renouvelable (8p) — Adjust Layout + repositionnements manuels + vérification marges' },
+      { id: 's02-04', text: 'Du Logement à la Ville (6p) — Adjust Layout + repositionnements manuels + vérification marges' },
+      { id: 's02-05', text: 'Maison de Quartier (4p) — Adjust Layout + repositionnements manuels + vérification marges' },
+      { id: 's02-06', text: 'Présence Concrète (6p) — Adjust Layout + repositionnements manuels + vérification marges' },
+      { id: 's02-07', text: 'Vérification cohérence lot 1 : consistance typographique, marges respectées, plans lisibles sur 32p' },
+    ]
+  },
+  {
+    id: 's03', week: 'S03', dates: '15–21 juin 2026',
+    type: 'nouveau', volClass: 'vol2-badge', volLabel: 'Vol.2 — Practice', section: 'Archi agence — lourd',
+    pages: '10p',
+    title: 'NOUVEAU — ALSH Spechbach',
+    subtitle: 'Mise en page complète 10p + Behance · Semaine dédiée',
+    note: { type: 'warning', text: '⚠️ Projet lourd — semaine entière dédiée. Rassembler TOUS les visuels en début de semaine avant de commencer la mise en page.' },
+    tasks: [
+      { id: 's03-01', text: 'Rassembler et trier tous les visuels du projet : esquisses, plans d\'exécution, coupes, façades, photos de chantier' },
+      { id: 's03-02', text: 'Définir la structure narrative des 10 pages (parti architectural → plans EXE → détails/photos)' },
+      { id: 's03-03', text: 'Mise en page pages 1–5 : présentation, contexte du projet, plans principaux' },
+      { id: 's03-04', text: 'Mise en page pages 6–10 : détails constructifs, photos chantier, conclusion' },
+      { id: 's03-05', text: 'Vérification preflight complet : 300 DPI, CMJN, fond perdu 3,175 mm sur toutes les pages' },
+      { id: 's03-06', text: 'Export JPEG 72 DPI sRGB pour Behance (toutes les pages)' },
+      { id: 's03-07', text: 'Upload Behance — ALSH Spechbach : mise en ligne, titre EN, description EN (~150 mots), tags' },
+    ]
+  },
+  {
+    id: 's04', week: 'S04', dates: '22–28 juin 2026',
+    type: 'reformat', volClass: 'vol1-badge', volLabel: 'Vol.1 — Formation', section: 'Architecture école',
+    pages: '56p',
+    title: 'REFORMAT — Architecture école · Lot 2',
+    subtitle: '4 projets denses · Fin de la section Architecture école',
+    note: { type: 'warning', text: '⚠️ Semaine très chargée (56p). Priorité : projets dans l\'ordre de complexité croissante. Si débordement, les 2 derniers projets peuvent glisser en début de S06.' },
+    tasks: [
+      { id: 's04-01', text: 'Specifi(cités) (16p) — Adjust Layout + ajustements manuels (projet cartographique/urbain dense)' },
+      { id: 's04-02', text: 'Corps Sonore (12p) — Adjust Layout + ajustements manuels' },
+      { id: 's04-03', text: 'Hypothèse C.U (16p) — Adjust Layout + ajustements manuels (contenu urbain dense)' },
+      { id: 's04-04', text: 'En Finir avec la Zone (12p) — Adjust Layout + ajustements manuels' },
+      { id: 's04-05', text: '✅ Vérification cohérence section Architecture école complète (88p total) — plans lisibles, typo consistante' },
+    ]
+  },
+  {
+    id: 's05', week: 'S05', dates: '29 juin – 5 juillet 2026',
+    type: 'nouveau', volClass: 'vol2-badge', volLabel: 'Vol.2 — Practice', section: 'Archi agence — lourd',
+    pages: '20p',
+    title: 'NOUVEAU — ALSH Muespach',
+    subtitle: 'Mise en page complète 20p + Behance · Semaine dédiée',
+    note: { type: 'warning', text: '⚠️ Projet lourd 20p depuis zéro — rythme ~4p/jour. Rassembler les visuels le lundi impérativement.' },
+    tasks: [
+      { id: 's05-01', text: 'Rassembler et trier tous les visuels : esquisses, plans EXE, coupes, façades, photos chantier' },
+      { id: 's05-02', text: 'Définir la structure narrative des 20 pages' },
+      { id: 's05-03', text: 'Mise en page pages 1–5 : présentation, contexte, implantation' },
+      { id: 's05-04', text: 'Mise en page pages 6–10 : plans niveaux, coupes principales' },
+      { id: 's05-05', text: 'Mise en page pages 11–15 : façades, détails constructifs' },
+      { id: 's05-06', text: 'Mise en page pages 16–20 : photos chantier, conclusion' },
+      { id: 's05-07', text: 'Vérification preflight complet : 300 DPI, CMJN, fond perdu' },
+      { id: 's05-08', text: 'Export JPEG + Upload Behance — ALSH Muespach : titre EN, description EN, tags' },
+    ]
+  },
+  {
+    id: 's06', week: 'S06', dates: '6–12 juillet 2026',
+    type: 'reformat', volClass: 'vol1-badge', volLabel: 'Vol.1 — Formation', section: 'Workshops',
+    pages: '50p',
+    title: 'REFORMAT — Workshops',
+    subtitle: '5 projets · Contenu visuel dense — reformatage rapide',
+    note: { type: '', text: 'Les workshops sont visuellement riches mais moins techniques que l\'architecture école. Le reformatage doit être plus rapide (~10p/h si l\'Adjust Layout est efficace).' },
+    tasks: [
+      { id: 's06-01', text: 'ZUT (16p) — Adjust Layout + ajustements manuels + vérification lisibilité visuelle' },
+      { id: 's06-02', text: 'Morpharchitecture (6p) — Adjust Layout + ajustements manuels' },
+      { id: 's06-03', text: 'Vortex (8p) — Adjust Layout + ajustements manuels' },
+      { id: 's06-04', text: 'La Conscience une Interface (8p) — Adjust Layout + ajustements manuels' },
+      { id: 's06-05', text: 'Ljubljana Amplitude Festival (12p) — Adjust Layout + ajustements manuels' },
+      { id: 's06-06', text: 'Vérification cohérence section Workshops (50p) — rythme visuel, cohérence des mises en page' },
+    ]
+  },
+  {
+    id: 's07', week: 'S07', dates: '13–19 juillet 2026',
+    type: 'nouveau', volClass: 'vol2-badge', volLabel: 'Vol.2 — Practice', section: 'Archi agence — lourd',
+    pages: '16p',
+    title: 'NOUVEAU — Sovia Logement Collectif',
+    subtitle: 'Mise en page complète 16p + Behance · ✅ Fin des 3 projets lourds',
+    note: { type: 'success', text: '✅ Fin des 3 projets lourds Vol.2. Une fois Sovia livré sur Behance, la partie la plus exigeante du volume Practice est terminée.' },
+    tasks: [
+      { id: 's07-01', text: 'Rassembler tous les visuels : plans masse, plans niveaux, façades, rendus, coupes' },
+      { id: 's07-02', text: 'Définir la structure narrative des 16 pages (contexte → conception → plans → façades)' },
+      { id: 's07-03', text: 'Mise en page pages 1–8 : présentation, plans principaux' },
+      { id: 's07-04', text: 'Mise en page pages 9–16 : façades, détails, rendus' },
+      { id: 's07-05', text: 'Vérification preflight : 300 DPI, CMJN, fond perdu' },
+      { id: 's07-06', text: 'Export JPEG + Upload Behance — Sovia Logement Collectif : titre EN, description EN, tags' },
+      { id: 's07-07', text: '✅ JALON — 3 projets lourds Vol.2 terminés : Spechbach + Muespach + Sovia' },
+    ]
+  },
+  {
+    id: 's08', week: 'S08', dates: '20–26 juillet 2026',
+    type: 'reformat', volClass: 'vol1-badge', volLabel: 'Vol.1 — Formation', section: 'Concours école',
+    pages: '54p',
+    title: 'REFORMAT — Concours école',
+    subtitle: '4 concours · Contenu dense mais finalisé',
+    note: { type: 'warning', text: '⚠️ Acier 2013 (20p) + Acier 2014 (18p) = 38p de contenu très dense. Commencer par Acier 2013 en début de semaine.' },
+    tasks: [
+      { id: 's08-01', text: 'La Vague (4p) — Adjust Layout + ajustements manuels' },
+      { id: 's08-02', text: 'Libre Cours à Florac (12p) — Adjust Layout + ajustements manuels' },
+      { id: 's08-03', text: 'Acier 2013 (20p) — Adjust Layout + ajustements manuels (contenu très dense, prévoir 2h min)' },
+      { id: 's08-04', text: 'Acier 2014 (18p) — Adjust Layout + ajustements manuels' },
+      { id: 's08-05', text: 'Vérification cohérence section Concours école (54p) — lisibilité des planches techniques' },
+    ]
+  },
+  {
+    id: 's09', week: 'S09', dates: '27 juillet – 1er août 2026',
+    type: 'nouveau', volClass: 'vol2-badge', volLabel: 'Vol.2 — Practice', section: 'Urbanisme pro',
+    pages: '24p',
+    title: 'NOUVEAU — Atelier Urbain Montpellier EST',
+    subtitle: 'Mise en page complète 24p + Behance · Dernier sprint avant congés',
+    note: { type: 'warning', text: '⚠️ 24p depuis zéro = semaine la plus chargée en NOUVEAU (~5p/jour). Commencer les visuels le dimanche soir ou lundi matin tôt.' },
+    tasks: [
+      { id: 's09-01', text: 'Rassembler tous les visuels : cartes, schémas urbains, photos de terrain, rendus, planches' },
+      { id: 's09-02', text: 'Définir la structure narrative des 24 pages (diagnostic → stratégie → projet → détails)' },
+      { id: 's09-03', text: 'Mise en page pages 1–8 : introduction, diagnostic territorial, cartes' },
+      { id: 's09-04', text: 'Mise en page pages 9–16 : stratégie urbaine, schémas, programmation' },
+      { id: 's09-05', text: 'Mise en page pages 17–24 : projet détaillé, perspectives, espaces publics' },
+      { id: 's09-06', text: 'Vérification preflight : 300 DPI, CMJN, fond perdu' },
+      { id: 's09-07', text: 'Export JPEG + Upload Behance — Atelier Urbain Montpellier EST : titre EN, description EN, tags' },
+    ]
+  },
+  { id: 'conges2', type: 'conges', dates: '1–9 août 2026', label: '1 semaine · hors planning' },
+  {
+    id: 's10', week: 'S10', dates: '10–16 août 2026',
+    type: 'reformat', volClass: 'vol1-badge', volLabel: 'Vol.1 + Vol.3', section: 'Urbanisme école / Graphisme',
+    pages: '46p',
+    title: 'REFORMAT — ✅ Vol.1 complet · Graphisme lot 1',
+    subtitle: 'De la Comédie au Lez 24p · Graphisme 5 projets 22p',
+    note: { type: 'success', text: '✅ Cette semaine marque la fin du Vol.1 Formation (218p). Vérifier le total : Intro 2p + Archi école 88p + Workshops 50p + Concours école 54p + Urbanisme école 24p = 218p ✅ (limite 240p, marge 22p).' },
+    tasks: [
+      { id: 's10-01', text: 'De la Comédie au Lez (24p) — Adjust Layout + ajustements manuels (projet urbain cartographique)' },
+      { id: 's10-02', text: '✅ Vérification Vol.1 Formation complet : total 218p — contrôle limite 240p, cohérence inter-sections' },
+      { id: 's10-03', text: 'Karul 4L (2p) — Adjust Layout graphisme' },
+      { id: 's10-04', text: 'Encga Agadir (2p) — Adjust Layout graphisme' },
+      { id: 's10-05', text: 'DW Design Battle (4p) — Adjust Layout graphisme' },
+      { id: 's10-06', text: 'Wallpaper Contest (6p) — Adjust Layout graphisme' },
+      { id: 's10-07', text: 'Posters (8p) — Adjust Layout graphisme' },
+    ]
+  },
+  {
+    id: 's11', week: 'S11', dates: '17–23 août 2026',
+    type: 'nouveau', volClass: 'vol2-badge', volLabel: 'Vol.2 — Practice', section: 'Urbanisme pro',
+    pages: '16p',
+    title: 'NOUVEAU — ZAC St. Jacques',
+    subtitle: 'Mise en page complète 16p + Behance · ✅ Urbanisme pro terminé',
+    note: { type: 'success', text: '✅ Fin des 2 projets urbanisme pro. Une fois ZAC St. Jacques livré, l\'urbanisme pro est complet (40p : Montpellier EST 24p + ZAC 16p).' },
+    tasks: [
+      { id: 's11-01', text: 'Rassembler tous les visuels : plans masse, OAP, schémas, photos de terrain, rendus' },
+      { id: 's11-02', text: 'Définir la structure narrative des 16 pages' },
+      { id: 's11-03', text: 'Mise en page pages 1–8 : contexte, diagnostic, stratégie' },
+      { id: 's11-04', text: 'Mise en page pages 9–16 : projet détaillé, détails de ZAC, programmation' },
+      { id: 's11-05', text: 'Vérification preflight : 300 DPI, CMJN, fond perdu' },
+      { id: 's11-06', text: 'Export JPEG + Upload Behance — ZAC St. Jacques : titre EN, description EN, tags' },
+      { id: 's11-07', text: '✅ JALON — Urbanisme pro terminé (2 projets, 40p). Vol.2 : lourds ✅ + urbanisme ✅' },
+    ]
+  },
+  {
+    id: 's12', week: 'S12', dates: '24–30 août 2026',
+    type: 'reformat', volClass: 'vol3-badge', volLabel: 'Vol.3 — Image', section: 'Graphisme',
+    pages: '42p',
+    title: 'REFORMAT — Graphisme · Fin de section',
+    subtitle: '12 projets · Contenu visuel — reformatage rapide',
+    note: { type: 'success', text: '✅ Fin de la section Graphisme Vol.3 (17 projets, 62p total). Les projets graphisme sont visuellement simples à reformater — rythme soutenu possible (2-4 min/page).' },
+    tasks: [
+      { id: 's12-01', text: 'Sweat ENSAM (6p) — Adjust Layout graphisme' },
+      { id: 's12-02', text: 'Punity (8p) — Adjust Layout graphisme' },
+      { id: 's12-03', text: 'Orthome (2p) — Adjust Layout graphisme' },
+      { id: 's12-04', text: 'Lern (2p) — Adjust Layout graphisme' },
+      { id: 's12-05', text: 'Cartes Postales ENSAM (4p) — Adjust Layout graphisme' },
+      { id: 's12-06', text: 'DJ Joyka (2p) — Adjust Layout graphisme' },
+      { id: 's12-07', text: 'Africunity (2p) — Adjust Layout graphisme' },
+      { id: 's12-08', text: "Kasaiko's (2p) — Adjust Layout graphisme" },
+      { id: 's12-09', text: 'Gaming (2p) — Adjust Layout graphisme' },
+      { id: 's12-10', text: 'World (2p) — Adjust Layout graphisme' },
+      { id: 's12-11', text: 'Students Ambassadors for Peace (2p) — Adjust Layout graphisme' },
+      { id: 's12-12', text: 'Typography (6p) — Adjust Layout graphisme' },
+      { id: 's12-13', text: '✅ Vérification section Graphisme complète — 17 projets, 62p total, cohérence visuelle globale' },
+    ]
+  },
+  {
+    id: 's13', week: 'S13', dates: '31 août – 6 septembre 2026',
+    type: 'nouveau', volClass: 'vol2-badge', volLabel: 'Vol.2 — Practice', section: 'Archi agence — standards',
+    pages: '20p',
+    title: 'NOUVEAU — Standards 1 → 5',
+    subtitle: '5 projets × 4p · Mise en page complète + Behance',
+    note: { type: '', text: 'Les projets standards (4p chacun) sont les plus rapides à réaliser. Structure identique pour chacun : 1p présentation, 1p plans, 1p façades/détails, 1p photos/rendu. Behance après chaque lot.' },
+    tasks: [
+      { id: 's13-01', text: 'Mobilier Tuilerie (4p) — mise en page complète (présentation, photos, détails)' },
+      { id: 's13-02', text: 'Maison Blind (4p) — mise en page complète' },
+      { id: 's13-03', text: 'Restaurant Haller (4p) — mise en page complète' },
+      { id: 's13-04', text: 'Extension Débricon (4p) — mise en page complète' },
+      { id: 's13-05', text: 'Maison Helterlin (4p) — mise en page complète' },
+      { id: 's13-06', text: 'Export JPEG 72 DPI sRGB — projets standards 1→5' },
+      { id: 's13-07', text: 'Upload Behance standards 1→5 (titres EN, descriptions courtes, tags)' },
+    ]
+  },
+  {
+    id: 's14', week: 'S14', dates: '7–13 septembre 2026',
+    type: 'reformat', volClass: 'vol3-badge', volLabel: 'Vol.3 — Image', section: 'Visualisation 3D',
+    pages: '40p',
+    title: 'REFORMAT — Perspectives 3D',
+    subtitle: '40p · Reformatage complet — projet le plus volumineux Visu 3D',
+    note: { type: '', text: 'Projet de visualisation 3D à forte densité d\'images. Le reformatage doit préserver la qualité des rendus en pleine page — vérifier que les images ne sont pas rééchantillonnées à la baisse.' },
+    tasks: [
+      { id: 's14-01', text: 'Perspectives 3D — Adjust Layout pages 1–10 (introductions, vues générales)' },
+      { id: 's14-02', text: 'Perspectives 3D — Adjust Layout pages 11–20 (vues d\'ambiance, détails)' },
+      { id: 's14-03', text: 'Perspectives 3D — Adjust Layout pages 21–30 (perspectives intérieures)' },
+      { id: 's14-04', text: 'Perspectives 3D — Adjust Layout pages 31–40 (perspectives nocturnes, finitions)' },
+      { id: 's14-05', text: 'Vérification qualité images : aucun rééchantillonnage, résolution 300 DPI maintenue sur toutes les pages' },
+    ]
+  },
+  {
+    id: 's15', week: 'S15', dates: '14–20 septembre 2026',
+    type: 'nouveau', volClass: 'vol2-badge', volLabel: 'Vol.2 — Practice', section: 'Archi agence — standards',
+    pages: '20p',
+    title: 'NOUVEAU — Standards 6 → 10',
+    subtitle: '5 projets × 4p · ✅ 10 standards terminés',
+    note: { type: 'success', text: '✅ Fin de la section Archi agence standards (10 projets, 40p). Après cette semaine, le Vol.2 ne manque plus que les 2 concours agence.' },
+    tasks: [
+      { id: 's15-01', text: 'Rénovation Mermoz (4p) — mise en page complète' },
+      { id: 's15-02', text: 'Biocoop (4p) — mise en page complète' },
+      { id: 's15-03', text: 'Oltingue (4p) — mise en page complète' },
+      { id: 's15-04', text: 'Maison Pum (4p) — mise en page complète' },
+      { id: 's15-05', text: 'Maternelle Mermoz (4p) — mise en page complète' },
+      { id: 's15-06', text: 'Export JPEG 72 DPI sRGB — projets standards 6→10' },
+      { id: 's15-07', text: 'Upload Behance standards 6→10 (titres EN, descriptions courtes, tags)' },
+      { id: 's15-08', text: '✅ JALON — 10 projets standards terminés (40p). Vol.2 standards complet ✅' },
+    ]
+  },
+  {
+    id: 's16', week: 'S16', dates: '21–27 septembre 2026',
+    type: 'reformat', volClass: 'vol3-badge', volLabel: 'Vol.3 — Image', section: 'Visu 3D + Photographie',
+    pages: '45p',
+    title: 'REFORMAT — Animation 3D + Calendrier ENSAM',
+    subtitle: 'Animation 35p · Calendrier 10p · Surveiller limite Vol.3',
+    note: { type: 'warning', text: '⚠️ Après cette semaine : Vol.3 atteindra ~183p (Graphisme 62p + Visu3D 75p + Calendrier 10p + base photo). Vérifier que le total reste sous 240p. Marge actuelle : 57p.' },
+    tasks: [
+      { id: 's16-01', text: 'Animation 3D (35p) — Adjust Layout pages 1–12' },
+      { id: 's16-02', text: 'Animation 3D (35p) — Adjust Layout pages 13–24' },
+      { id: 's16-03', text: 'Animation 3D (35p) — Adjust Layout pages 25–35' },
+      { id: 's16-04', text: 'Calendrier ENSAM (10p) — Adjust Layout complet' },
+      { id: 's16-05', text: 'Vérification cohérence section Visu 3D (Perspectives + Animation = 75p)' },
+      { id: 's16-06', text: '⚠️ Contrôle total Vol.3 : Graphisme 62p + Visu3D 75p + Photo en cours — vérifier projection finale sous 240p' },
+    ]
+  },
+  {
+    id: 's17', week: 'S17', dates: '28 septembre – 4 octobre 2026',
+    type: 'nouveau', volClass: 'vol2-badge', volLabel: 'Vol.2 — Practice', section: 'Concours agence',
+    pages: '30p',
+    title: 'NOUVEAU — Lycée Mermoz + ALSH Aspach',
+    subtitle: '20p + 10p · ✅ Vol.2 Practice complet · Semaine la plus chargée',
+    note: { type: 'warning', text: '⚠️ Semaine la plus chargée du planning en NOUVEAU (30p). Commencer par Lycée Mermoz (le plus complexe). Aspach peut être fait en fin de semaine.' },
+    tasks: [
+      { id: 's17-01', text: 'Rassembler visuels Lycée Mermoz : plans concours, perspectives, planches complètes' },
+      { id: 's17-02', text: 'Lycée Mermoz (20p) — mise en page pages 1–10 (présentation, parti architectural, plans masse)' },
+      { id: 's17-03', text: 'Lycée Mermoz (20p) — mise en page pages 11–20 (plans niveaux, façades, perspectives)' },
+      { id: 's17-04', text: 'ALSH Aspach (10p) — rassembler visuels + mise en page complète pages 1–10' },
+      { id: 's17-05', text: 'Vérification preflight : 300 DPI, CMJN, fond perdu sur 30p' },
+      { id: 's17-06', text: 'Export JPEG + Upload Behance — Lycée Mermoz : titre EN, description EN, tags' },
+      { id: 's17-07', text: '✅ JALON — Vol.2 Practice complet : Lourds 46p + Standards 40p + Urbanisme 40p + Concours 30p = 156p ✅' },
+    ]
+  },
+  {
+    id: 's18', week: 'S18', dates: '5–11 octobre 2026',
+    type: 'reformat', volClass: 'vol3-badge', volLabel: 'Vol.3 — Image', section: 'Photographie + Finitions',
+    pages: '36p',
+    title: 'REFORMAT — Photographie + Début finitions',
+    subtitle: 'Divers 36p · TOC · Pagination · ⚠️ Surveiller 240p Vol.3',
+    note: { type: 'warning', text: '⚠️ Surveiller la limite 240p Vol.3. Cible : 183p — marge 57p. Si la section photo dépasse 46p, compresser ou supprimer des images en double.' },
+    tasks: [
+      { id: 's18-01', text: 'Photographie Divers (36p) — Adjust Layout nouvelles séries : sélection finale des images, séquençage' },
+      { id: 's18-02', text: '⚠️ Contrôle final total Vol.3 : Graphisme 62p + Visu3D 75p + Photo 46p = 183p — vérifier sous 240p' },
+      { id: 's18-03', text: 'Début finitions Vol.1 : Table des matières, vérification pagination, numéros de page' },
+      { id: 's18-04', text: 'Début finitions Vol.2 : Table des matières, vérification pagination, numéros de page' },
+      { id: 's18-05', text: 'Début finitions Vol.3 : Table des matières, vérification pagination, numéros de page' },
+      { id: 's18-06', text: 'Vérification inter-volumes : cohérence des styles, couvertures préparées' },
+    ]
+  },
+  {
+    id: 's19', week: 'S19', dates: '12–17 octobre 2026',
+    type: 'finitions', volClass: '', volLabel: '3 volumes', section: 'Export & Commande',
+    pages: '—',
+    title: '🎯 FINITIONS — Export PDF × 3 · Commande Lulu',
+    subtitle: 'Couvertures · TOC finaux · PDF CMJN · Upload · COMMANDE',
+    note: { type: 'warning', text: '🎯 OBJECTIF FINAL. Ne pas commencer les exports sans avoir validé TOUS les points de vérification. Un export raté sur Lulu = recommencer depuis le début.' },
+    tasks: [
+      { id: 's19-01', text: 'Création couverture Vol.1 — Formation : première, dos (calculer selon épaisseur = nb pages × 0,0572 mm), quatrième' },
+      { id: 's19-02', text: 'Création couverture Vol.2 — Practice (même procédé)' },
+      { id: 's19-03', text: 'Création couverture Vol.3 — Image (même procédé)' },
+      { id: 's19-04', text: 'Finalisation TOC + pagination Vol.1 : vérifier toutes les références de page' },
+      { id: 's19-05', text: 'Finalisation TOC + pagination Vol.2 : vérifier toutes les références de page' },
+      { id: 's19-06', text: 'Finalisation TOC + pagination Vol.3 : vérifier toutes les références de page' },
+      { id: 's19-07', text: 'Relecture finale Vol.1 + contrôle technique : 300 DPI, CMJN, fond perdu 3,175 mm, total sous 240p' },
+      { id: 's19-08', text: 'Relecture finale Vol.2 + contrôle technique (mêmes points)' },
+      { id: 's19-09', text: 'Relecture finale Vol.3 + contrôle technique (mêmes points)' },
+      { id: 's19-10', text: 'Export PDF print-ready CMJN Vol.1 — Formation (intérieur + couverture séparés)' },
+      { id: 's19-11', text: 'Export PDF print-ready CMJN Vol.2 — Practice' },
+      { id: 's19-12', text: 'Export PDF print-ready CMJN Vol.3 — Image' },
+      { id: 's19-13', text: 'Upload PDF × 3 volumes sur Lulu + validation prévisualisation en ligne' },
+      { id: 's19-14', text: '🎯 COMMANDE IMPRESSION LULU × 3 volumes — ~157€ livraison comprise' },
+    ]
+  },
+];
+
+// ── VOLUMES DATA ──────────────────────────────────────────────────────────────
+
+const VOLUMES = [
+  {
+    id: 'vol1', cls: 'v1', label: 'Vol.1', title: 'Formation',
+    pages: 218, limit: 240, marge: 22,
+    sections: [
+      { name: 'Intro', total: 2, projects: [{ name: 'Pages intro', pages: 2, semaine: 'S19' }] },
+      { name: 'Architecture école', total: 88, projects: [
+        { name: 'Maison Individuelle', pages: 4, semaine: 'S02' },
+        { name: 'FAV', pages: 4, semaine: 'S02' },
+        { name: 'Habitat Renouvelable', pages: 8, semaine: 'S02' },
+        { name: 'Du Logement à la Ville', pages: 6, semaine: 'S02' },
+        { name: 'Maison de Quartier', pages: 4, semaine: 'S02' },
+        { name: 'Présence Concrète', pages: 6, semaine: 'S02' },
+        { name: 'Specifi(cités)', pages: 16, semaine: 'S04' },
+        { name: 'Corps Sonore', pages: 12, semaine: 'S04' },
+        { name: 'Hypothèse C.U', pages: 16, semaine: 'S04' },
+        { name: 'En Finir avec la Zone', pages: 12, semaine: 'S04' },
+      ]},
+      { name: 'Workshops', total: 50, projects: [
+        { name: 'ZUT', pages: 16, semaine: 'S06' },
+        { name: 'Morpharchitecture', pages: 6, semaine: 'S06' },
+        { name: 'Vortex', pages: 8, semaine: 'S06' },
+        { name: 'La Conscience une Interface', pages: 8, semaine: 'S06' },
+        { name: 'Ljubljana Amplitude Festival', pages: 12, semaine: 'S06' },
+      ]},
+      { name: 'Concours école', total: 54, projects: [
+        { name: 'La Vague', pages: 4, semaine: 'S08' },
+        { name: 'Libre Cours à Florac', pages: 12, semaine: 'S08' },
+        { name: 'Acier 2013', pages: 20, semaine: 'S08' },
+        { name: 'Acier 2014', pages: 18, semaine: 'S08' },
+      ]},
+      { name: 'Urbanisme école', total: 24, projects: [
+        { name: 'De la Comédie au Lez', pages: 24, semaine: 'S10' },
+      ]},
+    ]
+  },
+  {
+    id: 'vol2', cls: 'v2', label: 'Vol.2', title: 'Practice',
+    pages: 156, limit: 240, marge: 84,
+    sections: [
+      { name: 'Archi agence — lourds', total: 46, projects: [
+        { name: 'ALSH Spechbach', pages: 10, semaine: 'S03' },
+        { name: 'ALSH Muespach', pages: 20, semaine: 'S05' },
+        { name: 'Sovia Logement Collectif', pages: 16, semaine: 'S07' },
+      ]},
+      { name: 'Archi agence — standards', total: 40, projects: [
+        { name: 'Mobilier Tuilerie', pages: 4, semaine: 'S13' },
+        { name: 'Maison Blind', pages: 4, semaine: 'S13' },
+        { name: 'Restaurant Haller', pages: 4, semaine: 'S13' },
+        { name: 'Extension Débricon', pages: 4, semaine: 'S13' },
+        { name: 'Maison Helterlin', pages: 4, semaine: 'S13' },
+        { name: 'Rénovation Mermoz', pages: 4, semaine: 'S15' },
+        { name: 'Biocoop', pages: 4, semaine: 'S15' },
+        { name: 'Oltingue', pages: 4, semaine: 'S15' },
+        { name: 'Maison Pum', pages: 4, semaine: 'S15' },
+        { name: 'Maternelle Mermoz', pages: 4, semaine: 'S15' },
+      ]},
+      { name: 'Urbanisme pro', total: 40, projects: [
+        { name: 'Atelier Urbain Montpellier EST', pages: 24, semaine: 'S09' },
+        { name: 'ZAC St. Jacques', pages: 16, semaine: 'S11' },
+      ]},
+      { name: 'Concours agence', total: 30, projects: [
+        { name: 'Lycée Mermoz', pages: 20, semaine: 'S17' },
+        { name: 'ALSH Aspach', pages: 10, semaine: 'S17' },
+      ]},
+    ]
+  },
+  {
+    id: 'vol3', cls: 'v3', label: 'Vol.3', title: 'Image',
+    pages: 183, limit: 240, marge: 57,
+    sections: [
+      { name: 'Graphisme', total: 62, projects: [
+        { name: 'Karul 4L', pages: 2, semaine: 'S10' },
+        { name: 'Encga Agadir', pages: 2, semaine: 'S10' },
+        { name: 'DW Design Battle', pages: 4, semaine: 'S10' },
+        { name: 'Wallpaper Contest', pages: 6, semaine: 'S10' },
+        { name: 'Posters', pages: 8, semaine: 'S10' },
+        { name: 'Sweat ENSAM', pages: 6, semaine: 'S12' },
+        { name: 'Punity', pages: 8, semaine: 'S12' },
+        { name: 'Orthome', pages: 2, semaine: 'S12' },
+        { name: 'Lern', pages: 2, semaine: 'S12' },
+        { name: 'Cartes Postales ENSAM', pages: 4, semaine: 'S12' },
+        { name: 'DJ Joyka', pages: 2, semaine: 'S12' },
+        { name: 'Africunity', pages: 2, semaine: 'S12' },
+        { name: "Kasaiko's", pages: 2, semaine: 'S12' },
+        { name: 'Gaming', pages: 2, semaine: 'S12' },
+        { name: 'World', pages: 2, semaine: 'S12' },
+        { name: 'Students Ambassadors for Peace', pages: 2, semaine: 'S12' },
+        { name: 'Typography', pages: 6, semaine: 'S12' },
+      ]},
+      { name: 'Visualisation 3D', total: 75, projects: [
+        { name: 'Perspectives', pages: 40, semaine: 'S14' },
+        { name: 'Animation', pages: 35, semaine: 'S16' },
+      ]},
+      { name: 'Photographie', total: 46, projects: [
+        { name: 'Calendrier ENSAM', pages: 10, semaine: 'S16' },
+        { name: 'Divers', pages: 36, semaine: 'S18' },
+      ]},
+    ]
+  }
+];
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+
+const STORAGE_KEY = 'portfolio_planning_v7';
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch(e) { return {}; }
+}
+
+function saveState(state) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+}
+
+let state = loadState();
+
+function isTaskDone(taskId) { return !!state[taskId]; }
+function setTaskDone(taskId, done) {
+  state[taskId] = done;
+  saveState(state);
+}
+
+// ── RENDERING ─────────────────────────────────────────────────────────────────
+
+function renderPlanning() {
+  const container = document.getElementById('planning-container');
+  let html = '<div style="padding:32px 24px 80px;max-width:860px;margin:0 auto;">';
+
+  PLANNING.forEach(entry => {
+    if (entry.type === 'conges') {
+      html += `<div class="week-entry">
+        <div class="conges-block">
+          <span class="conges-icon">✈️</span>
+          <div>
+            <div class="conges-label">Congés — hors planning</div>
+            <div class="conges-dates">${entry.dates} · ${entry.label}</div>
+          </div>
+        </div>
+      </div>`;
+      return;
+    }
+
+    const totalTasks = entry.tasks.length;
+    const doneTasks = entry.tasks.filter(t => isTaskDone(t.id)).length;
+    const pct = totalTasks > 0 ? Math.round(doneTasks / totalTasks * 100) : 0;
+    const isComplete = pct === 100;
+    const isCurrent = !isComplete && isFirstIncomplete(entry);
+
+    html += `<div class="week-entry">
+      <div class="week-card ${entry.type} ${isComplete ? 'completed' : ''} ${isCurrent ? 'current' : ''}" id="week-${entry.id}">
+        <div class="week-header" onclick="toggleWeek('${entry.id}')">
+          <div class="week-title-group">
+            <div class="week-meta" style="margin-bottom:6px;">
+              <span class="week-num">${entry.week}</span>
+              <span class="type-badge type-${entry.type}">${entry.type.toUpperCase()}</span>
+              ${entry.volClass ? `<span class="type-badge ${entry.volClass}">${entry.volLabel}</span>` : ''}
+            </div>
+            <div class="week-title">${entry.title}</div>
+            <div class="week-subtitle">${entry.dates} &nbsp;·&nbsp; ${entry.subtitle}</div>
+          </div>
+          <div class="week-right">
+            ${entry.pages ? `<span class="week-pages">${entry.pages}</span>` : ''}
+            <div class="week-progress-mini">
+              <div class="week-progress-bar"><div class="week-progress-fill" id="wpf-${entry.id}" style="width:${pct}%"></div></div>
+              <span class="week-progress-pct" id="wpp-${entry.id}">${pct}%</span>
+            </div>
+            <span class="chevron">▾</span>
+          </div>
+        </div>
+        <div class="tasks-panel" id="tasks-${entry.id}">
+          <div class="section-label">Tâches · ${doneTasks}/${totalTasks} complétées</div>
+          ${entry.tasks.map(t => `
+            <div class="task-item ${isTaskDone(t.id) ? 'done' : ''}" id="task-row-${t.id}">
+              <input type="checkbox" class="task-check" id="chk-${t.id}"
+                ${isTaskDone(t.id) ? 'checked' : ''}
+                onchange="toggleTask('${t.id}', '${entry.id}', this.checked)">
+              <div>
+                <div class="task-text">${t.text}</div>
+              </div>
+            </div>
+          `).join('')}
+          ${entry.note ? `<div class="week-note ${entry.note.type}">${entry.note.text}</div>` : ''}
+        </div>
+      </div>
+    </div>`;
+  });
+
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+function renderVolumes() {
+  const container = document.getElementById('volumes-container');
+  let html = `<div id="tab-volumes" class="tab-content active" style="max-width:860px;margin:0 auto;padding:32px 24px 80px;">
+    <div class="volumes-header">
+      <h2>Répartition des pages</h2>
+      <p>3 VOLUMES · LULU 216×216 MM · LIMITE 240P/VOLUME</p>
+    </div>
+    <div class="vol-summary">`;
+
+  VOLUMES.forEach(v => {
+    const pct = Math.round(v.pages / v.limit * 100);
+    html += `<div class="vol-card ${v.cls}">
+      <div class="vol-card-label">${v.label}</div>
+      <div class="vol-card-title">${v.title}</div>
+      <div class="vol-bar-container">
+        <div class="vol-bar-track"><div class="vol-bar-fill" style="width:${pct}%"></div></div>
+        <div class="vol-bar-nums">
+          <span class="pages">${v.pages}p</span>
+          <span>/ ${v.limit}p max</span>
+        </div>
+      </div>
+      <div class="vol-marge">Marge disponible : <span>+${v.marge}p</span></div>
+    </div>`;
+  });
+
+  html += `</div>`;
+
+  VOLUMES.forEach(v => {
+    html += `<div class="vol-detail">
+      <div class="vol-detail-header">
+        <h3><span class="type-badge ${v.cls === 'v1' ? 'vol1-badge' : v.cls === 'v2' ? 'vol2-badge' : 'vol3-badge'}">${v.label}</span> ${v.title}</h3>
+        <span class="vol-detail-pages">${v.pages}p / ${v.limit}p</span>
+      </div>`;
+
+    v.sections.forEach(sec => {
+      html += `<div class="section-group">
+        <div class="section-group-header">
+          <span>${sec.name}</span>
+          <span class="sec-pages">${sec.total}p — ${sec.projects.length} projet${sec.projects.length > 1 ? 's' : ''}</span>
+        </div>`;
+      sec.projects.forEach(p => {
+        html += `<div class="project-row">
+          <span>${p.name}</span>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <span class="project-semaine">${p.semaine}</span>
+            <span class="project-pages">${p.pages}p</span>
+          </div>
+        </div>`;
+      });
+      html += `</div>`;
+    });
+
+    html += `</div>`;
+  });
+
+  html += `</div>`;
+  container.innerHTML = html;
+}
+
+// ── INTERACTIONS ──────────────────────────────────────────────────────────────
+
+function isFirstIncomplete(entry) {
+  if (entry.type === 'conges') return false;
+  const doneTasks = entry.tasks.filter(t => isTaskDone(t.id)).length;
+  if (doneTasks === entry.tasks.length) return false;
+  // Check if all previous weeks are complete
+  for (const e of PLANNING) {
+    if (e.type === 'conges') continue;
+    if (e.id === entry.id) return true;
+    const d = e.tasks.filter(t => isTaskDone(t.id)).length;
+    if (d < e.tasks.length) return false;
+  }
+  return false;
+}
+
+function toggleWeek(weekId) {
+  const card = document.getElementById('week-' + weekId);
+  const panel = document.getElementById('tasks-' + weekId);
+  card.classList.toggle('open');
+}
+
+function toggleTask(taskId, weekId, checked) {
+  setTaskDone(taskId, checked);
+  const row = document.getElementById('task-row-' + taskId);
+  if (checked) row.classList.add('done');
+  else row.classList.remove('done');
+  updateWeekProgress(weekId);
+  updateGlobalProgress();
+}
+
+function updateWeekProgress(weekId) {
+  const entry = PLANNING.find(e => e.id === weekId);
+  if (!entry || !entry.tasks) return;
+  const total = entry.tasks.length;
+  const done = entry.tasks.filter(t => isTaskDone(t.id)).length;
+  const pct = Math.round(done / total * 100);
+  const fill = document.getElementById('wpf-' + weekId);
+  const label = document.getElementById('wpp-' + weekId);
+  if (fill) fill.style.width = pct + '%';
+  if (label) label.textContent = pct + '%';
+  const card = document.getElementById('week-' + weekId);
+  if (card) {
+    if (pct === 100) card.classList.add('completed');
+    else card.classList.remove('completed');
+  }
+  const sectionLabel = document.querySelector(`#tasks-${weekId} .section-label`);
+  if (sectionLabel) sectionLabel.textContent = `Tâches · ${done}/${total} complétées`;
+}
+
+function updateGlobalProgress() {
+  const allTasks = PLANNING.filter(e => e.tasks).flatMap(e => e.tasks);
+  const total = allTasks.length;
+  const done = allTasks.filter(t => isTaskDone(t.id)).length;
+  const pct = Math.round(done / total * 100);
+  const fill = document.getElementById('global-fill');
+  const label = document.getElementById('global-label');
+  if (fill) fill.style.width = pct + '%';
+  if (label) label.textContent = `${done} / ${total} tâches`;
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    if (b.textContent.toLowerCase().includes(tab === 'planning' ? 'planning' : 'volumes')) b.classList.add('active');
+  });
+}
+
+function scrollToCurrentWeek() {
+  // Open and scroll to first non-complete week
+  for (const entry of PLANNING) {
+    if (entry.type === 'conges') continue;
+    const doneTasks = entry.tasks.filter(t => isTaskDone(t.id)).length;
+    if (doneTasks < entry.tasks.length) {
+      const card = document.getElementById('week-' + entry.id);
+      if (card) {
+        card.classList.add('open');
+        setTimeout(() => {
+          card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 150);
+      }
+      break;
+    }
+  }
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+
+renderPlanning();
+renderVolumes();
+updateGlobalProgress();
+
+// Open current week on load
+window.addEventListener('load', () => {
+  setTimeout(scrollToCurrentWeek, 200);
+});
+</script>
+</body>
+</html>
