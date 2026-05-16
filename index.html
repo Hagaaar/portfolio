@@ -13,9 +13,9 @@
   --surface2: #1c1c1a;
   --border: #242422;
   --border2: #303030;
-  --text: #e6e2da;
-  --text2: #8a8680;
-  --text3: #4e4c4a;
+  --text: #f5f0e8;
+  --text2: #bdb8b0;
+  --text3: #8a8680;
   --setup:    #6b7280; --setup-bg:    #191b1f;
   --reformat: #4ade80; --reformat-bg: #0c1a10;
   --nouveau:  #60a5fa; --nouveau-bg:  #0c1422;
@@ -52,7 +52,7 @@ body {
   text-align: center;
   padding: 10px 12px 0;
   font-family: 'DM Mono', monospace;
-  font-size: 10px; letter-spacing: .18em;
+  font-size: 11px; letter-spacing: .14em;
   color: var(--text2); text-transform: uppercase;
 }
 .hdr-title strong { color: var(--accent); font-weight: 500; }
@@ -66,7 +66,7 @@ body {
   flex: 1; text-align: center;
   padding: 9px 4px; cursor: pointer;
   font-family: 'DM Mono', monospace;
-  font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  font-size: 12px; letter-spacing: .08em; text-transform: uppercase;
   color: var(--text3); border: none; background: none;
   border-bottom: 2px solid transparent;
   transition: color .15s, border-color .15s;
@@ -88,7 +88,7 @@ body {
 }
 .hdr-prog-label {
   font-family: 'DM Mono', monospace; font-size: 10px;
-  color: var(--text3); white-space: nowrap; letter-spacing: .04em;
+  color: var(--text2); white-space: nowrap; letter-spacing: .04em;
 }
 .sync-dot {
   width: 6px; height: 6px; border-radius: 50%;
@@ -118,10 +118,10 @@ body {
 }
 .conges-row .ci { font-size: 16px; }
 .conges-row .cl {
-  font-family: 'DM Mono', monospace; font-size: 9px;
+  font-family: 'DM Mono', monospace; font-size: 10px;
   color: var(--conges); letter-spacing: .1em; text-transform: uppercase;
 }
-.conges-row .cd { font-size: 13px; color: var(--text2); }
+.conges-row .cd { font-size: 13px; color: var(--text); }
 
 /* Week card */
 .wk {
@@ -151,7 +151,7 @@ body {
 }
 .badge {
   font-family: 'DM Mono', monospace;
-  font-size: 8px; letter-spacing: .1em; text-transform: uppercase;
+  font-size: 9px; letter-spacing: .08em; text-transform: uppercase;
   padding: 2px 6px; border-radius: 3px; border: 1px solid;
   line-height: 1.4;
 }
@@ -165,11 +165,11 @@ body {
 .b-week     { color: var(--text3);    background: transparent;        border-color: var(--border2); }
 
 .wk-title {
-  font-size: 15px; font-weight: 500; color: var(--text);
+  font-size: 16px; font-weight: 600; color: var(--text);
   line-height: 1.3; margin-bottom: 2px;
 }
 .wk-sub {
-  font-size: 12px; color: var(--text3); line-height: 1.4;
+  font-size: 13px; color: var(--text); line-height: 1.4;
 }
 
 .wk-right {
@@ -177,7 +177,7 @@ body {
   align-items: flex-end; gap: 4px; padding-top: 1px;
 }
 .wk-pages {
-  font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text3);
+  font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text2);
 }
 .wk-prog-wrap { display: flex; align-items: center; gap: 5px; }
 .wk-prog-bar {
@@ -191,7 +191,7 @@ body {
 .finitions .wk-prog-fill { background: var(--finitions); }
 .wk-prog-pct {
   font-family: 'DM Mono', monospace; font-size: 9px;
-  color: var(--text3); width: 26px; text-align: right;
+  color: var(--text2); width: 26px; text-align: right;
 }
 .chev {
   font-size: 10px; color: var(--text3);
@@ -240,9 +240,9 @@ body {
 }
 
 .task-txt {
-  font-size: 14px; color: var(--text); line-height: 1.5; flex: 1;
+  font-size: 15px; color: var(--text); line-height: 1.55; flex: 1;
 }
-.task.done .task-txt { text-decoration: line-through; color: var(--text3); }
+.task.done .task-txt { text-decoration: line-through; color: var(--text2); }
 
 .wk-note {
   margin: 4px 12px 0;
@@ -250,7 +250,7 @@ body {
   border-radius: var(--r);
   background: var(--surface2);
   border-left: 2px solid var(--border2);
-  font-size: 12px; color: var(--text2); line-height: 1.6;
+  font-size: 13px; color: var(--text); line-height: 1.6;
 }
 .wk-note.warn { border-left-color: var(--finitions); }
 .wk-note.ok   { border-left-color: var(--reformat); }
@@ -281,7 +281,7 @@ body {
   display: flex; justify-content: space-between;
   font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text3);
 }
-.vc-nums .big { font-size: 14px; color: var(--text); }
+.vc-nums .big { font-size: 15px; color: var(--text); }
 .vc-marge { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text3); margin-top: 4px; }
 .vc-marge span { color: var(--reformat); }
 
@@ -294,25 +294,25 @@ body {
   display: flex; align-items: center; justify-content: space-between;
 }
 .vd-hdr-l { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 500; }
-.vd-total { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text3); }
+.vd-total { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text2); }
 
 .sec-head {
   padding: 7px 12px;
   background: var(--surface2); border-bottom: 1px solid var(--border);
   display: flex; justify-content: space-between; align-items: center;
   font-family: 'DM Mono', monospace; font-size: 9px;
-  color: var(--text2); letter-spacing: .08em; text-transform: uppercase;
+  color: var(--text); letter-spacing: .08em; text-transform: uppercase;
 }
 
 .proj-row {
   padding: 7px 12px 7px 20px;
   display: flex; justify-content: space-between; align-items: center;
   border-top: 1px solid var(--border);
-  font-size: 13px;
+  font-size: 14px;
 }
 .proj-right { display: flex; gap: 8px; align-items: center; }
-.proj-sem { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text3); }
-.proj-p   { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text2); }
+.proj-sem { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text2); }
+.proj-p   { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--text); }
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 3px; }
@@ -323,7 +323,7 @@ body {
   position: fixed; bottom: 0; left: 0; right: 0; z-index: 300;
   background: var(--surface2); border-top: 1px solid var(--border);
   padding: 10px 12px calc(10px + var(--safe-bot));
-  font-size: 12px; color: var(--text2); line-height: 1.6;
+  font-size: 13px; color: var(--text); line-height: 1.6;
 }
 #setup-banner h4 { font-size: 13px; font-weight: 600; color: var(--accent); margin-bottom: 4px; }
 #setup-banner code { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text); background: var(--bg); padding: 1px 4px; border-radius: 3px; }
@@ -386,7 +386,7 @@ body {
 // ══════════════════════════════════════════════════════════════════
 // CONFIGURATION — coller ici l'URL de votre Apps Script (optionnel)
 // ══════════════════════════════════════════════════════════════════
-let GS_URL = localStorage.getItem('portfolio_gs_url') || '';
+let GS_URL = localStorage.getItem('portfolio_gs_url') || 'https://script.google.com/macros/s/AKfycbzcEMTmWpc-x0XUpxu8KlY71xWQoVHO_SsR46sXo-m9VHEGlUqdvrAED_6H2sToCjQwkA/exec';
 
 // ══════════════════════════════════════════════════════════════════
 // DONNÉES PLANNING
