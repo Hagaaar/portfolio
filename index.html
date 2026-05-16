@@ -826,8 +826,9 @@ function setSyncDot(status) {
   const map = {
     ok:      { cls:'ok',      label:'Synchronisé' },
     syncing: { cls:'syncing', label:'Sync...' },
-    error:   { cls:'offline', label:'Erreur' },
+    error:   { cls:'offline', label:'Hors ligne' },
     offline: { cls:'offline', label:'Hors ligne' },
+    local:   { cls:'',        label:'Local' },
     idle:    { cls:'',        label:'Local' },
   };
   const s = map[status] || map.idle;
@@ -839,14 +840,25 @@ async function loadFromGS() {
   if (!GS_URL) return false;
   try {
     setSyncDot('syncing');
-    const r = await fetch(GS_URL + '?action=get');
-    if (!r.ok) throw new Error();
-    const data = await r.json();
+    // Use a script tag injection (JSONP-style) to avoid CORS on file:// protocol
+    const url = GS_URL + '?action=get&cb=_gsCallback&t=' + Date.now();
+    const data = await new Promise((resolve, reject) => {
+      const timeout = setTimeout(() => reject(new Error('timeout')), 8000);
+      window._gsCallback = (d) => { clearTimeout(timeout); resolve(d); };
+      const s = document.createElement('script');
+      s.src = url; s.onerror = () => { clearTimeout(timeout); reject(new Error('load')); };
+      document.head.appendChild(s);
+      setTimeout(() => document.head.removeChild(s), 9000);
+    });
     state = { ...state, ...data };
     saveLocal();
     setSyncDot('ok');
     return true;
-  } catch(e) { setSyncDot('error'); return false; }
+  } catch(e) {
+    console.warn('GS load skipped (local file mode):', e.message);
+    setSyncDot('local');
+    return false;
+  }
 }
 
 let syncTimer = null;
@@ -856,14 +868,21 @@ async function syncToGS() {
   syncTimer = setTimeout(async () => {
     try {
       setSyncDot('syncing');
+      // Use no-cors to avoid CORS preflight issues with Apps Script
+      // Data sent as plain text in body, Apps Script reads e.postData.contents
       await fetch(GS_URL + '?action=set', {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify(state)
       });
+      // With no-cors we can't read the response, but if no exception = sent OK
       setSyncDot('ok');
-    } catch(e) { setSyncDot('error'); }
-  }, 800);
+    } catch(e) {
+      console.warn('GS sync error:', e);
+      setSyncDot('offline');
+    }
+  }, 1000);
 }
 
 function isDone(id) { return !!state[id]; }
@@ -1056,14 +1075,17 @@ function switchTab(tab) {
 // INIT
 // ══════════════════════════════════════════════════════════════════
 state = loadLocal();
-if (!GS_URL) { setSyncDot('offline'); } else { setSyncDot('syncing'); }
+if (!GS_URL) { setSyncDot('local'); } else { setSyncDot('syncing'); }
 
 renderPlanning();
 renderVolumes();
 updateGlobalProg();
 
 if (GS_URL) {
-  loadFromGS().then(ok => { if (ok) { renderPlanning(); updateGlobalProg(); } });
+  loadFromGS().then(ok => {
+    if (ok) { renderPlanning(); updateGlobalProg(); }
+    else { setSyncDot('local'); }
+  }).catch(() => setSyncDot('local'));
 }
 </script>
 </body>
