@@ -134,18 +134,18 @@ body {
 .conges-row {
   border: 1px solid var(--border);
   border-radius: var(--r);
-  background: var(--conges-bg);
-  padding: 10px 12px;
+  background: var(--bg);
+  padding: 6px 12px;
   margin-bottom: 6px;
-  display: flex; align-items: center; gap: 10px;
-  opacity: .6;
+  display: flex; align-items: center; gap: 8px;
+  opacity: .3;
 }
-.conges-row .ci { font-size: 16px; }
+.conges-row .ci { font-size: 13px; }
 .conges-row .cl {
-  font-family: 'Roboto Mono', monospace; font-size: 10px;
-  color: var(--conges); letter-spacing: .1em; text-transform: uppercase;
+  font-family: 'Roboto Mono', monospace; font-size: 9px;
+  color: var(--text3); letter-spacing: .08em; text-transform: uppercase;
 }
-.conges-row .cd { font-size: 13px; color: var(--text); }
+.conges-row .cd { font-size: 12px; color: var(--text3); }
 
 /* Week card */
 .wk {
@@ -156,7 +156,7 @@ body {
   overflow: hidden; transition: border-color .2s;
 }
 .wk.current { border-color: var(--accent)88; }
-.wk.done-all { opacity: .5; }
+.wk.done-all { background: #0d1f10; border-color: #1e3d22; opacity: .75; }
 
 /* Week header tap area */
 .wk-head {
@@ -244,7 +244,7 @@ body {
   min-height: 44px; transition: opacity .2s;
 }
 .task:last-of-type { border-bottom: none; }
-.task.done { opacity: 1; background: #0d2016; }
+.task.done { opacity: 1; background: #0d2016; border-left: 2px solid #1a4a28; }
 
 .task-cb {
   width: 20px; height: 20px; flex-shrink: 0;
