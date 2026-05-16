@@ -414,11 +414,6 @@ body {
 
 <script>
 // ══════════════════════════════════════════════════════════════════
-// CONFIGURATION — coller ici l'URL de votre Apps Script (optionnel)
-// ══════════════════════════════════════════════════════════════════
-let GS_URL = localStorage.getItem('portfolio_gs_url') || 'https://script.google.com/macros/s/AKfycbzcEMTmWpc-x0XUpxu8KlY71xWQoVHO_SsR46sXo-m9VHEGlUqdvrAED_6H2sToCjQwkA/exec';
-
-// ══════════════════════════════════════════════════════════════════
 // DONNÉES PLANNING
 // ══════════════════════════════════════════════════════════════════
 const PLANNING = [
@@ -805,7 +800,12 @@ const VOLUMES = [
 ];
 
 // ══════════════════════════════════════════════════════════════════
-// STATE — localStorage + Google Sheets sync
+// CONFIGURATION — Google Apps Script URL
+// ══════════════════════════════════════════════════════════════════
+const GS_URL = 'https://script.google.com/macros/s/AKfycbzcEMTmWpc-x0XUpxu8KlY71xWQoVHO_SsR46sXo-m9VHEGlUqdvrAED_6H2sToCjQwkA/exec';
+
+// ══════════════════════════════════════════════════════════════════
+// STATE — localStorage (cache immédiat) + Apps Script (sync cross-device)
 // ══════════════════════════════════════════════════════════════════
 const LS_KEY = 'portfolio_v7_state';
 let state = {};
@@ -814,7 +814,6 @@ function loadLocal() {
   try { const r = localStorage.getItem(LS_KEY); return r ? JSON.parse(r) : {}; }
   catch(e) { return {}; }
 }
-
 function saveLocal() {
   try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch(e) {}
 }
@@ -826,70 +825,56 @@ function setSyncDot(status) {
   const map = {
     ok:      { cls:'ok',      label:'Synchronisé' },
     syncing: { cls:'syncing', label:'Sync...' },
-    error:   { cls:'offline', label:'Hors ligne' },
+    error:   { cls:'offline', label:'Erreur' },
     offline: { cls:'offline', label:'Hors ligne' },
     local:   { cls:'',        label:'Local' },
-    idle:    { cls:'',        label:'Local' },
   };
-  const s = map[status] || map.idle;
+  const s = map[status] || map.local;
   d.className = 'sync-dot' + (s.cls ? ' ' + s.cls : '');
   if (l) l.textContent = s.label;
 }
 
+// Lecture — fetch GET classique (même pattern que l'app budget)
 async function loadFromGS() {
-  if (!GS_URL) return false;
   try {
     setSyncDot('syncing');
-    // Use a script tag injection (JSONP-style) to avoid CORS on file:// protocol
-    const url = GS_URL + '?action=get&cb=_gsCallback&t=' + Date.now();
-    const data = await new Promise((resolve, reject) => {
-      const timeout = setTimeout(() => reject(new Error('timeout')), 8000);
-      window._gsCallback = (d) => { clearTimeout(timeout); resolve(d); };
-      const s = document.createElement('script');
-      s.src = url; s.onerror = () => { clearTimeout(timeout); reject(new Error('load')); };
-      document.head.appendChild(s);
-      setTimeout(() => document.head.removeChild(s), 9000);
-    });
-    state = { ...state, ...data };
-    saveLocal();
+    const r = await fetch(GS_URL);
+    const remote = await r.json();
+    if (remote && Object.keys(remote).length > 0) {
+      // Merge : true gagne toujours pour ne jamais décocher une tâche validée
+      Object.keys(remote).forEach(k => { if (remote[k]) state[k] = true; });
+      saveLocal();
+    }
     setSyncDot('ok');
     return true;
   } catch(e) {
-    console.warn('GS load skipped (local file mode):', e.message);
-    setSyncDot('local');
+    console.warn('GS load error:', e);
+    setSyncDot('offline');
     return false;
   }
 }
 
-let syncTimer = null;
-async function syncToGS() {
-  if (!GS_URL) return;
-  clearTimeout(syncTimer);
-  syncTimer = setTimeout(async () => {
+// Écriture — POST no-cors (même pattern que l'app budget)
+let saveTimer = null;
+function scheduleRemoteSave() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(async () => {
     try {
       setSyncDot('syncing');
-      // Use no-cors to avoid CORS preflight issues with Apps Script
-      // Data sent as plain text in body, Apps Script reads e.postData.contents
-      await fetch(GS_URL + '?action=set', {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify(state)
-      });
-      // With no-cors we can't read the response, but if no exception = sent OK
+      await fetch(GS_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(state) });
       setSyncDot('ok');
     } catch(e) {
-      console.warn('GS sync error:', e);
+      console.warn('GS save error:', e);
       setSyncDot('offline');
     }
-  }, 1000);
+  }, 800);
 }
 
 function isDone(id) { return !!state[id]; }
 function setDone(id, v) {
-  state[id] = v;
+  if (v) { state[id] = true; } else { delete state[id]; }
   saveLocal();
-  syncToGS();
+  scheduleRemoteSave();
 }
 
 // ══════════════════════════════════════════════════════════════════
@@ -1074,19 +1059,17 @@ function switchTab(tab) {
 // ══════════════════════════════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════════════════════════════
+// 1. Affichage immédiat depuis localStorage (0 ms de latence)
 state = loadLocal();
-if (!GS_URL) { setSyncDot('local'); } else { setSyncDot('syncing'); }
-
+setSyncDot('syncing');
 renderPlanning();
 renderVolumes();
 updateGlobalProg();
 
-if (GS_URL) {
-  loadFromGS().then(ok => {
-    if (ok) { renderPlanning(); updateGlobalProg(); }
-    else { setSyncDot('local'); }
-  }).catch(() => setSyncDot('local'));
-}
+// 2. Sync depuis Apps Script en arrière-plan, puis re-render si changements
+loadFromGS().then(ok => {
+  if (ok) { renderPlanning(); updateGlobalProg(); }
+});
 </script>
 </body>
 </html>
