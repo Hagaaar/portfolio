@@ -156,10 +156,17 @@ body {
 .wk.current { background: var(--surface2); }
 
 .wk.done-all {
+  background: var(--green);
   border-left-color: var(--green);
-  opacity: .38;
+  opacity: 1;
 }
-.wk.done-all .wk-prog-fill { background: var(--green) !important; width: 100% !important; }
+.wk.done-all .wk-title    { color: rgba(0,0,0,.85) !important; }
+.wk.done-all .wk-sub      { color: rgba(0,0,0,.6); }
+.wk.done-all .wk-prog-bar { background: rgba(0,0,0,.18); }
+.wk.done-all .wk-prog-fill { background: rgba(0,0,0,.3) !important; width: 100% !important; }
+.wk.done-all .wk-prog-pct  { color: rgba(0,0,0,.55); }
+.wk.done-all .chev         { color: rgba(0,0,0,.45); }
+.wk.done-all .badge        { background: rgba(0,0,0,.18); color: rgba(0,0,0,.7); }
 
 /* Week header */
 .wk-head {
@@ -186,7 +193,7 @@ body {
 .b-vol3     { background: var(--green-bg);  color: var(--green-t);  }
 .b-week     { background: transparent;      color: var(--text3);    }
 
-.wk-title { font-size: 13px; font-weight: 600; line-height: 1.3; margin-bottom: 1px; }
+.wk-title { font-size: 22px; font-weight: 700; line-height: 1.25; margin-bottom: 3px; }
 .wk.reformat  .wk-title { color: var(--orange-t); }
 .wk.nouveau   .wk-title { color: var(--blue-t);   }
 .wk.setup     .wk-title { color: var(--setup-t);  }
