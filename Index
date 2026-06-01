@@ -227,9 +227,11 @@ body {
   cursor: pointer;
 }
 .task:last-of-type { border-bottom: none; }
-.task.done { opacity: .45; }
-.task.done .task-txt { text-decoration: line-through; }
-.task.done .task-pages-badge { text-decoration: line-through; }
+.task.done { background: var(--green); }
+.task.done .task-txt { color: rgba(0,0,0,.82); font-weight: 500; }
+.task.done .task-pages-badge { color: rgba(0,0,0,.55); }
+.task.done .task-cb:checked { background: rgba(0,0,0,.22); border-color: rgba(0,0,0,.15); }
+.task.done .task-cb:checked::after { color: #fff; }
 
 .task-cb {
   width: 16px; height: 16px; flex-shrink: 0;
