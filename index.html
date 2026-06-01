@@ -157,13 +157,9 @@ body {
 
 .wk.done-all {
   border-left-color: var(--green);
-  opacity: .55;
+  opacity: .38;
 }
-.wk.done-all .wk-title    { color: var(--green-t) !important; }
-.wk.done-all .wk-sub      { color: var(--green-bg); }
 .wk.done-all .wk-prog-fill { background: var(--green) !important; width: 100% !important; }
-.wk.done-all .wk-prog-pct  { color: var(--green-t); }
-.wk.done-all .chev         { color: var(--text3); }
 
 /* Week header */
 .wk-head {
@@ -228,11 +224,12 @@ body {
   padding: 8px 14px;
   border-bottom: 1px solid var(--sep);
   min-height: 40px;
+  cursor: pointer;
 }
 .task:last-of-type { border-bottom: none; }
-.task.done { background: var(--green-bg); }
-.task.done .task-txt { text-decoration: line-through; color: var(--green-t); opacity: .7; }
-.task.done .task-pages-badge { color: var(--text3); }
+.task.done { opacity: .45; }
+.task.done .task-txt { text-decoration: line-through; }
+.task.done .task-pages-badge { text-decoration: line-through; }
 
 .task-cb {
   width: 16px; height: 16px; flex-shrink: 0;
@@ -878,9 +875,9 @@ function renderPlanning() {
       <div class="wk-tasks" id="wkt-${e.id}">
         <div class="tasks-header" id="th-${e.id}">Tâches · ${done} / ${total}</div>
         ${e.tasks.map(t => `
-          <div class="task${isDone(t.id) ? ' done' : ''}" id="tr-${t.id}">
-            <input type="checkbox" class="task-cb" id="cb-${t.id}" ${isDone(t.id) ? 'checked' : ''}
-              onchange="toggleTask('${t.id}','${e.id}',this.checked)">
+          <div class="task${isDone(t.id) ? ' done' : ''}" id="tr-${t.id}"
+            onclick="taskRowClick(event,'${t.id}','${e.id}')">
+            <input type="checkbox" class="task-cb" id="cb-${t.id}" ${isDone(t.id) ? 'checked' : ''}>
             <span class="task-txt">${taskCleanText(t.txt)}</span>
             ${taskPageBadge(t.txt)}
           </div>`).join('')}
@@ -931,6 +928,12 @@ function renderVolumes() {
 // ══════════════════════════════════════════════════════════
 function toggleWk(id) {
   document.getElementById('wk-' + id).classList.toggle('open');
+}
+
+function taskRowClick(e, tid, wid) {
+  const cb = document.getElementById('cb-' + tid);
+  cb.checked = !cb.checked;
+  toggleTask(tid, wid, cb.checked);
 }
 
 function toggleTask(tid, wid, checked) {
@@ -1019,7 +1022,23 @@ if (_curId) {
 }
 
 loadFromGS().then(ok => {
-  if (ok) { renderPlanning(); updateGlobalProg(); }
+  if (ok) {
+    // Mémoriser les cartes ouvertes avant le re-render
+    const openIds = [...document.querySelectorAll('.wk.open')].map(el => el.id.replace('wk-', ''));
+    renderPlanning();
+    updateGlobalProg();
+    // Restaurer les cartes ouvertes (sans scroll)
+    openIds.forEach(id => {
+      const c = document.getElementById('wk-' + id);
+      if (c) c.classList.add('open');
+    });
+    // La semaine en cours reste toujours ouverte
+    const curId = findCurrentWeek();
+    if (curId) {
+      const c = document.getElementById('wk-' + curId);
+      if (c) c.classList.add('open');
+    }
+  }
 });
 </script>
 </body>
