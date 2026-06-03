@@ -102,22 +102,22 @@ body {
 .hdr-prog-row { display: flex; align-items: center; gap: 8px; }
 .hdr-prog-lbl {
   font-family: 'JetBrains Mono', monospace; font-size: 9px;
-  color: var(--text3); letter-spacing: .07em; text-transform: uppercase;
-  width: 46px; flex-shrink: 0; font-weight: 500;
+  color: var(--text2); letter-spacing: .07em; text-transform: uppercase;
+  width: 46px; flex-shrink: 0; font-weight: 600;
 }
 .hdr-prog-bar {
-  flex: 1; height: 6px; background: var(--sep2);
-  border-radius: 3px; overflow: hidden; min-width: 0;
+  flex: 1; height: 12px; background: var(--sep2);
+  border-radius: 6px; overflow: hidden; min-width: 0;
 }
 .hdr-prog-fill {
-  height: 100%; background: var(--green); border-radius: 3px;
+  height: 100%; background: var(--green); border-radius: 6px;
   transition: width .4s ease;
 }
 .hdr-prog-fill-pages { background: var(--blue); }
 .hdr-prog-label {
   font-family: 'JetBrains Mono', monospace; font-size: 10px;
-  color: var(--text2); white-space: nowrap;
-  width: 68px; text-align: right; font-weight: 400; flex-shrink: 0;
+  color: var(--text); white-space: nowrap;
+  width: 68px; text-align: right; font-weight: 500; flex-shrink: 0;
 }
 
 /* ═══ TABS ═══ */
@@ -127,25 +127,13 @@ body {
 /* ═══ PLANNING ═══ */
 #page-planning { padding-bottom: 60px; }
 
-/* Congés — inline, minimal */
-.conges-row {
-  padding: 6px 14px 6px 16px;
-  display: flex; align-items: center; gap: 8px;
-  border-bottom: 1px solid var(--sep);
-  opacity: .35;
-}
-.conges-row .ci { font-size: 12px; }
-.conges-row .cl {
-  font-family: 'JetBrains Mono', monospace; font-size: 8px;
-  color: var(--text3); letter-spacing: .09em; text-transform: uppercase;
-}
-.conges-row .cd { font-size: 11px; color: var(--text3); margin-left: 4px; }
-
 /* Week row — flat, no border-box */
 .wk {
   border-left: 2px solid var(--sep2);
   border-bottom: 1px solid var(--sep);
-  background: var(--surface);
+  background:
+    linear-gradient(to right, rgba(44,174,104,.18) var(--wk-pct, 0%), transparent var(--wk-pct, 0%)),
+    var(--surface);
   overflow: hidden;
 }
 .wk.reformat  { border-left-color: var(--orange); }
@@ -153,10 +141,14 @@ body {
 .wk.setup     { border-left-color: var(--setup);  }
 .wk.finitions { border-left-color: var(--amber);  }
 
-.wk.current { background: var(--surface2); }
+.wk.current {
+  background:
+    linear-gradient(to right, rgba(44,174,104,.18) var(--wk-pct, 0%), transparent var(--wk-pct, 0%)),
+    var(--surface2);
+}
 
 .wk.done-all {
-  background: var(--green);
+  background: var(--green) !important;
   border-left-color: var(--green);
   opacity: 1;
 }
@@ -381,7 +373,7 @@ const PLANNING = [
   {
     id:'s01', week:'S01', dates:'18–24 mai 2026',
     type:'setup', vol:'', volLbl:'', section:'Fondations', pages:null,
-    title:'SETUP — Gabarit Lulu 216×216 mm',
+    title:'SETUP I Gabarit Lulu 216×216 mm',
     sub:'Fondations InDesign · 3 fichiers Book',
     note:{cls:'warn',txt:'⚠️ Valider ce gabarit AVANT toute mise en page. C\'est le socle de tout le projet.'},
     tasks:[
@@ -399,7 +391,7 @@ const PLANNING = [
   {
     id:'s02', week:'S02', dates:'8–14 juin 2026',
     type:'reformat', vol:'b-vol1', volLbl:'Vol.1 — Formation', section:'Architecture école', pages:'32p',
-    title:'REFORMAT — Architecture école · Lot 1',
+    title:'REFORMAT I Architecture école · Lot 1',
     sub:'6 projets · 32p · Adjust Layout + ajustements manuels',
     note:{cls:'',txt:'Utiliser Adjust Layout InDesign comme première passe, puis corriger manuellement les repositionnements de dessins techniques.'},
     tasks:[
@@ -415,7 +407,7 @@ const PLANNING = [
   {
     id:'s03', week:'S03', dates:'15–21 juin 2026',
     type:'nouveau', vol:'b-vol2', volLbl:'Vol.2 — Practice', section:'Archi agence — lourd', pages:'10p',
-    title:'NOUVEAU — ALSH Spechbach',
+    title:'NOUVEAU I ALSH Spechbach',
     sub:'Mise en page complète 10p + Behance · Semaine dédiée',
     note:{cls:'warn',txt:'⚠️ Rassembler TOUS les visuels en début de semaine avant de commencer la mise en page.'},
     tasks:[
@@ -431,7 +423,7 @@ const PLANNING = [
   {
     id:'s04', week:'S04', dates:'22–28 juin 2026',
     type:'reformat', vol:'b-vol1', volLbl:'Vol.1 — Formation', section:'Architecture école', pages:'56p',
-    title:'REFORMAT — Architecture école · Lot 2',
+    title:'REFORMAT I Architecture école · Lot 2',
     sub:'4 projets denses · 56p · Fin section Architecture école',
     note:{cls:'warn',txt:'⚠️ Semaine très chargée (56p). Si débordement, les derniers projets peuvent glisser en début de S06.'},
     tasks:[
@@ -445,7 +437,7 @@ const PLANNING = [
   {
     id:'s05', week:'S05', dates:'29 juin – 5 juillet 2026',
     type:'nouveau', vol:'b-vol2', volLbl:'Vol.2 — Practice', section:'Archi agence — lourd', pages:'20p',
-    title:'NOUVEAU — ALSH Muespach',
+    title:'NOUVEAU I ALSH Muespach',
     sub:'Mise en page complète 20p + Behance · ~4p/jour',
     note:{cls:'warn',txt:'⚠️ Projet lourd 20p depuis zéro. Rassembler les visuels le lundi impérativement.'},
     tasks:[
@@ -462,7 +454,7 @@ const PLANNING = [
   {
     id:'s06', week:'S06', dates:'6–12 juillet 2026',
     type:'reformat', vol:'b-vol1', volLbl:'Vol.1 — Formation', section:'Workshops', pages:'50p',
-    title:'REFORMAT — Workshops',
+    title:'REFORMAT I Workshops',
     sub:'5 projets · 50p · Contenu visuel dense',
     note:{cls:'',txt:'Les workshops sont visuellement riches mais moins techniques. Rythme plus rapide possible (~10p/h si Adjust Layout efficace).'},
     tasks:[
@@ -477,7 +469,7 @@ const PLANNING = [
   {
     id:'s07', week:'S07', dates:'13–19 juillet 2026',
     type:'nouveau', vol:'b-vol2', volLbl:'Vol.2 — Practice', section:'Archi agence — lourd', pages:'16p',
-    title:'NOUVEAU — Sovia Logement Collectif',
+    title:'NOUVEAU I Sovia Logement Collectif',
     sub:'Mise en page complète 16p + Behance · Fin des 3 lourds',
     note:{cls:'ok',txt:'Fin des 3 projets lourds Vol.2. Une fois Sovia livré, la partie la plus exigeante de Practice est terminée.'},
     tasks:[
@@ -493,7 +485,7 @@ const PLANNING = [
   {
     id:'s08', week:'S08', dates:'20–26 juillet 2026',
     type:'reformat', vol:'b-vol1', volLbl:'Vol.1 — Formation', section:'Concours école', pages:'54p',
-    title:'REFORMAT — Concours école',
+    title:'REFORMAT I Concours école',
     sub:'4 concours · 54p · Contenu dense mais finalisé',
     note:{cls:'warn',txt:'⚠️ Acier 2013 (20p) + Acier 2014 (18p) = 38p très denses. Commencer par Acier 2013 en début de semaine.'},
     tasks:[
@@ -507,7 +499,7 @@ const PLANNING = [
   {
     id:'s09', week:'S09', dates:'27 juillet – 1er août 2026',
     type:'nouveau', vol:'b-vol2', volLbl:'Vol.2 — Practice', section:'Urbanisme pro', pages:'24p',
-    title:'NOUVEAU — Atelier Urbain Montpellier EST',
+    title:'NOUVEAU I Atelier Urbain Montpellier EST',
     sub:'Mise en page complète 24p + Behance · ~5p/jour',
     note:{cls:'warn',txt:'⚠️ 24p depuis zéro = semaine la plus chargée en NOUVEAU. Commencer les visuels le lundi matin tôt.'},
     tasks:[
@@ -524,7 +516,7 @@ const PLANNING = [
   {
     id:'s10', week:'S10', dates:'10–16 août 2026',
     type:'reformat', vol:'b-vol1', volLbl:'Vol.1 + Vol.3', section:'Urbanisme école / Graphisme', pages:'46p',
-    title:'REFORMAT — Vol.1 complet · Graphisme lot 1',
+    title:'REFORMAT I Vol.1 complet · Graphisme lot 1',
     sub:'De la Comédie au Lez 24p · 5 projets graphisme 22p',
     note:{cls:'ok',txt:'Fin du Vol.1 Formation (218p). Vérifier : Intro 2 + Archi école 88 + Workshops 50 + Concours 54 + Urbanisme 24 = 218p '},
     tasks:[
@@ -540,7 +532,7 @@ const PLANNING = [
   {
     id:'s11', week:'S11', dates:'17–23 août 2026',
     type:'nouveau', vol:'b-vol2', volLbl:'Vol.2 — Practice', section:'Urbanisme pro', pages:'16p',
-    title:'NOUVEAU — ZAC St. Jacques',
+    title:'NOUVEAU I ZAC St. Jacques',
     sub:'Mise en page complète 16p + Behance · Urbanisme pro terminé',
     note:{cls:'ok',txt:'Fin des 2 projets urbanisme pro (Montpellier EST + ZAC = 40p). Vol.2 : lourds + urbanisme '},
     tasks:[
@@ -556,7 +548,7 @@ const PLANNING = [
   {
     id:'s12', week:'S12', dates:'24–30 août 2026',
     type:'reformat', vol:'b-vol3', volLbl:'Vol.3 — Image', section:'Graphisme', pages:'42p',
-    title:'REFORMAT — Graphisme · Fin de section',
+    title:'REFORMAT I Graphisme · Fin de section',
     sub:'12 projets · 42p · Contenu visuel rapide',
     note:{cls:'ok',txt:'Fin section Graphisme Vol.3 (17 projets, 62p total). Rythme soutenu possible (2–4 min/page).'},
     tasks:[
@@ -578,7 +570,7 @@ const PLANNING = [
   {
     id:'s13', week:'S13', dates:'31 août – 6 septembre 2026',
     type:'nouveau', vol:'b-vol2', volLbl:'Vol.2 — Practice', section:'Archi agence — standards', pages:'20p',
-    title:'NOUVEAU — Standards 1 → 5',
+    title:'NOUVEAU I Standards 1 → 5',
     sub:'5 projets × 4p · Mise en page + Behance',
     note:{cls:'',txt:'Structure identique pour chaque standard : 1p présentation, 1p plans, 1p façades/détails, 1p photos. Behance après le lot.'},
     tasks:[
@@ -594,7 +586,7 @@ const PLANNING = [
   {
     id:'s14', week:'S14', dates:'7–13 septembre 2026',
     type:'reformat', vol:'b-vol3', volLbl:'Vol.3 — Image', section:'Visualisation 3D', pages:'40p',
-    title:'REFORMAT — Perspectives 3D',
+    title:'REFORMAT I Perspectives 3D',
     sub:'40p · Projet le plus volumineux Visu 3D',
     note:{cls:'',txt:'Vérifier que les images 3D ne sont pas rééchantillonnées. Maintenir 300 DPI sur toutes les pages.'},
     tasks:[
@@ -608,7 +600,7 @@ const PLANNING = [
   {
     id:'s15', week:'S15', dates:'14–20 septembre 2026',
     type:'nouveau', vol:'b-vol2', volLbl:'Vol.2 — Practice', section:'Archi agence — standards', pages:'20p',
-    title:'NOUVEAU — Standards 6 → 10',
+    title:'NOUVEAU I Standards 6 → 10',
     sub:'5 projets × 4p · 10 standards terminés',
     note:{cls:'ok',txt:'Fin Archi agence standards (10 projets, 40p). Vol.2 ne manque plus que les 2 concours agence.'},
     tasks:[
@@ -625,7 +617,7 @@ const PLANNING = [
   {
     id:'s16', week:'S16', dates:'21–27 septembre 2026',
     type:'reformat', vol:'b-vol3', volLbl:'Vol.3 — Image', section:'Visu 3D + Photographie', pages:'45p',
-    title:'REFORMAT — Animation 3D + Calendrier ENSAM',
+    title:'REFORMAT I Animation 3D + Calendrier ENSAM',
     sub:'Animation 35p · Calendrier 10p · Surveiller limite Vol.3',
     note:{cls:'warn',txt:'⚠️ Après cette semaine Vol.3 ≈ 183p. Vérifier projection finale sous 240p. Marge disponible : 57p.'},
     tasks:[
@@ -640,7 +632,7 @@ const PLANNING = [
   {
     id:'s17', week:'S17', dates:'28 septembre – 4 octobre 2026',
     type:'nouveau', vol:'b-vol2', volLbl:'Vol.2 — Practice', section:'Concours agence', pages:'30p',
-    title:'NOUVEAU — Lycée Mermoz + ALSH Aspach',
+    title:'NOUVEAU I Lycée Mermoz + ALSH Aspach',
     sub:'20p + 10p · Vol.2 Practice complet · Semaine la plus chargée',
     note:{cls:'warn',txt:'⚠️ Semaine la plus chargée (30p NOUVEAU). Commencer par Lycée Mermoz (le plus complexe).'},
     tasks:[
@@ -656,7 +648,7 @@ const PLANNING = [
   {
     id:'s18', week:'S18', dates:'5–11 octobre 2026',
     type:'reformat', vol:'b-vol3', volLbl:'Vol.3 — Image', section:'Photographie + Finitions', pages:'36p',
-    title:'REFORMAT — Photographie + Début finitions',
+    title:'REFORMAT I Photographie + Début finitions',
     sub:'Divers 36p · TOC · Pagination · ⚠️ Surveiller 240p Vol.3',
     note:{cls:'warn',txt:'⚠️ Surveiller limite 240p Vol.3. Cible 183p, marge 57p. Si photo dépasse 46p, supprimer des images en double.'},
     tasks:[
@@ -671,7 +663,7 @@ const PLANNING = [
   {
     id:'s19', week:'S19', dates:'12–17 octobre 2026',
     type:'finitions', vol:'', volLbl:'3 volumes', section:'Export & Commande', pages:'—',
-    title:'🎯 FINITIONS — Export PDF × 3 · Commande Lulu',
+    title:'🎯 FINITIONS I Export PDF × 3 · Commande Lulu',
     sub:'Couvertures · TOC finaux · PDF CMJN · Upload · COMMANDE',
     note:{cls:'warn',txt:'🎯 OBJECTIF FINAL. Ne pas commencer les exports sans valider TOUS les points de contrôle. Un export raté = recommencer depuis le début.'},
     tasks:[
@@ -847,21 +839,14 @@ function renderPlanning() {
   const currentId = findCurrentWeek();
   let h = '';
   PLANNING.forEach(e => {
-    if (e.type === 'conges') {
-      h += `<div class="conges-row">
-        <span class="ci">✈️</span>
-        <span class="cl">Congés</span>
-        <span class="cd">${e.dates} · ${e.lbl}</span>
-      </div>`;
-      return;
-    }
+    if (e.type === 'conges') return;
     const total = e.tasks.length;
     const done  = e.tasks.filter(t => isDone(t.id)).length;
     const pct   = total ? Math.round(done / total * 100) : 0;
     const isCur = e.id === currentId;
     const isAll = done === total;
 
-    h += `<div class="wk ${e.type}${isAll ? ' done-all' : ''}${isCur ? ' current' : ''}" id="wk-${e.id}">
+    h += `<div class="wk ${e.type}${isAll ? ' done-all' : ''}${isCur ? ' current' : ''}" id="wk-${e.id}" style="--wk-pct:${pct}%">
       <div class="wk-head" onclick="toggleWk('${e.id}')">
         <div class="wk-left">
           <div class="wk-badges">
@@ -966,7 +951,10 @@ function updateWeekProg(wid) {
   if (fill) fill.style.width = pct + '%';
   if (lbl)  lbl.textContent  = pct + '%';
   if (th)   th.textContent   = `Tâches · ${done} / ${total}`;
-  if (card) pct === 100 ? card.classList.add('done-all') : card.classList.remove('done-all');
+  if (card) {
+    pct === 100 ? card.classList.add('done-all') : card.classList.remove('done-all');
+    card.style.setProperty('--wk-pct', pct + '%');
+  }
 }
 
 function parseTaskPages(txt) {
