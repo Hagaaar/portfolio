@@ -212,12 +212,6 @@ body {
 .wk-tasks { display: none; border-top: 1px solid var(--sep); }
 .wk.open .wk-tasks { display: block; }
 
-.tasks-header {
-  padding: 5px 14px;
-  font-family: 'JetBrains Mono', monospace; font-size: 8px;
-  color: var(--text3); letter-spacing: .1em; text-transform: uppercase;
-  border-bottom: 1px solid var(--sep);
-}
 .task {
   display: flex; align-items: flex-start; gap: 10px;
   padding: 8px 14px;
@@ -867,7 +861,6 @@ function renderPlanning() {
         </div>
       </div>
       <div class="wk-tasks" id="wkt-${e.id}">
-        <div class="tasks-header" id="th-${e.id}">Tâches · ${done} / ${total}</div>
         ${e.tasks.map(t => `
           <div class="task${isDone(t.id) ? ' done' : ''}" id="tr-${t.id}"
             onclick="taskRowClick(event,'${t.id}','${e.id}')">
@@ -946,11 +939,9 @@ function updateWeekProg(wid) {
   const pct   = Math.round(done / total * 100);
   const fill  = document.getElementById('wpf-' + wid);
   const lbl   = document.getElementById('wpp-' + wid);
-  const th    = document.getElementById('th-'  + wid);
   const card  = document.getElementById('wk-'  + wid);
   if (fill) fill.style.width = pct + '%';
   if (lbl)  lbl.textContent  = pct + '%';
-  if (th)   th.textContent   = `Tâches · ${done} / ${total}`;
   if (card) {
     pct === 100 ? card.classList.add('done-all') : card.classList.remove('done-all');
     card.style.setProperty('--wk-pct', pct + '%');
