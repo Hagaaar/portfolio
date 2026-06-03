@@ -131,9 +131,7 @@ body {
 .wk {
   border-left: 2px solid var(--sep2);
   border-bottom: 1px solid var(--sep);
-  background:
-    linear-gradient(to right, rgba(44,174,104,.18) var(--wk-pct, 0%), transparent var(--wk-pct, 0%)),
-    var(--surface);
+  background: var(--surface);
   overflow: hidden;
 }
 .wk.reformat  { border-left-color: var(--orange); }
@@ -141,17 +139,14 @@ body {
 .wk.setup     { border-left-color: var(--setup);  }
 .wk.finitions { border-left-color: var(--amber);  }
 
-.wk.current {
-  background:
-    linear-gradient(to right, rgba(44,174,104,.18) var(--wk-pct, 0%), transparent var(--wk-pct, 0%)),
-    var(--surface2);
-}
+.wk.current { background: var(--surface2); }
 
 .wk.done-all {
   background: var(--green) !important;
   border-left-color: var(--green);
   opacity: 1;
 }
+.wk.done-all .wk-head     { background: transparent !important; }
 .wk.done-all .wk-title    { color: rgba(0,0,0,.85) !important; }
 .wk.done-all .wk-sub      { color: rgba(0,0,0,.6); }
 .wk.done-all .wk-prog-bar { background: rgba(0,0,0,.18); }
@@ -164,8 +159,13 @@ body {
 .wk-head {
   padding: 9px 14px; cursor: pointer; user-select: none;
   display: flex; align-items: flex-start; gap: 10px; min-height: 44px;
+  background: linear-gradient(to right, rgba(44,174,104,.30) var(--wk-pct, 0%), transparent var(--wk-pct, 0%));
 }
-.wk-head:active { background: var(--surface2); }
+.wk-head:active {
+  background:
+    linear-gradient(to right, rgba(44,174,104,.30) var(--wk-pct, 0%), transparent var(--wk-pct, 0%)),
+    var(--surface2);
+}
 .wk-left { flex: 1; min-width: 0; }
 
 .wk-badges { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 4px; align-items: center; }
