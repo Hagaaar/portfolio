@@ -96,28 +96,38 @@ body {
 .hdr-tab.tab-volumes.active  { color: var(--blue-t);   border-bottom-color: var(--blue);   }
 
 .hdr-progress {
-  padding: 8px 14px 10px;
-  display: flex; flex-direction: column; gap: 6px;
+  display: flex; flex-direction: column; gap: 4px;
+  padding: 8px 0 10px;
 }
-.hdr-prog-row { display: flex; align-items: center; gap: 8px; }
-.hdr-prog-lbl {
-  font-family: 'JetBrains Mono', monospace; font-size: 9px;
-  color: var(--text2); letter-spacing: .07em; text-transform: uppercase;
-  width: 46px; flex-shrink: 0; font-weight: 600;
+.hdr-bar-track {
+  position: relative;
+  height: 30px;
+  background: var(--sep2);
+  overflow: hidden;
 }
-.hdr-prog-bar {
-  flex: 1; height: 12px; background: var(--sep2);
-  border-radius: 6px; overflow: hidden; min-width: 0;
-}
-.hdr-prog-fill {
-  height: 100%; background: var(--green); border-radius: 6px;
+.hdr-bar-fill {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  background: var(--green);
   transition: width .4s ease;
 }
-.hdr-prog-fill-pages { background: var(--blue); }
-.hdr-prog-label {
-  font-family: 'JetBrains Mono', monospace; font-size: 10px;
-  color: var(--text); white-space: nowrap;
-  width: 68px; text-align: right; font-weight: 500; flex-shrink: 0;
+.hdr-bar-fill-pages { background: var(--blue); }
+.hdr-bar-text {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 14px; z-index: 1;
+}
+.hdr-bar-lbl {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px; font-weight: 800;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: rgba(255,255,255,.95);
+  text-shadow: 0 1px 4px rgba(0,0,0,.6);
+}
+.hdr-bar-val {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px; font-weight: 800;
+  color: rgba(255,255,255,.95);
+  text-shadow: 0 1px 4px rgba(0,0,0,.6);
 }
 
 /* ═══ TABS ═══ */
@@ -159,11 +169,11 @@ body {
 .wk-head {
   padding: 9px 14px; cursor: pointer; user-select: none;
   display: flex; align-items: flex-start; gap: 10px; min-height: 44px;
-  background: linear-gradient(to right, rgba(44,174,104,.30) var(--wk-pct, 0%), transparent var(--wk-pct, 0%));
+  background: linear-gradient(to right, rgba(44,174,104,.40) var(--wk-pct, 0%), transparent var(--wk-pct, 0%));
 }
 .wk-head:active {
   background:
-    linear-gradient(to right, rgba(44,174,104,.30) var(--wk-pct, 0%), transparent var(--wk-pct, 0%)),
+    linear-gradient(to right, rgba(44,174,104,.40) var(--wk-pct, 0%), transparent var(--wk-pct, 0%)),
     var(--surface2);
 }
 .wk-left { flex: 1; min-width: 0; }
@@ -197,14 +207,12 @@ body {
   flex-shrink: 0; display: flex; flex-direction: column;
   align-items: flex-end; gap: 4px; padding-top: 1px;
 }
-.wk-pages { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--text3); }
-.wk-prog-wrap { display: flex; align-items: center; gap: 5px; }
-.wk-prog-bar { width: 44px; height: 3px; background: var(--sep2); border-radius: 2px; overflow: hidden; }
-.wk-prog-fill { height: 100%; border-radius: 2px; transition: width .3s; background: var(--orange); }
-.wk.nouveau   .wk-prog-fill { background: var(--blue);  }
-.wk.setup     .wk-prog-fill { background: var(--setup); }
-.wk.finitions .wk-prog-fill { background: var(--amber); }
-.wk-prog-pct { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: var(--text3); width: 24px; text-align: right; }
+.wk-pages { font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 700; color: var(--text2); }
+.wk-prog-pct { font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 800; color: var(--green-t); line-height: 1; }
+.wk.nouveau   .wk-prog-pct { color: var(--blue-t);   }
+.wk.setup     .wk-prog-pct { color: var(--setup-t);  }
+.wk.finitions .wk-prog-pct { color: var(--amber-t);  }
+.wk.done-all  .wk-prog-pct { color: rgba(0,0,0,.6);  }
 .chev { font-size: 9px; color: var(--text3); transition: transform .2s; margin-top: 3px; }
 .wk.open .chev { transform: rotate(180deg); }
 
@@ -315,6 +323,12 @@ body {
 .proj-sem { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: var(--text3); }
 .proj-p   { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text); }
 
+.proj-row.proj-done {
+  background: rgba(44,174,104,.14);
+  color: var(--green-t);
+}
+.proj-row.proj-done .proj-p { color: var(--green-t); }
+
 /* Scrollbar */
 ::-webkit-scrollbar { width: 3px; }
 ::-webkit-scrollbar-thumb { background: var(--sep2); }
@@ -336,15 +350,19 @@ body {
     <button class="hdr-tab tab-volumes"  onclick="switchTab('volumes')">Volumes</button>
   </div>
   <div class="hdr-progress">
-    <div class="hdr-prog-row">
-      <span class="hdr-prog-lbl">Tâches</span>
-      <div class="hdr-prog-bar"><div class="hdr-prog-fill" id="gFill" style="width:0%"></div></div>
-      <span class="hdr-prog-label" id="gLabel">0 / 0</span>
+    <div class="hdr-bar-track">
+      <div class="hdr-bar-fill" id="gFill" style="width:0%"></div>
+      <div class="hdr-bar-text">
+        <span class="hdr-bar-lbl">Tâches</span>
+        <span class="hdr-bar-val" id="gLabel">0 / 0</span>
+      </div>
     </div>
-    <div class="hdr-prog-row">
-      <span class="hdr-prog-lbl">Pages</span>
-      <div class="hdr-prog-bar"><div class="hdr-prog-fill hdr-prog-fill-pages" id="pFill" style="width:0%"></div></div>
-      <span class="hdr-prog-label" id="pLabel">0 / 557p</span>
+    <div class="hdr-bar-track">
+      <div class="hdr-bar-fill hdr-bar-fill-pages" id="pFill" style="width:0%"></div>
+      <div class="hdr-bar-text">
+        <span class="hdr-bar-lbl">Pages</span>
+        <span class="hdr-bar-val" id="pLabel">0 / 557p</span>
+      </div>
     </div>
   </div>
 </div>
@@ -385,7 +403,7 @@ const PLANNING = [
   {
     id:'s02', week:'S02', dates:'8–14 juin 2026',
     type:'reformat', vol:'b-vol1', volLbl:'Vol.1 — Formation', section:'Architecture école', pages:'32p',
-    title:'REFORMAT I Architecture école · Lot 1',
+    title:'REFORMAT I Architecture école · -1',
     sub:'6 projets · 32p · Adjust Layout + ajustements manuels',
     note:{cls:'',txt:'Utiliser Adjust Layout InDesign comme première passe, puis corriger manuellement les repositionnements de dessins techniques.'},
     tasks:[
@@ -417,7 +435,7 @@ const PLANNING = [
   {
     id:'s04', week:'S04', dates:'22–28 juin 2026',
     type:'reformat', vol:'b-vol1', volLbl:'Vol.1 — Formation', section:'Architecture école', pages:'56p',
-    title:'REFORMAT I Architecture école · Lot 2',
+    title:'REFORMAT I Architecture école · -2',
     sub:'4 projets denses · 56p · Fin section Architecture école',
     note:{cls:'warn',txt:'⚠️ Semaine très chargée (56p). Si débordement, les derniers projets peuvent glisser en début de S06.'},
     tasks:[
@@ -510,7 +528,7 @@ const PLANNING = [
   {
     id:'s10', week:'S10', dates:'10–16 août 2026',
     type:'reformat', vol:'b-vol1', volLbl:'Vol.1 + Vol.3', section:'Urbanisme école / Graphisme', pages:'46p',
-    title:'REFORMAT I Vol.1 complet · Graphisme lot 1',
+    title:'REFORMAT I Vol.1 complet · Graphisme -1',
     sub:'De la Comédie au Lez 24p · 5 projets graphisme 22p',
     note:{cls:'ok',txt:'Fin du Vol.1 Formation (218p). Vérifier : Intro 2 + Archi école 88 + Workshops 50 + Concours 54 + Urbanisme 24 = 218p '},
     tasks:[
@@ -853,10 +871,7 @@ function renderPlanning() {
         </div>
         <div class="wk-right">
           ${e.pages ? `<span class="wk-pages">${e.pages}</span>` : ''}
-          <div class="wk-prog-wrap">
-            <div class="wk-prog-bar"><div class="wk-prog-fill" id="wpf-${e.id}" style="width:${pct}%"></div></div>
-            <span class="wk-prog-pct" id="wpp-${e.id}">${pct}%</span>
-          </div>
+          <span class="wk-prog-pct" id="wpp-${e.id}">${pct}%</span>
           <span class="chev">▾</span>
         </div>
       </div>
@@ -878,6 +893,12 @@ function renderPlanning() {
 // ══════════════════════════════════════════════════════════
 // RENDER VOLUMES
 // ══════════════════════════════════════════════════════════
+function isWeekDone(weekId) {
+  const e = PLANNING.find(e => e.week === weekId);
+  if (!e || !e.tasks || e.tasks.length === 0) return false;
+  return e.tasks.every(t => isDone(t.id));
+}
+
 function renderVolumes() {
   let h = '<div class="vol-cards">';
   VOLUMES.forEach(v => {
@@ -901,7 +922,7 @@ function renderVolumes() {
     v.sections.forEach(sec => {
       h += `<div class="sec-head"><span>${sec.name}</span><span>${sec.total}p · ${sec.projs.length} proj.</span></div>`;
       sec.projs.forEach(p => {
-        h += `<div class="proj-row"><span>${p.n}</span><div class="proj-right"><span class="proj-sem">${p.s}</span><span class="proj-p">${p.p}p</span></div></div>`;
+        h += `<div class="proj-row${isWeekDone(p.s) ? ' proj-done' : ''}"><span>${p.n}</span><div class="proj-right"><span class="proj-sem">${p.s}</span><span class="proj-p">${p.p}p</span></div></div>`;
       });
     });
     h += '</div>';
@@ -929,6 +950,7 @@ function toggleTask(tid, wid, checked) {
   if (row) checked ? row.classList.add('done') : row.classList.remove('done');
   updateWeekProg(wid);
   updateGlobalProg();
+  renderVolumes();
 }
 
 function updateWeekProg(wid) {
@@ -937,10 +959,8 @@ function updateWeekProg(wid) {
   const total = entry.tasks.length;
   const done  = entry.tasks.filter(t => isDone(t.id)).length;
   const pct   = Math.round(done / total * 100);
-  const fill  = document.getElementById('wpf-' + wid);
   const lbl   = document.getElementById('wpp-' + wid);
   const card  = document.getElementById('wk-'  + wid);
-  if (fill) fill.style.width = pct + '%';
   if (lbl)  lbl.textContent  = pct + '%';
   if (card) {
     pct === 100 ? card.classList.add('done-all') : card.classList.remove('done-all');
