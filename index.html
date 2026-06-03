@@ -65,7 +65,7 @@ body {
 }
 .hdr-title {
   font-size: 15px; font-weight: 700; letter-spacing: .06em;
-  color: var(--orange);
+  color: var(--green-t);
 }
 .hdr-sync { display: flex; align-items: center; gap: 6px; }
 .sync-dot {
@@ -81,19 +81,28 @@ body {
 .hdr-tabs {
   display: flex; width: 100%;
   border-bottom: 1px solid var(--sep);
-  padding: 0 8px;
+  padding: 0;
+  position: relative;
+}
+.tab-indicator {
+  position: absolute;
+  top: 0; bottom: 0; left: 0;
+  width: 50%;
+  background: rgba(88,200,136,.14);
+  border-bottom: 2px solid var(--green-t);
+  transition: left .25s cubic-bezier(.4,0,.2,1);
+  pointer-events: none;
 }
 .hdr-tab {
   flex: 1; text-align: center;
   padding: 8px 6px; cursor: pointer;
   font-size: 11px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase;
   color: var(--text3); border: none; background: none;
-  border-bottom: 2px solid transparent; margin-bottom: -1px;
-  transition: color .15s, border-color .15s;
+  transition: color .2s;
   -webkit-appearance: none;
+  position: relative; z-index: 1;
 }
-.hdr-tab.tab-planning.active { color: var(--orange-t); border-bottom-color: var(--orange); }
-.hdr-tab.tab-volumes.active  { color: var(--blue-t);   border-bottom-color: var(--blue);   }
+.hdr-tab.active { color: var(--green-t); }
 
 .hdr-progress {
   display: flex; flex-direction: column; gap: 4px;
@@ -168,12 +177,12 @@ body {
 /* Week header */
 .wk-head {
   padding: 9px 14px; cursor: pointer; user-select: none;
-  display: flex; align-items: flex-start; gap: 10px; min-height: 44px;
-  background: linear-gradient(to right, rgba(44,174,104,.40) var(--wk-pct, 0%), transparent var(--wk-pct, 0%));
+  display: flex; align-items: stretch; gap: 10px; min-height: 44px;
+  background: linear-gradient(to top, rgba(44,174,104,.52) var(--wk-pct, 0%), transparent var(--wk-pct, 0%));
 }
 .wk-head:active {
   background:
-    linear-gradient(to right, rgba(44,174,104,.40) var(--wk-pct, 0%), transparent var(--wk-pct, 0%)),
+    linear-gradient(to top, rgba(44,174,104,.52) var(--wk-pct, 0%), transparent var(--wk-pct, 0%)),
     var(--surface2);
 }
 .wk-left { flex: 1; min-width: 0; }
@@ -205,7 +214,7 @@ body {
 
 .wk-right {
   flex-shrink: 0; display: flex; flex-direction: column;
-  align-items: flex-end; gap: 4px; padding-top: 1px;
+  align-items: flex-end; justify-content: space-between; padding: 4px 0;
 }
 .wk-pages { font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 700; color: var(--text2); }
 .wk-prog-pct { font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 800; color: var(--green-t); line-height: 1; }
@@ -346,6 +355,7 @@ body {
     </div>
   </div>
   <div class="hdr-tabs">
+    <div class="tab-indicator" id="tabInd"></div>
     <button class="hdr-tab tab-planning active" onclick="switchTab('planning')">Planning</button>
     <button class="hdr-tab tab-volumes"  onclick="switchTab('volumes')">Volumes</button>
   </div>
@@ -403,7 +413,7 @@ const PLANNING = [
   {
     id:'s02', week:'S02', dates:'8–14 juin 2026',
     type:'reformat', vol:'b-vol1', volLbl:'Vol.1 — Formation', section:'Architecture école', pages:'32p',
-    title:'REFORMAT I Architecture école · -1',
+    title:'REFORMAT I Architecture école -1',
     sub:'6 projets · 32p · Adjust Layout + ajustements manuels',
     note:{cls:'',txt:'Utiliser Adjust Layout InDesign comme première passe, puis corriger manuellement les repositionnements de dessins techniques.'},
     tasks:[
@@ -435,7 +445,7 @@ const PLANNING = [
   {
     id:'s04', week:'S04', dates:'22–28 juin 2026',
     type:'reformat', vol:'b-vol1', volLbl:'Vol.1 — Formation', section:'Architecture école', pages:'56p',
-    title:'REFORMAT I Architecture école · -2',
+    title:'REFORMAT I Architecture école -2',
     sub:'4 projets denses · 56p · Fin section Architecture école',
     note:{cls:'warn',txt:'⚠️ Semaine très chargée (56p). Si débordement, les derniers projets peuvent glisser en début de S06.'},
     tasks:[
@@ -862,7 +872,7 @@ function renderPlanning() {
       <div class="wk-head" onclick="toggleWk('${e.id}')">
         <div class="wk-left">
           <div class="wk-badges">
-            <span class="badge b-week">${e.week}</span>
+            <span class="badge b-${e.type}">${e.week}</span>
             <span class="badge b-${e.type}">${e.type.toUpperCase()}</span>
             ${e.vol ? `<span class="badge ${e.vol}">${e.volLbl}</span>` : ''}
           </div>
@@ -1004,6 +1014,8 @@ function switchTab(tab) {
   document.getElementById('page-' + tab).classList.add('active');
   const btn = document.querySelector('.hdr-tab.tab-' + tab);
   if (btn) btn.classList.add('active');
+  const ind = document.getElementById('tabInd');
+  if (ind) ind.style.left = (tab === 'planning' ? '0' : '50') + '%';
 }
 
 // ══════════════════════════════════════════════════════════
