@@ -5,405 +5,498 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Portfolio Planning</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+/* ── TOKENS ────────────────────────────────────────────── */
 :root {
-  --bg: #0D0C0A;
-  --surface: #131210;
-  --surface2: #191715;
-  --sep: #1E1C19;
-  --sep2: #282420;
-  --text: #EDE6DC;
-  --text2: #9A9088;
-  --text3: #564E46;
+  --bg:    #0B0B12;
+  --s1:    #121219;
+  --s2:    #181820;
+  --b1:    #1E1E2A;
+  --b2:    #26263A;
+  --tx:    #EEEAFF;
+  --tx2:   #7C7A9A;
+  --tx3:   #3E3C5A;
 
-  --orange: #E87830;
-  --orange-bg: #1C1208;
-  --orange-t: #F09A6A;
+  --c1:    #F06020;  --c1t: #F89668;  --c1bg: #1A0C06;
+  --c2:    #3A76F0;  --c2t: #7AAEFF;  --c2bg: #060C1E;
+  --c3:    #12B888;  --c3t: #46D8AE;  --c3bg: #041410;
 
-  --blue: #4892D8;
-  --blue-bg: #0A1320;
-  --blue-t: #7AB4EE;
+  --done:  #24CC7C;  --donedk: #041A0C;
+  --amber: #E09820;  --amberdk: #1A1004;  --ambrt: #F0C040;
+  --red:   #D84040;
+  --setup: #6878A2;  --setupbg: #0C1018;  --setupt: #8CACD0;
 
-  --green: #2CAE68;
-  --green-bg: #071510;
-  --green-t: #58C888;
-
-  --amber: #CC8A28;
-  --amber-bg: #181208;
-  --amber-t: #DCA850;
-
-  --setup: #6878A0;
-  --setup-bg: #0C1018;
-  --setup-t: #8EAACC;
-
-  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-top: env(safe-area-inset-top,  0px);
   --safe-bot: env(safe-area-inset-bottom, 0px);
 }
-
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html { scroll-behavior: smooth; }
 body {
-  background: var(--bg);
-  color: var(--text);
+  background: var(--bg); color: var(--tx);
   font-family: 'Inter', -apple-system, sans-serif;
   font-size: 14px; line-height: 1.5;
-  min-height: 100vh;
-  -webkit-font-smoothing: antialiased;
+  min-height: 100vh; -webkit-font-smoothing: antialiased;
 }
 
-/* ═══ HEADER ═══ */
+/* ── HEADER ────────────────────────────────────────────── */
 #header {
   position: sticky; top: 0; z-index: 200;
-  background: var(--bg);
-  padding-top: var(--safe-top);
-  border-bottom: 1px solid var(--sep);
+  background: var(--bg); padding-top: var(--safe-top);
 }
 .hdr-top {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 11px 14px 7px;
+  padding: 12px 16px 0;
 }
 .hdr-title {
-  font-size: 15px; font-weight: 700; letter-spacing: .06em;
-  color: var(--green-t);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--tx3);
 }
 .hdr-sync { display: flex; align-items: center; gap: 6px; }
 .sync-dot {
   width: 7px; height: 7px; border-radius: 50%;
-  background: var(--sep2); flex-shrink: 0; transition: background .4s;
+  background: var(--b2); flex-shrink: 0; transition: background .4s;
 }
-.sync-dot.ok      { background: var(--green); }
-.sync-dot.syncing { background: var(--amber); animation: pulse .8s infinite; }
-.sync-dot.offline { background: #D05050; }
-.sync-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--text3); letter-spacing: .04em; }
-@keyframes pulse { 0%,100%{opacity:1}50%{opacity:.4} }
+.sync-dot.ok      { background: var(--done); }
+.sync-dot.syncing { background: var(--amber); animation: blink .8s infinite; }
+.sync-dot.offline { background: var(--red); }
+.sync-lbl { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--tx3); }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
 
+/* Hero progress bar */
+.hdr-hero { padding: 10px 14px 0; }
+.hero-bar {
+  position: relative; height: 64px;
+  background: var(--s1); border-radius: 14px; overflow: hidden;
+}
+.hero-bar-fill {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  background: #3A5AE0;
+  transition: width .7s cubic-bezier(.2,0,.4,1);
+}
+.hero-bar-content {
+  position: absolute; inset: 0; z-index: 1;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 18px;
+}
+.hero-pct {
+  font-size: 30px; font-weight: 900; color: #fff;
+  text-shadow: 0 1px 6px rgba(0,0,0,.5); line-height: 1;
+}
+.hero-stats { text-align: right; }
+.hero-tasks {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; font-weight: 600; color: rgba(255,255,255,.88);
+}
+.hero-pages {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; color: rgba(255,255,255,.45); margin-top: 1px;
+}
+
+/* 2-tab bar */
 .hdr-tabs {
-  display: flex; width: 100%;
-  border-bottom: 1px solid var(--sep);
-  padding: 0;
+  display: flex; margin-top: 10px;
+  border-bottom: 1px solid var(--b1);
   position: relative;
 }
-.tab-indicator {
-  position: absolute;
-  top: 0; bottom: 0; left: 0;
-  width: 50%;
-  background: rgba(88,200,136,.14);
-  border-bottom: 2px solid var(--green-t);
+.tab-slider {
+  position: absolute; bottom: 0; left: 0;
+  width: 50%; height: 2px;
+  background: var(--tx2);
   transition: left .25s cubic-bezier(.4,0,.2,1);
-  pointer-events: none;
 }
 .hdr-tab {
-  flex: 1; text-align: center;
-  padding: 8px 6px; cursor: pointer;
-  font-size: 11px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase;
-  color: var(--text3); border: none; background: none;
-  transition: color .2s;
+  flex: 1; text-align: center; padding: 9px 4px 8px;
+  cursor: pointer; border: none; background: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px; font-weight: 700; letter-spacing: .10em; text-transform: uppercase;
+  color: var(--tx3); transition: color .2s;
   -webkit-appearance: none;
-  position: relative; z-index: 1;
 }
-.hdr-tab.active { color: var(--green-t); }
+.hdr-tab.active { color: var(--tx); }
 
-.hdr-progress {
-  display: flex; flex-direction: column; gap: 4px;
-  padding: 8px 0 10px;
-}
-.hdr-bar-track {
-  position: relative;
-  height: 30px;
-  background: var(--sep2);
-  overflow: hidden;
-}
-.hdr-bar-fill {
-  position: absolute; left: 0; top: 0; bottom: 0;
-  background: var(--green);
-  transition: width .4s ease;
-}
-.hdr-bar-fill-pages { background: var(--blue); }
-.hdr-bar-text {
-  position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 14px; z-index: 1;
-}
-.hdr-bar-lbl {
-  font-family: 'Inter', sans-serif;
-  font-size: 11px; font-weight: 800;
-  letter-spacing: .12em; text-transform: uppercase;
-  color: rgba(255,255,255,.95);
-  text-shadow: 0 1px 4px rgba(0,0,0,.6);
-}
-.hdr-bar-val {
-  font-family: 'Inter', sans-serif;
-  font-size: 13px; font-weight: 800;
-  color: rgba(255,255,255,.95);
-  text-shadow: 0 1px 4px rgba(0,0,0,.6);
-}
-
-/* ═══ TABS ═══ */
-.tab-page { display: none; }
+/* ── TAB PAGES ──────────────────────────────────────────── */
+.tab-page { display: none; padding-bottom: 80px; }
 .tab-page.active { display: block; }
 
-/* ═══ PLANNING ═══ */
-#page-planning { padding-bottom: 60px; }
+/* ── BADGES — fully rounded (pill) ─────────────────────── */
+.badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+  padding: 2px 8px; border-radius: 99px; line-height: 1.6; white-space: nowrap;
+}
+.bw          { background: var(--b2);                    color: var(--tx3); }
+.b-now       { background: var(--amber);                 color: #000; }
+.b-reformat  { background: rgba(240,96,32,.14);          color: var(--c1t); }
+.b-nouveau   { background: rgba(58,118,240,.14);         color: var(--c2t); }
+.b-setup     { background: rgba(104,120,162,.14);        color: var(--setupt); }
+.b-finitions { background: rgba(224,152,32,.14);         color: var(--ambrt); }
+.b-vol1      { background: rgba(240,96,32,.12);          color: var(--c1t); }
+.b-vol2      { background: rgba(58,118,240,.12);         color: var(--c2t); }
+.b-vol3      { background: rgba(18,184,136,.12);         color: var(--c3t); }
 
-/* Week row — flat, no border-box */
-.wk {
-  border-left: 2px solid var(--sep2);
-  border-bottom: 1px solid var(--sep);
-  background: var(--surface);
+/* ── VOLUME ACCORDIONS ──────────────────────────────────── */
+.vol-list { padding: 10px 14px; display: flex; flex-direction: column; gap: 10px; }
+
+.vol-acc {
+  background: var(--s1);
+  border-radius: 14px;
+  border: 1px solid var(--b1);
   overflow: hidden;
 }
-.wk.reformat  { border-left-color: var(--orange); }
-.wk.nouveau   { border-left-color: var(--blue);   }
-.wk.setup     { border-left-color: var(--setup);  }
-.wk.finitions { border-left-color: var(--amber);  }
+.vol-acc.v1 { border-left: 4px solid var(--c1); }
+.vol-acc.v2 { border-left: 4px solid var(--c2); }
+.vol-acc.v3 { border-left: 4px solid var(--c3); }
 
-.wk.current { background: var(--surface2); }
-
-.wk.done-all {
-  background: var(--green) !important;
-  border-left-color: var(--green);
-  opacity: 1;
+.vacc-head {
+  padding: 16px 16px 14px;
+  cursor: pointer; user-select: none;
 }
-.wk.done-all .wk-head     { background: transparent !important; }
-.wk.done-all .wk-title    { color: rgba(0,0,0,.85) !important; }
-.wk.done-all .wk-sub      { color: rgba(0,0,0,.6); }
-.wk.done-all .wk-prog-bar { background: rgba(0,0,0,.18); }
-.wk.done-all .wk-prog-fill { background: rgba(0,0,0,.3) !important; width: 100% !important; }
-.wk.done-all .wk-prog-pct  { color: rgba(0,0,0,.55); }
-.wk.done-all .chev         { color: rgba(0,0,0,.45); }
-.wk.done-all .badge        { background: rgba(0,0,0,.18); color: rgba(0,0,0,.7); }
+.vacc-head:active { background: var(--s2); }
+
+.vacc-top {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 14px;
+}
+.vacc-lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+  margin-bottom: 3px;
+}
+.vol-acc.v1 .vacc-lbl { color: var(--c1t); }
+.vol-acc.v2 .vacc-lbl { color: var(--c2t); }
+.vol-acc.v3 .vacc-lbl { color: var(--c3t); }
+
+.vacc-title {
+  font-size: 20px; font-weight: 800; color: var(--tx);
+}
+
+.vacc-right { display: flex; align-items: center; gap: 8px; }
+.vacc-pct {
+  font-size: 48px; font-weight: 900; line-height: 1;
+}
+.vol-acc.v1 .vacc-pct { color: var(--c1); }
+.vol-acc.v2 .vacc-pct { color: var(--c2); }
+.vol-acc.v3 .vacc-pct { color: var(--c3); }
+.vacc-chev {
+  font-size: 10px; color: var(--tx3); margin-top: 6px;
+  transition: transform .2s; align-self: flex-start;
+}
+.vol-acc.open .vacc-chev { transform: rotate(180deg); }
+
+.vacc-bar-track {
+  height: 8px; background: var(--b2);
+  border-radius: 99px; overflow: hidden; margin-bottom: 8px;
+}
+.vacc-bar-fill {
+  height: 100%; border-radius: 99px;
+  transition: width .6s cubic-bezier(.2,0,.4,1);
+}
+.vol-acc.v1 .vacc-bar-fill { background: var(--c1); }
+.vol-acc.v2 .vacc-bar-fill { background: var(--c2); }
+.vol-acc.v3 .vacc-bar-fill { background: var(--c3); }
+
+.vacc-stats {
+  display: flex; justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--tx3);
+}
+.vacc-stats .hi { color: var(--tx2); font-weight: 600; }
+
+.vacc-body { display: none; border-top: 1px solid var(--b1); }
+.vol-acc.open .vacc-body { display: block; }
+
+.vsec { border-bottom: 1px solid var(--b1); }
+.vsec:last-child { border-bottom: none; }
+.vsec-hdr {
+  padding: 8px 16px;
+  display: flex; justify-content: space-between; align-items: center;
+  background: var(--s2);
+  border-bottom: 1px solid var(--b1);
+}
+.vsec-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; font-weight: 600; letter-spacing: .10em; text-transform: uppercase;
+  color: var(--tx2);
+}
+.vsec-right { display: flex; align-items: center; gap: 8px; }
+.vsec-total { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--tx3); }
+
+.vsec-mini-bar {
+  width: 50px; height: 4px;
+  background: var(--b2); border-radius: 99px; overflow: hidden;
+}
+.vsec-mini-fill {
+  height: 100%; border-radius: 99px; transition: width .4s;
+}
+.vol-acc.v1 .vsec-mini-fill { background: var(--c1); }
+.vol-acc.v2 .vsec-mini-fill { background: var(--c2); }
+.vol-acc.v3 .vsec-mini-fill { background: var(--c3); }
+
+.proj-row {
+  padding: 8px 16px 8px 22px;
+  display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 1px solid var(--b1);
+  font-size: 12px; color: var(--tx2);
+}
+.proj-row:last-child { border-bottom: none; }
+.proj-left { display: flex; align-items: center; gap: 8px; }
+.proj-dot {
+  width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0;
+  background: var(--b2);
+}
+.proj-row.proj-done .proj-dot {
+  background: var(--done);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 8px; font-weight: 900; color: #000;
+}
+.proj-row.proj-done { color: var(--done); }
+.proj-right { display: flex; gap: 8px; align-items: center; }
+.proj-sem {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px; color: var(--tx3);
+  background: var(--b2); padding: 1px 6px; border-radius: 99px;
+}
+.proj-row.proj-done .proj-sem { background: rgba(36,204,124,.12); color: var(--done); }
+.proj-p {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; font-weight: 600; color: var(--tx);
+  min-width: 28px; text-align: right;
+}
+.proj-row.proj-done .proj-p { color: var(--done); }
+
+/* ── PLANNING — WEEK CARDS ──────────────────────────────── */
+.wk {
+  background: var(--s1);
+  border-bottom: 1px solid var(--b1);
+  border-left: 3px solid var(--b2);
+  overflow: hidden;
+}
+.wk.t-reformat  { border-left-color: var(--c1); }
+.wk.t-nouveau   { border-left-color: var(--c2); }
+.wk.t-setup     { border-left-color: var(--setup); }
+.wk.t-finitions { border-left-color: var(--amber); }
+.wk.done-all    { border-left-color: var(--done); }
 
 /* Week header */
 .wk-head {
-  padding: 9px 14px; cursor: pointer; user-select: none;
-  display: flex; align-items: stretch; gap: 10px; min-height: 44px;
-  background: linear-gradient(to top, rgba(44,174,104,.52) var(--wk-pct, 0%), transparent var(--wk-pct, 0%));
+  padding: 10px 14px;
+  cursor: pointer; user-select: none;
+  display: flex; align-items: center; gap: 12px;
+  min-height: 60px; position: relative; overflow: hidden;
+  transition: background .1s;
 }
-.wk-head:active {
-  background:
-    linear-gradient(to top, rgba(44,174,104,.52) var(--wk-pct, 0%), transparent var(--wk-pct, 0%)),
-    var(--surface2);
+.wk-head:active { background: var(--s2); }
+
+.wk-pbar {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  background: rgba(36,204,124,.07);
+  pointer-events: none; z-index: 0;
+  transition: width .5s cubic-bezier(.2,0,.4,1);
 }
-.wk-left { flex: 1; min-width: 0; }
+.wk-head > * { position: relative; z-index: 1; }
 
-.wk-badges { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 4px; align-items: center; }
-
-.badge {
+/* SVG circle */
+.wk-circ {
+  flex-shrink: 0; width: 42px; height: 42px; position: relative;
+}
+.wk-circ svg { width: 42px; height: 42px; transform: rotate(-90deg); }
+.circ-bg { fill: none; stroke: var(--b2); stroke-width: 3.5; }
+.circ-fg {
+  fill: none; stroke: var(--done);
+  stroke-width: 3.5; stroke-linecap: round;
+  transition: stroke-dashoffset .5s cubic-bezier(.4,0,.2,1);
+}
+.circ-num {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 8px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase;
-  padding: 1px 5px; border-radius: 2px;
-  line-height: 1.6; white-space: nowrap;
+  font-size: 9px; font-weight: 700; color: var(--tx2);
 }
-.b-setup    { background: var(--setup-bg);  color: var(--setup-t);  }
-.b-reformat { background: var(--orange-bg); color: var(--orange-t); }
-.b-nouveau  { background: var(--blue-bg);   color: var(--blue-t);   }
-.b-finitions{ background: var(--amber-bg);  color: var(--amber-t);  }
-.b-vol1     { background: var(--orange-bg); color: var(--orange-t); }
-.b-vol2     { background: var(--blue-bg);   color: var(--blue-t);   }
-.b-vol3     { background: var(--green-bg);  color: var(--green-t);  }
-.b-week     { background: transparent;      color: var(--text3);    }
+.wk.done-all .circ-num { color: var(--done); font-size: 12px; }
+.wk.is-current .circ-num { color: var(--tx); }
 
-.wk-title { font-size: 22px; font-weight: 700; line-height: 1.25; margin-bottom: 3px; }
-.wk.reformat  .wk-title { color: var(--orange-t); }
-.wk.nouveau   .wk-title { color: var(--blue-t);   }
-.wk.setup     .wk-title { color: var(--setup-t);  }
-.wk.finitions .wk-title { color: var(--amber-t);  }
-
-.wk-sub { font-size: 11px; color: var(--text3); line-height: 1.4; }
-
-.wk-right {
-  flex-shrink: 0; display: flex; flex-direction: column;
-  align-items: flex-end; justify-content: space-between; padding: 4px 0;
+/* Week info */
+.wk-info { flex: 1; min-width: 0; }
+.wk-badges { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 3px; }
+.wk-title {
+  font-size: 14px; font-weight: 700; color: var(--tx);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  line-height: 1.3; margin-bottom: 2px;
 }
-.wk-pages { font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 700; color: var(--text2); }
-.wk-prog-pct { font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 800; color: var(--green-t); line-height: 1; }
-.wk.nouveau   .wk-prog-pct { color: var(--blue-t);   }
-.wk.setup     .wk-prog-pct { color: var(--setup-t);  }
-.wk.finitions .wk-prog-pct { color: var(--amber-t);  }
-.wk.done-all  .wk-prog-pct { color: rgba(0,0,0,.6);  }
-.chev { font-size: 9px; color: var(--text3); transition: transform .2s; margin-top: 3px; }
+.wk.done-all .wk-title { color: var(--done); }
+.wk-sub { font-size: 10px; color: var(--tx3); }
+.wk-right { flex-shrink: 0; }
+.chev { font-size: 8px; color: var(--tx3); transition: transform .2s; }
 .wk.open .chev { transform: rotate(180deg); }
 
 /* Tasks panel */
-.wk-tasks { display: none; border-top: 1px solid var(--sep); }
+.wk-tasks { display: none; border-top: 1px solid var(--b1); }
 .wk.open .wk-tasks { display: block; }
 
-.task {
-  display: flex; align-items: flex-start; gap: 10px;
-  padding: 8px 14px;
-  border-bottom: 1px solid var(--sep);
-  min-height: 40px;
-  cursor: pointer;
+/* Week progress bar inside tasks panel */
+.wk-prog {
+  position: relative; height: 44px;
+  border-bottom: 1px solid var(--b1); overflow: hidden;
+  background: var(--bg);
 }
-.task:last-of-type { border-bottom: none; }
-.task.done { background: var(--green); }
-.task.done .task-txt { color: rgba(0,0,0,.82); font-weight: 500; }
-.task.done .task-pages-badge { color: rgba(0,0,0,.55); }
-.task.done .task-cb:checked { background: rgba(0,0,0,.22); border-color: rgba(0,0,0,.15); }
-.task.done .task-cb:checked::after { color: #fff; }
-
-.task-cb {
-  width: 16px; height: 16px; flex-shrink: 0;
-  border: 1px solid var(--sep2);
-  border-radius: 3px; margin-top: 1px;
-  cursor: pointer; -webkit-appearance: none; appearance: none;
-  background: var(--surface); position: relative; transition: all .15s;
+.wk-prog-fill {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  transition: width .5s;
 }
-.task-cb:checked { background: var(--green); border-color: var(--green); }
-.task-cb:checked::after {
-  content: '✓'; position: absolute; top: 50%; left: 50%;
-  transform: translate(-50%,-50%);
-  font-size: 9px; color: #000; font-weight: 900; line-height: 1;
-}
-.task-txt { font-size: 13px; color: var(--text); line-height: 1.5; flex: 1; }
-.task-pages-badge {
-  font-family: 'JetBrains Mono', monospace; font-size: 10px;
-  color: var(--text3); white-space: nowrap; flex-shrink: 0;
-  align-self: center; padding-left: 8px;
-}
-
-.wk-note {
-  margin: 0; padding: 7px 14px;
-  border-top: 1px solid var(--sep);
-  border-left: 2px solid var(--sep2);
-  font-size: 12px; color: var(--text2); line-height: 1.55;
-  background: var(--surface2);
-}
-.wk-note.warn { border-left-color: var(--amber); color: var(--amber-t); background: var(--amber-bg); }
-.wk-note.ok   { border-left-color: var(--green); color: var(--green-t); background: var(--green-bg); }
-
-/* ═══ VOLUMES ═══ */
-#page-volumes { padding-bottom: 60px; }
-
-.vol-cards { display: flex; flex-direction: column; }
-.vol-card {
-  border-left: 2px solid var(--sep2);
-  border-bottom: 1px solid var(--sep);
-  background: var(--surface);
-  padding: 10px 14px;
-}
-.v1.vol-card { border-left-color: var(--orange); }
-.v2.vol-card { border-left-color: var(--blue);   }
-.v3.vol-card { border-left-color: var(--green);  }
-
-.vc-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
-.vc-lbl { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: .12em; text-transform: uppercase; font-weight: 600; }
-.v1 .vc-lbl { color: var(--orange-t); }
-.v2 .vc-lbl { color: var(--blue-t);   }
-.v3 .vc-lbl { color: var(--green-t);  }
-.vc-title { font-size: 15px; font-weight: 300; font-style: italic; color: var(--text2); }
-
-.vc-bar-track { height: 5px; background: var(--sep2); border-radius: 2px; overflow: hidden; margin-bottom: 6px; }
-.vc-bar-fill  { height: 100%; border-radius: 2px; transition: width .5s; }
-.v1 .vc-bar-fill { background: var(--orange); }
-.v2 .vc-bar-fill { background: var(--blue);   }
-.v3 .vc-bar-fill { background: var(--green);  }
-
-.vc-nums { display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--text3); }
-.vc-nums .big { font-size: 14px; font-weight: 600; color: var(--text); }
-.vc-marge { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--text3); margin-top: 3px; }
-.vc-marge span { color: var(--green-t); }
-
-.vol-detail { border-bottom: 1px solid var(--sep); }
-.vd-hdr {
-  padding: 9px 14px; border-bottom: 1px solid var(--sep);
+.wk.t-reformat  .wk-prog-fill { background: var(--c1); }
+.wk.t-nouveau   .wk-prog-fill { background: var(--c2); }
+.wk.t-setup     .wk-prog-fill { background: var(--setup); }
+.wk.t-finitions .wk-prog-fill { background: var(--amber); }
+.wk.done-all    .wk-prog-fill { background: var(--done); }
+.wk-prog-text {
+  position: absolute; inset: 0; z-index: 1;
   display: flex; align-items: center; justify-content: space-between;
-  background: var(--surface);
+  padding: 0 16px;
 }
-.vd-hdr-l { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; }
-.vd-total { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text3); }
+.wk-prog-pct {
+  font-size: 22px; font-weight: 900; color: #fff;
+  text-shadow: 0 1px 5px rgba(0,0,0,.5); line-height: 1;
+}
+.wk-prog-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; color: rgba(255,255,255,.6);
+}
 
-.sec-head {
-  padding: 5px 14px;
-  background: var(--surface2); border-bottom: 1px solid var(--sep);
-  display: flex; justify-content: space-between; align-items: center;
-  font-family: 'JetBrains Mono', monospace; font-size: 8px;
-  color: var(--text3); letter-spacing: .08em; text-transform: uppercase;
+/* Task step */
+.task-step {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 10px 16px; min-height: 48px;
+  border-bottom: 1px solid var(--b1);
+  cursor: pointer; transition: background .12s;
 }
-.proj-row {
-  padding: 6px 14px 6px 22px;
-  display: flex; justify-content: space-between; align-items: center;
-  border-bottom: 1px solid var(--sep);
-  font-size: 12px; color: var(--text2);
-}
-.proj-row:last-child { border-bottom: none; }
-.proj-right { display: flex; gap: 8px; align-items: center; }
-.proj-sem { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: var(--text3); }
-.proj-p   { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text); }
+.task-step:last-of-type { border-bottom: none; }
+.task-step:active { background: var(--s2); }
+.task-step.done   { background: rgba(36,204,124,.05); }
 
-.proj-row.proj-done {
-  background: rgba(44,174,104,.14);
-  color: var(--green-t);
+.step-num {
+  flex-shrink: 0;
+  width: 24px; height: 24px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; font-weight: 700;
+  background: var(--b2); color: var(--tx3);
+  margin-top: 1px;
+  transition: background .2s, color .2s, transform .15s;
 }
-.proj-row.proj-done .proj-p { color: var(--green-t); }
+.step-num.done { background: var(--done); color: #000; font-size: 11px; }
+@keyframes pop { 0%{transform:scale(1)} 40%{transform:scale(1.4)} 100%{transform:scale(1)} }
+.step-num.popping { animation: pop .22s ease-out; }
+
+.step-body { flex: 1; min-width: 0; }
+.step-txt { font-size: 12px; color: var(--tx2); line-height: 1.5; }
+.task-step.done .step-txt { color: var(--done); }
+.step-pbadge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; color: var(--tx3); margin-top: 1px;
+}
+.task-step.done .step-pbadge { color: rgba(36,204,124,.45); }
+
+/* Note */
+.wk-note {
+  padding: 9px 14px;
+  border-top: 1px solid var(--b1); border-left: 3px solid var(--b2);
+  font-size: 11px; color: var(--tx2); line-height: 1.6;
+  background: var(--s2);
+}
+.wk-note.warn { border-left-color: var(--amber); color: var(--ambrt); background: var(--amberdk); }
+.wk-note.ok   { border-left-color: var(--done);  color: var(--done);  background: var(--donedk); }
+
+/* Vacation separator */
+.conges-row {
+  padding: 10px 16px; background: var(--bg);
+  border-bottom: 1px solid var(--b1);
+  display: flex; align-items: center; gap: 10px;
+}
+.conges-dates { font-size: 11px; color: var(--tx3); }
+.conges-tag {
+  display: inline-block; margin-top: 2px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px; font-weight: 600; letter-spacing: .08em;
+  padding: 2px 8px; border-radius: 99px;
+  background: var(--b2); color: var(--tx3); text-transform: uppercase;
+}
+
+/* ── DONE-ALL : full green card (satisfaction visuelle) ─── */
+.wk.done-all {
+  background: var(--done);
+  border-left-color: var(--done);
+}
+.wk.done-all .wk-pbar        { background: rgba(0,0,0,.10) !important; }
+.wk.done-all .wk-head:active  { background: rgba(0,0,0,.06); }
+.wk.done-all .wk-title        { color: rgba(0,0,0,.85) !important; }
+.wk.done-all .wk-sub          { color: rgba(0,0,0,.5); }
+.wk.done-all .badge           { background: rgba(0,0,0,.14) !important; color: rgba(0,0,0,.6) !important; }
+.wk.done-all .circ-bg         { stroke: rgba(0,0,0,.15); }
+.wk.done-all .circ-fg         { stroke: rgba(0,0,0,.30) !important; }
+.wk.done-all .circ-num        { color: rgba(0,0,0,.72) !important; font-size: 13px; }
+.wk.done-all .chev            { color: rgba(0,0,0,.40); }
+.wk.done-all .wk-tasks        { background: var(--donedk); }
+.wk.done-all .wk-prog-fill    { background: rgba(255,255,255,.25) !important; }
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 3px; }
-::-webkit-scrollbar-thumb { background: var(--sep2); }
+::-webkit-scrollbar-thumb { background: var(--b2); }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
+<!-- ═══ HEADER ═══ -->
 <div id="header">
   <div class="hdr-top">
     <span class="hdr-title">PORTFOLIO</span>
     <div class="hdr-sync">
       <span class="sync-dot" id="syncDot"></span>
-      <span class="sync-label" id="syncLabel">—</span>
+      <span class="sync-lbl" id="syncLabel">—</span>
     </div>
   </div>
+
+  <div class="hdr-hero">
+    <div class="hero-bar">
+      <div class="hero-bar-fill" id="gFill" style="width:0%"></div>
+      <div class="hero-bar-content">
+        <span class="hero-pct" id="gPct">0%</span>
+        <div class="hero-stats">
+          <div class="hero-tasks" id="gLabel">0 / 0 tâches</div>
+          <div class="hero-pages" id="pLabel">0p / 557p</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="hdr-tabs">
-    <div class="tab-indicator" id="tabInd"></div>
-    <button class="hdr-tab tab-planning active" onclick="switchTab('planning')">Planning</button>
-    <button class="hdr-tab tab-volumes"  onclick="switchTab('volumes')">Volumes</button>
-  </div>
-  <div class="hdr-progress">
-    <div class="hdr-bar-track">
-      <div class="hdr-bar-fill" id="gFill" style="width:0%"></div>
-      <div class="hdr-bar-text">
-        <span class="hdr-bar-lbl">Tâches</span>
-        <span class="hdr-bar-val" id="gLabel">0 / 0</span>
-      </div>
-    </div>
-    <div class="hdr-bar-track">
-      <div class="hdr-bar-fill hdr-bar-fill-pages" id="pFill" style="width:0%"></div>
-      <div class="hdr-bar-text">
-        <span class="hdr-bar-lbl">Pages</span>
-        <span class="hdr-bar-val" id="pLabel">0 / 557p</span>
-      </div>
-    </div>
+    <div class="tab-slider" id="tabSlider"></div>
+    <button class="hdr-tab active" data-tab="planning" onclick="switchTab('planning')">PLANNING</button>
+    <button class="hdr-tab"        data-tab="volumes"  onclick="switchTab('volumes')">VOLUMES</button>
   </div>
 </div>
 
-<!-- PLANNING -->
-<div class="tab-page active" id="page-planning">
-  <div id="planCont"></div>
-</div>
-
-<!-- VOLUMES -->
-<div class="tab-page" id="page-volumes">
-  <div id="volCont"></div>
-</div>
+<!-- ═══ PAGES ═══ -->
+<div id="page-planning" class="tab-page active"><div id="planCont"></div></div>
+<div id="page-volumes"  class="tab-page"><div id="volCont"></div></div>
 
 <script>
 // ══════════════════════════════════════════════════════════
-// DONNÉES PLANNING
+// PLANNING DATA
 // ══════════════════════════════════════════════════════════
 const PLANNING = [
   {
     id:'s01', week:'S01', dates:'18–24 mai 2026',
     type:'setup', vol:'', volLbl:'', section:'Fondations', pages:null,
-    title:'SETUP I Gabarit Lulu 216×216 mm',
+    title:'Gabarit Lulu 216×216 mm',
     sub:'Fondations InDesign · 3 fichiers Book',
-    note:{cls:'warn',txt:'⚠️ Valider ce gabarit AVANT toute mise en page. C\'est le socle de tout le projet.'},
+    note:{cls:'warn',txt:"⚠️ Valider ce gabarit AVANT toute mise en page. C'est le socle de tout le projet."},
     tasks:[
       {id:'s01-01',txt:'Télécharger le template officiel Lulu 216×216 mm (avec guides préconfigurés)'},
-      {id:'s01-02',txt:'Créer fichier InDesign Vol.1 — Formation (216×216 mm, fond perdu 3,175 mm, marges 12,7 mm, gouttière 6–8 mm)'},
+      {id:'s01-02',txt:'Créer fichier InDesign Vol.1 — Formation (216×216 mm, fond perdu 3,175 mm)'},
       {id:'s01-03',txt:'Créer fichier InDesign Vol.2 — Practice (mêmes réglages)'},
       {id:'s01-04',txt:'Créer fichier InDesign Vol.3 — Image (mêmes réglages)'},
-      {id:'s01-05',txt:'Configurer styles de paragraphes dans les 3 fichiers : H1/H2, corps, légendes, numéros de page'},
+      {id:'s01-05',txt:'Configurer styles de paragraphes dans les 3 fichiers : H1/H2, corps, légendes'},
       {id:'s01-06',txt:'Configurer master pages dans les 3 fichiers : numérotation, en-têtes, fond perdu'},
       {id:'s01-07',txt:'Réaliser une page test : vérifier preflight 300 DPI, export CMJN, fond perdu actif'},
       {id:'s01-08',txt:'Valider le gabarit sur aperçu Lulu — ne pas commencer S02 sans cette validation'},
@@ -413,13 +506,13 @@ const PLANNING = [
   {
     id:'s02', week:'S02', dates:'8–14 juin 2026',
     type:'reformat', vol:'b-vol1', volLbl:'Vol.1 — Formation', section:'Architecture école', pages:'32p',
-    title:'REFORMAT I Architecture école -1',
+    title:'Architecture école -1',
     sub:'6 projets · 32p · Adjust Layout + ajustements manuels',
-    note:{cls:'',txt:'Utiliser Adjust Layout InDesign comme première passe, puis corriger manuellement les repositionnements de dessins techniques.'},
+    note:{cls:'',txt:'Utiliser Adjust Layout InDesign comme première passe, puis corriger manuellement les repositionnements.'},
     tasks:[
-      {id:'s02-01',txt:'Maison Individuelle (4p) — Adjust Layout + repositionnements manuels + vérification marges'},
-      {id:'s02-02',txt:'FAV (4p) — Adjust Layout + repositionnements manuels + vérification marges'},
-      {id:'s02-03',txt:'Habitat Renouvelable (8p) — Adjust Layout + repositionnements manuels + vérification marges'},
+      {id:'s02-01',txt:'Maison Individuelle (4p) — Adjust Layout + repositionnements manuels'},
+      {id:'s02-02',txt:'FAV (4p) — Adjust Layout + repositionnements manuels'},
+      {id:'s02-03',txt:'Habitat Renouvelable (8p) — Adjust Layout + repositionnements manuels'},
       {id:'s02-04',txt:'Du Logement à la Ville (6p) — Adjust Layout + repositionnements manuels'},
       {id:'s02-05',txt:'Maison de Quartier (4p) — Adjust Layout + repositionnements manuels'},
       {id:'s02-06',txt:'Présence Concrète (6p) — Adjust Layout + repositionnements manuels'},
@@ -429,8 +522,8 @@ const PLANNING = [
   {
     id:'s03', week:'S03', dates:'15–21 juin 2026',
     type:'nouveau', vol:'b-vol2', volLbl:'Vol.2 — Practice', section:'Archi agence — lourd', pages:'10p',
-    title:'NOUVEAU I ALSH Spechbach',
-    sub:'Mise en page complète 10p + Behance · Semaine dédiée',
+    title:'ALSH Spechbach',
+    sub:'Mise en page complète 10p + Behance',
     note:{cls:'warn',txt:'⚠️ Rassembler TOUS les visuels en début de semaine avant de commencer la mise en page.'},
     tasks:[
       {id:'s03-01',txt:'Rassembler et trier tous les visuels : esquisses, plans EXE, coupes, façades, photos chantier'},
@@ -445,21 +538,21 @@ const PLANNING = [
   {
     id:'s04', week:'S04', dates:'22–28 juin 2026',
     type:'reformat', vol:'b-vol1', volLbl:'Vol.1 — Formation', section:'Architecture école', pages:'56p',
-    title:'REFORMAT I Architecture école -2',
+    title:'Architecture école -2',
     sub:'4 projets denses · 56p · Fin section Architecture école',
     note:{cls:'warn',txt:'⚠️ Semaine très chargée (56p). Si débordement, les derniers projets peuvent glisser en début de S06.'},
     tasks:[
-      {id:'s04-01',txt:'Specifi(cités) (16p) — Adjust Layout + ajustements manuels (projet urbain dense)'},
+      {id:'s04-01',txt:'Specifi(cités) (16p) — Adjust Layout + ajustements manuels'},
       {id:'s04-02',txt:'Corps Sonore (12p) — Adjust Layout + ajustements manuels'},
-      {id:'s04-03',txt:'Hypothèse C.U (16p) — Adjust Layout + ajustements manuels (contenu urbain dense)'},
+      {id:'s04-03',txt:'Hypothèse C.U (16p) — Adjust Layout + ajustements manuels'},
       {id:'s04-04',txt:'En Finir avec la Zone (12p) — Adjust Layout + ajustements manuels'},
-      {id:'s04-05',txt:'Vérification cohérence Architecture école complète (88p) — plans lisibles, typo consistante'},
+      {id:'s04-05',txt:'Vérification cohérence Architecture école complète (88p)'},
     ]
   },
   {
     id:'s05', week:'S05', dates:'29 juin – 5 juillet 2026',
     type:'nouveau', vol:'b-vol2', volLbl:'Vol.2 — Practice', section:'Archi agence — lourd', pages:'20p',
-    title:'NOUVEAU I ALSH Muespach',
+    title:'ALSH Muespach',
     sub:'Mise en page complète 20p + Behance · ~4p/jour',
     note:{cls:'warn',txt:'⚠️ Projet lourd 20p depuis zéro. Rassembler les visuels le lundi impérativement.'},
     tasks:[
@@ -476,38 +569,38 @@ const PLANNING = [
   {
     id:'s06', week:'S06', dates:'6–12 juillet 2026',
     type:'reformat', vol:'b-vol1', volLbl:'Vol.1 — Formation', section:'Workshops', pages:'50p',
-    title:'REFORMAT I Workshops',
+    title:'Workshops',
     sub:'5 projets · 50p · Contenu visuel dense',
-    note:{cls:'',txt:'Les workshops sont visuellement riches mais moins techniques. Rythme plus rapide possible (~10p/h si Adjust Layout efficace).'},
+    note:{cls:'',txt:'Les workshops sont visuellement riches mais moins techniques. Rythme plus rapide possible (~10p/h).'},
     tasks:[
       {id:'s06-01',txt:'ZUT (16p) — Adjust Layout + ajustements manuels + lisibilité visuelle'},
       {id:'s06-02',txt:'Morpharchitecture (6p) — Adjust Layout + ajustements manuels'},
       {id:'s06-03',txt:'Vortex (8p) — Adjust Layout + ajustements manuels'},
       {id:'s06-04',txt:'La Conscience une Interface (8p) — Adjust Layout + ajustements manuels'},
       {id:'s06-05',txt:'Ljubljana Amplitude Festival (12p) — Adjust Layout + ajustements manuels'},
-      {id:'s06-06',txt:'Vérification cohérence section Workshops (50p) — rythme visuel, cohérence globale'},
+      {id:'s06-06',txt:'Vérification cohérence section Workshops (50p)'},
     ]
   },
   {
     id:'s07', week:'S07', dates:'13–19 juillet 2026',
     type:'nouveau', vol:'b-vol2', volLbl:'Vol.2 — Practice', section:'Archi agence — lourd', pages:'16p',
-    title:'NOUVEAU I Sovia Logement Collectif',
+    title:'Sovia Logement Collectif',
     sub:'Mise en page complète 16p + Behance · Fin des 3 lourds',
-    note:{cls:'ok',txt:'Fin des 3 projets lourds Vol.2. Une fois Sovia livré, la partie la plus exigeante de Practice est terminée.'},
+    note:{cls:'ok',txt:'Fin des 3 projets lourds Vol.2. Une fois Sovia livré, la partie la plus exigeante est terminée.'},
     tasks:[
       {id:'s07-01',txt:'Rassembler visuels : plans masse, plans niveaux, façades, rendus, coupes'},
-      {id:'s07-02',txt:'Définir structure narrative des 16 pages (contexte → conception → plans → façades)'},
+      {id:'s07-02',txt:'Définir structure narrative des 16 pages'},
       {id:'s07-03',txt:'Mise en page pages 1–8 : présentation, plans principaux'},
       {id:'s07-04',txt:'Mise en page pages 9–16 : façades, détails, rendus'},
       {id:'s07-05',txt:'Vérification preflight : 300 DPI, CMJN, fond perdu'},
-      {id:'s07-06',txt:'Export JPEG + Upload Behance — Sovia Logement Collectif : titre EN, description EN, tags'},
+      {id:'s07-06',txt:'Export JPEG + Upload Behance — Sovia Logement Collectif'},
       {id:'s07-07',txt:'JALON — 3 projets lourds Vol.2 terminés : Spechbach + Muespach + Sovia'},
     ]
   },
   {
     id:'s08', week:'S08', dates:'20–26 juillet 2026',
     type:'reformat', vol:'b-vol1', volLbl:'Vol.1 — Formation', section:'Concours école', pages:'54p',
-    title:'REFORMAT I Concours école',
+    title:'Concours école',
     sub:'4 concours · 54p · Contenu dense mais finalisé',
     note:{cls:'warn',txt:'⚠️ Acier 2013 (20p) + Acier 2014 (18p) = 38p très denses. Commencer par Acier 2013 en début de semaine.'},
     tasks:[
@@ -515,35 +608,35 @@ const PLANNING = [
       {id:'s08-02',txt:'Libre Cours à Florac (12p) — Adjust Layout + ajustements manuels'},
       {id:'s08-03',txt:'Acier 2013 (20p) — Adjust Layout + ajustements manuels (prévoir 2h min)'},
       {id:'s08-04',txt:'Acier 2014 (18p) — Adjust Layout + ajustements manuels'},
-      {id:'s08-05',txt:'Vérification cohérence section Concours école (54p) — lisibilité des planches techniques'},
+      {id:'s08-05',txt:'Vérification cohérence section Concours école (54p)'},
     ]
   },
   {
     id:'s09', week:'S09', dates:'27 juillet – 1er août 2026',
     type:'nouveau', vol:'b-vol2', volLbl:'Vol.2 — Practice', section:'Urbanisme pro', pages:'24p',
-    title:'NOUVEAU I Atelier Urbain Montpellier EST',
+    title:'Atelier Urbain Montpellier EST',
     sub:'Mise en page complète 24p + Behance · ~5p/jour',
     note:{cls:'warn',txt:'⚠️ 24p depuis zéro = semaine la plus chargée en NOUVEAU. Commencer les visuels le lundi matin tôt.'},
     tasks:[
       {id:'s09-01',txt:'Rassembler visuels : cartes, schémas urbains, photos terrain, rendus, planches'},
-      {id:'s09-02',txt:'Définir structure narrative des 24 pages (diagnostic → stratégie → projet → détails)'},
+      {id:'s09-02',txt:'Définir structure narrative des 24 pages'},
       {id:'s09-03',txt:'Mise en page pages 1–8 : introduction, diagnostic territorial, cartes'},
       {id:'s09-04',txt:'Mise en page pages 9–16 : stratégie urbaine, schémas, programmation'},
       {id:'s09-05',txt:'Mise en page pages 17–24 : projet détaillé, perspectives, espaces publics'},
       {id:'s09-06',txt:'Vérification preflight : 300 DPI, CMJN, fond perdu'},
-      {id:'s09-07',txt:'Export JPEG + Upload Behance — Atelier Urbain Montpellier EST : titre EN, description EN, tags'},
+      {id:'s09-07',txt:'Export JPEG + Upload Behance — Atelier Urbain Montpellier EST'},
     ]
   },
   {id:'c2',type:'conges',dates:'1–9 août 2026',lbl:'1 semaine · hors planning'},
   {
     id:'s10', week:'S10', dates:'10–16 août 2026',
     type:'reformat', vol:'b-vol1', volLbl:'Vol.1 + Vol.3', section:'Urbanisme école / Graphisme', pages:'46p',
-    title:'REFORMAT I Vol.1 complet · Graphisme -1',
+    title:'Vol.1 complet + Graphisme -1',
     sub:'De la Comédie au Lez 24p · 5 projets graphisme 22p',
-    note:{cls:'ok',txt:'Fin du Vol.1 Formation (218p). Vérifier : Intro 2 + Archi école 88 + Workshops 50 + Concours 54 + Urbanisme 24 = 218p '},
+    note:{cls:'ok',txt:'Fin du Vol.1 Formation (218p). Vérifier : Intro 2 + Archi école 88 + Workshops 50 + Concours 54 + Urbanisme 24 = 218p'},
     tasks:[
-      {id:'s10-01',txt:'De la Comédie au Lez (24p) — Adjust Layout + ajustements manuels (projet urbain cartographique)'},
-      {id:'s10-02',txt:'Vérification Vol.1 Formation complet : total 218p — contrôle limite 240p, cohérence inter-sections'},
+      {id:'s10-01',txt:'De la Comédie au Lez (24p) — Adjust Layout + ajustements manuels'},
+      {id:'s10-02',txt:'Vérification Vol.1 Formation complet : total 218p — contrôle limite 240p'},
       {id:'s10-03',txt:'Karul 4L (2p) — Adjust Layout graphisme Vol.3'},
       {id:'s10-04',txt:'Encga Agadir (2p) — Adjust Layout graphisme Vol.3'},
       {id:'s10-05',txt:'DW Design Battle (4p) — Adjust Layout graphisme Vol.3'},
@@ -554,25 +647,25 @@ const PLANNING = [
   {
     id:'s11', week:'S11', dates:'17–23 août 2026',
     type:'nouveau', vol:'b-vol2', volLbl:'Vol.2 — Practice', section:'Urbanisme pro', pages:'16p',
-    title:'NOUVEAU I ZAC St. Jacques',
-    sub:'Mise en page complète 16p + Behance · Urbanisme pro terminé',
-    note:{cls:'ok',txt:'Fin des 2 projets urbanisme pro (Montpellier EST + ZAC = 40p). Vol.2 : lourds + urbanisme '},
+    title:'ZAC St. Jacques',
+    sub:'Mise en page complète 16p + Behance',
+    note:{cls:'ok',txt:'Fin des 2 projets urbanisme pro (Montpellier EST + ZAC = 40p).'},
     tasks:[
       {id:'s11-01',txt:'Rassembler visuels : plans masse, OAP, schémas, photos terrain, rendus'},
       {id:'s11-02',txt:'Définir structure narrative des 16 pages'},
       {id:'s11-03',txt:'Mise en page pages 1–8 : contexte, diagnostic, stratégie'},
       {id:'s11-04',txt:'Mise en page pages 9–16 : projet détaillé, programmation ZAC'},
       {id:'s11-05',txt:'Vérification preflight : 300 DPI, CMJN, fond perdu'},
-      {id:'s11-06',txt:'Export JPEG + Upload Behance — ZAC St. Jacques : titre EN, description EN, tags'},
+      {id:'s11-06',txt:'Export JPEG + Upload Behance — ZAC St. Jacques'},
       {id:'s11-07',txt:'JALON — Urbanisme pro terminé (2 projets, 40p)'},
     ]
   },
   {
     id:'s12', week:'S12', dates:'24–30 août 2026',
     type:'reformat', vol:'b-vol3', volLbl:'Vol.3 — Image', section:'Graphisme', pages:'42p',
-    title:'REFORMAT I Graphisme · Fin de section',
+    title:'Graphisme · Fin de section',
     sub:'12 projets · 42p · Contenu visuel rapide',
-    note:{cls:'ok',txt:'Fin section Graphisme Vol.3 (17 projets, 62p total). Rythme soutenu possible (2–4 min/page).'},
+    note:{cls:'ok',txt:'Fin section Graphisme Vol.3 (17 projets, 62p total). Rythme soutenu possible.'},
     tasks:[
       {id:'s12-01',txt:'Sweat ENSAM (6p) — Adjust Layout graphisme'},
       {id:'s12-02',txt:'Punity (8p) — Adjust Layout graphisme'},
@@ -586,17 +679,17 @@ const PLANNING = [
       {id:'s12-10',txt:'World (2p) — Adjust Layout graphisme'},
       {id:'s12-11',txt:'Students Ambassadors for Peace (2p) — Adjust Layout graphisme'},
       {id:'s12-12',txt:'Typography (6p) — Adjust Layout graphisme'},
-      {id:'s12-13',txt:'Vérification section Graphisme complète — 17 projets, 62p, cohérence visuelle globale'},
+      {id:'s12-13',txt:'Vérification section Graphisme complète — 17 projets, 62p'},
     ]
   },
   {
     id:'s13', week:'S13', dates:'31 août – 6 septembre 2026',
     type:'nouveau', vol:'b-vol2', volLbl:'Vol.2 — Practice', section:'Archi agence — standards', pages:'20p',
-    title:'NOUVEAU I Standards 1 → 5',
+    title:'Standards 1 → 5',
     sub:'5 projets × 4p · Mise en page + Behance',
-    note:{cls:'',txt:'Structure identique pour chaque standard : 1p présentation, 1p plans, 1p façades/détails, 1p photos. Behance après le lot.'},
+    note:{cls:'',txt:'Structure identique pour chaque standard : 1p présentation, 1p plans, 1p façades/détails, 1p photos.'},
     tasks:[
-      {id:'s13-01',txt:'Mobilier Tuilerie (4p) — mise en page complète (présentation, photos, détails)'},
+      {id:'s13-01',txt:'Mobilier Tuilerie (4p) — mise en page complète'},
       {id:'s13-02',txt:'Maison Blind (4p) — mise en page complète'},
       {id:'s13-03',txt:'Restaurant Haller (4p) — mise en page complète'},
       {id:'s13-04',txt:'Extension Débricon (4p) — mise en page complète'},
@@ -608,21 +701,21 @@ const PLANNING = [
   {
     id:'s14', week:'S14', dates:'7–13 septembre 2026',
     type:'reformat', vol:'b-vol3', volLbl:'Vol.3 — Image', section:'Visualisation 3D', pages:'40p',
-    title:'REFORMAT I Perspectives 3D',
+    title:'Perspectives 3D',
     sub:'40p · Projet le plus volumineux Visu 3D',
     note:{cls:'',txt:'Vérifier que les images 3D ne sont pas rééchantillonnées. Maintenir 300 DPI sur toutes les pages.'},
     tasks:[
-      {id:'s14-01',txt:'Perspectives 3D — Adjust Layout pages 1–10 (introductions, vues générales)'},
-      {id:'s14-02',txt:"Perspectives 3D — Adjust Layout pages 11–20 (vues d'ambiance, détails)"},
-      {id:'s14-03',txt:'Perspectives 3D — Adjust Layout pages 21–30 (perspectives intérieures)'},
-      {id:'s14-04',txt:'Perspectives 3D — Adjust Layout pages 31–40 (perspectives nocturnes, finitions)'},
-      {id:'s14-05',txt:'Vérification qualité : aucun rééchantillonnage, 300 DPI maintenu sur toutes les pages'},
+      {id:'s14-01',txt:'Perspectives 3D — Adjust Layout pages 1–10'},
+      {id:'s14-02',txt:'Perspectives 3D — Adjust Layout pages 11–20'},
+      {id:'s14-03',txt:'Perspectives 3D — Adjust Layout pages 21–30'},
+      {id:'s14-04',txt:'Perspectives 3D — Adjust Layout pages 31–40'},
+      {id:'s14-05',txt:'Vérification qualité : aucun rééchantillonnage, 300 DPI maintenu'},
     ]
   },
   {
     id:'s15', week:'S15', dates:'14–20 septembre 2026',
     type:'nouveau', vol:'b-vol2', volLbl:'Vol.2 — Practice', section:'Archi agence — standards', pages:'20p',
-    title:'NOUVEAU I Standards 6 → 10',
+    title:'Standards 6 → 10',
     sub:'5 projets × 4p · 10 standards terminés',
     note:{cls:'ok',txt:'Fin Archi agence standards (10 projets, 40p). Vol.2 ne manque plus que les 2 concours agence.'},
     tasks:[
@@ -632,14 +725,14 @@ const PLANNING = [
       {id:'s15-04',txt:'Maison Pum (4p) — mise en page complète'},
       {id:'s15-05',txt:'Maternelle Mermoz (4p) — mise en page complète'},
       {id:'s15-06',txt:'Export JPEG 72 DPI sRGB — standards 6→10'},
-      {id:'s15-07',txt:'Upload Behance standards 6→10 (titres EN, descriptions courtes, tags)'},
-      {id:'s15-08',txt:'JALON — 10 projets standards terminés (40p). Standards Vol.2 complets '},
+      {id:'s15-07',txt:'Upload Behance standards 6→10'},
+      {id:'s15-08',txt:'JALON — 10 projets standards terminés (40p)'},
     ]
   },
   {
     id:'s16', week:'S16', dates:'21–27 septembre 2026',
     type:'reformat', vol:'b-vol3', volLbl:'Vol.3 — Image', section:'Visu 3D + Photographie', pages:'45p',
-    title:'REFORMAT I Animation 3D + Calendrier ENSAM',
+    title:'Animation 3D + Calendrier ENSAM',
     sub:'Animation 35p · Calendrier 10p · Surveiller limite Vol.3',
     note:{cls:'warn',txt:'⚠️ Après cette semaine Vol.3 ≈ 183p. Vérifier projection finale sous 240p. Marge disponible : 57p.'},
     tasks:[
@@ -648,34 +741,34 @@ const PLANNING = [
       {id:'s16-03',txt:'Animation 3D (35p) — Adjust Layout pages 25–35'},
       {id:'s16-04',txt:'Calendrier ENSAM (10p) — Adjust Layout complet'},
       {id:'s16-05',txt:'Vérification cohérence section Visu 3D (Perspectives + Animation = 75p)'},
-      {id:'s16-06',txt:'⚠️ Contrôle total Vol.3 : Graphisme 62p + Visu3D 75p + Photo en cours — vérifier sous 240p'},
+      {id:'s16-06',txt:'⚠️ Contrôle total Vol.3 : Graphisme 62p + Visu3D 75p + Photo en cours'},
     ]
   },
   {
     id:'s17', week:'S17', dates:'28 septembre – 4 octobre 2026',
     type:'nouveau', vol:'b-vol2', volLbl:'Vol.2 — Practice', section:'Concours agence', pages:'30p',
-    title:'NOUVEAU I Lycée Mermoz + ALSH Aspach',
+    title:'Lycée Mermoz + ALSH Aspach',
     sub:'20p + 10p · Vol.2 Practice complet · Semaine la plus chargée',
     note:{cls:'warn',txt:'⚠️ Semaine la plus chargée (30p NOUVEAU). Commencer par Lycée Mermoz (le plus complexe).'},
     tasks:[
       {id:'s17-01',txt:'Rassembler visuels Lycée Mermoz : plans concours, perspectives, planches complètes'},
-      {id:'s17-02',txt:'Lycée Mermoz (20p) — mise en page pages 1–10 (présentation, parti, plans masse)'},
-      {id:'s17-03',txt:'Lycée Mermoz (20p) — mise en page pages 11–20 (plans niveaux, façades, perspectives)'},
+      {id:'s17-02',txt:'Lycée Mermoz (20p) — mise en page pages 1–10'},
+      {id:'s17-03',txt:'Lycée Mermoz (20p) — mise en page pages 11–20'},
       {id:'s17-04',txt:'ALSH Aspach (10p) — rassembler visuels + mise en page complète pages 1–10'},
       {id:'s17-05',txt:'Vérification preflight : 300 DPI, CMJN, fond perdu sur 30p'},
-      {id:'s17-06',txt:'Export JPEG + Upload Behance — Lycée Mermoz + ALSH Aspach (titres EN, descriptions EN, tags)'},
-      {id:'s17-07',txt:'JALON — Vol.2 Practice complet : Lourds 46 + Standards 40 + Urbanisme 40 + Concours 30 = 156p '},
+      {id:'s17-06',txt:'Export JPEG + Upload Behance — Lycée Mermoz + ALSH Aspach'},
+      {id:'s17-07',txt:'JALON — Vol.2 Practice complet : Lourds 46 + Standards 40 + Urbanisme 40 + Concours 30 = 156p'},
     ]
   },
   {
     id:'s18', week:'S18', dates:'5–11 octobre 2026',
     type:'reformat', vol:'b-vol3', volLbl:'Vol.3 — Image', section:'Photographie + Finitions', pages:'36p',
-    title:'REFORMAT I Photographie + Début finitions',
-    sub:'Divers 36p · TOC · Pagination · ⚠️ Surveiller 240p Vol.3',
+    title:'Photographie + Début finitions',
+    sub:'Divers 36p · TOC · Pagination',
     note:{cls:'warn',txt:'⚠️ Surveiller limite 240p Vol.3. Cible 183p, marge 57p. Si photo dépasse 46p, supprimer des images en double.'},
     tasks:[
       {id:'s18-01',txt:'Photographie Divers (36p) — Adjust Layout nouvelles séries, sélection finale, séquençage'},
-      {id:'s18-02',txt:'⚠️ Contrôle final total Vol.3 : Graphisme 62 + Visu3D 75 + Photo 46 = 183p — vérifier sous 240p'},
+      {id:'s18-02',txt:'⚠️ Contrôle final total Vol.3 : Graphisme 62 + Visu3D 75 + Photo 46 = 183p'},
       {id:'s18-03',txt:'Début finitions Vol.1 : Table des matières, pagination, numéros de page vérifiés'},
       {id:'s18-04',txt:'Début finitions Vol.2 : Table des matières, pagination, numéros de page vérifiés'},
       {id:'s18-05',txt:'Début finitions Vol.3 : Table des matières, pagination, numéros de page vérifiés'},
@@ -685,20 +778,20 @@ const PLANNING = [
   {
     id:'s19', week:'S19', dates:'12–17 octobre 2026',
     type:'finitions', vol:'', volLbl:'3 volumes', section:'Export & Commande', pages:'—',
-    title:'🎯 FINITIONS I Export PDF × 3 · Commande Lulu',
+    title:'🎯 Export PDF × 3 · Commande Lulu',
     sub:'Couvertures · TOC finaux · PDF CMJN · Upload · COMMANDE',
-    note:{cls:'warn',txt:'🎯 OBJECTIF FINAL. Ne pas commencer les exports sans valider TOUS les points de contrôle. Un export raté = recommencer depuis le début.'},
+    note:{cls:'warn',txt:'🎯 OBJECTIF FINAL. Un export raté = recommencer depuis le début.'},
     tasks:[
-      {id:'s19-01',txt:'Couverture Vol.1 — Formation : 1ère, dos (pages × 0,0572 mm), 4ème de couverture'},
+      {id:'s19-01',txt:'Couverture Vol.1 — Formation : 1ère, dos (pages × 0,0572 mm), 4ème'},
       {id:'s19-02',txt:'Couverture Vol.2 — Practice (même procédé, calculer épaisseur du dos)'},
       {id:'s19-03',txt:'Couverture Vol.3 — Image (même procédé)'},
       {id:'s19-04',txt:'Finalisation TOC + pagination Vol.1 : vérifier toutes les références de page'},
-      {id:'s19-05',txt:'Finalisation TOC + pagination Vol.2 : vérifier toutes les références de page'},
-      {id:'s19-06',txt:'Finalisation TOC + pagination Vol.3 : vérifier toutes les références de page'},
-      {id:'s19-07',txt:'Relecture finale Vol.1 + contrôle : 300 DPI, CMJN, fond perdu 3,175 mm, total sous 240p'},
-      {id:'s19-08',txt:'Relecture finale Vol.2 + contrôle technique (mêmes points)'},
-      {id:'s19-09',txt:'Relecture finale Vol.3 + contrôle technique (mêmes points)'},
-      {id:'s19-10',txt:'Export PDF print-ready CMJN Vol.1 — Formation (intérieur + couverture séparés)'},
+      {id:'s19-05',txt:'Finalisation TOC + pagination Vol.2'},
+      {id:'s19-06',txt:'Finalisation TOC + pagination Vol.3'},
+      {id:'s19-07',txt:'Relecture finale Vol.1 + contrôle : 300 DPI, CMJN, fond perdu 3,175 mm'},
+      {id:'s19-08',txt:'Relecture finale Vol.2 + contrôle technique'},
+      {id:'s19-09',txt:'Relecture finale Vol.3 + contrôle technique'},
+      {id:'s19-10',txt:'Export PDF print-ready CMJN Vol.1 — Formation'},
       {id:'s19-11',txt:'Export PDF print-ready CMJN Vol.2 — Practice'},
       {id:'s19-12',txt:'Export PDF print-ready CMJN Vol.3 — Image'},
       {id:'s19-13',txt:'Upload PDF × 3 volumes sur Lulu + validation prévisualisation en ligne'},
@@ -708,10 +801,10 @@ const PLANNING = [
 ];
 
 // ══════════════════════════════════════════════════════════
-// DONNÉES VOLUMES
+// VOLUMES DATA
 // ══════════════════════════════════════════════════════════
 const VOLUMES = [
-  { id:'vol1', cls:'v1', lbl:'Vol.1', title:'Formation', pages:218, limit:240, marge:22, sections:[
+  { id:'vol1', cls:'v1', lbl:'VOL.1', title:'Formation', pages:218, limit:240, marge:22, sections:[
     { name:'Intro', total:2, projs:[{n:'Pages intro',p:2,s:'S19'}] },
     { name:'Architecture école', total:88, projs:[
       {n:'Maison Individuelle',p:4,s:'S02'},{n:'FAV',p:4,s:'S02'},
@@ -731,7 +824,7 @@ const VOLUMES = [
     ]},
     { name:'Urbanisme école', total:24, projs:[{n:'De la Comédie au Lez',p:24,s:'S10'}]},
   ]},
-  { id:'vol2', cls:'v2', lbl:'Vol.2', title:'Practice', pages:156, limit:240, marge:84, sections:[
+  { id:'vol2', cls:'v2', lbl:'VOL.2', title:'Practice', pages:156, limit:240, marge:84, sections:[
     { name:'Archi agence — lourds', total:46, projs:[
       {n:'ALSH Spechbach',p:10,s:'S03'},{n:'ALSH Muespach',p:20,s:'S05'},
       {n:'Sovia Logement Collectif',p:16,s:'S07'},
@@ -750,7 +843,7 @@ const VOLUMES = [
       {n:'Lycée Mermoz',p:20,s:'S17'},{n:'ALSH Aspach',p:10,s:'S17'},
     ]},
   ]},
-  { id:'vol3', cls:'v3', lbl:'Vol.3', title:'Image', pages:183, limit:240, marge:57, sections:[
+  { id:'vol3', cls:'v3', lbl:'VOL.3', title:'Image', pages:183, limit:240, marge:57, sections:[
     { name:'Graphisme', total:62, projs:[
       {n:'Karul 4L',p:2,s:'S10'},{n:'Encga Agadir',p:2,s:'S10'},
       {n:'DW Design Battle',p:4,s:'S10'},{n:'Wallpaper Contest',p:6,s:'S10'},
@@ -771,51 +864,27 @@ const VOLUMES = [
 ];
 
 // ══════════════════════════════════════════════════════════
-// CONFIG + STATE
+// STATE
 // ══════════════════════════════════════════════════════════
 const GS_URL = 'https://script.google.com/macros/s/AKfycbzcEMTmWpc-x0XUpxu8KlY71xWQoVHO_SsR46sXo-m9VHEGlUqdvrAED_6H2sToCjQwkA/exec';
 const LS_KEY = 'portfolio_v7_state';
+const CIRC_C = (2 * Math.PI * 16).toFixed(2); // ≈ 100.53
+
 let state = {};
 
 function loadLocal() {
-  try { const r = localStorage.getItem(LS_KEY); return r ? JSON.parse(r) : {}; }
-  catch(e) { return {}; }
+  try { const r = localStorage.getItem(LS_KEY); return r ? JSON.parse(r) : {}; } catch { return {}; }
 }
-function saveLocal() {
-  try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch(e) {}
-}
+function saveLocal() { try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch {} }
 
-function setSyncDot(status) {
-  const d = document.getElementById('syncDot');
-  const l = document.getElementById('syncLabel');
-  if (!d) return;
-  const map = {
-    ok:      { cls:'ok',      label:'Synchronisé' },
-    syncing: { cls:'syncing', label:'Sync...' },
-    error:   { cls:'offline', label:'Erreur' },
-    offline: { cls:'offline', label:'Hors ligne' },
-    local:   { cls:'',        label:'Local' },
-  };
-  const s = map[status] || map.local;
-  d.className = 'sync-dot' + (s.cls ? ' ' + s.cls : '');
-  if (l) l.textContent = s.label;
-}
-
-async function loadFromGS() {
-  try {
-    setSyncDot('syncing');
-    const r = await fetch(GS_URL);
-    const remote = await r.json();
-    if (remote && Object.keys(remote).length > 0) {
-      Object.keys(remote).forEach(k => { if (remote[k]) state[k] = true; });
-      saveLocal();
-    }
-    setSyncDot('ok');
-    return true;
-  } catch(e) {
-    setSyncDot('offline');
-    return false;
-  }
+function setSyncDot(s) {
+  const dot = document.getElementById('syncDot');
+  const lbl = document.getElementById('syncLabel');
+  if (!dot) return;
+  const m = { ok:['ok','Synchronisé'], syncing:['syncing','Sync…'], error:['offline','Erreur'], offline:['offline','Hors ligne'], local:['','Local'] };
+  const [cls,txt] = m[s] || m.local;
+  dot.className = 'sync-dot' + (cls ? ' '+cls : '');
+  if (lbl) lbl.textContent = txt;
 }
 
 let saveTimer = null;
@@ -826,15 +895,79 @@ function scheduleRemoteSave() {
       setSyncDot('syncing');
       await fetch(GS_URL, { method:'POST', mode:'no-cors', body:JSON.stringify(state) });
       setSyncDot('ok');
-    } catch(e) { setSyncDot('offline'); }
+    } catch { setSyncDot('offline'); }
   }, 800);
 }
 
-function isDone(id) { return !!state[id]; }
+async function loadFromGS() {
+  try {
+    setSyncDot('syncing');
+    const r = await fetch(GS_URL);
+    const remote = await r.json();
+    if (remote && Object.keys(remote).length > 0)
+      Object.keys(remote).forEach(k => { if (remote[k]) state[k] = true; });
+    saveLocal(); setSyncDot('ok'); return true;
+  } catch { setSyncDot('offline'); return false; }
+}
+
+const isDone = id => !!state[id];
 function setDone(id, v) {
-  if (v) { state[id] = true; } else { delete state[id]; }
-  saveLocal();
-  scheduleRemoteSave();
+  if (v) state[id] = true; else delete state[id];
+  saveLocal(); scheduleRemoteSave();
+}
+
+// ══════════════════════════════════════════════════════════
+// TASK → VOLUME MAP
+// Chaque tâche est rattachée à un volume dès l'init,
+// pour que cocher une tâche mette à jour le % volume immédiatement.
+// ══════════════════════════════════════════════════════════
+const taskVolMap = {}; // taskId → volId
+
+function buildTaskVolMap() {
+  PLANNING.forEach(e => {
+    if (!e.tasks) return;
+
+    // Trouver quels volumes ont des projets dans cette semaine
+    const volsInWeek = new Set();
+    VOLUMES.forEach(vol =>
+      vol.sections.forEach(sec =>
+        sec.projs.forEach(p => { if (p.s === e.week) volsInWeek.add(vol.id); })
+      )
+    );
+
+    if (!volsInWeek.size) return; // Semaine sans projets dans les volumes (S01 setup)
+
+    if (volsInWeek.size === 1) {
+      // Semaine mono-volume : toutes les tâches → ce volume
+      const volId = [...volsInWeek][0];
+      e.tasks.forEach(t => { taskVolMap[t.id] = volId; });
+    } else {
+      // Semaine multi-volumes (ex: S10 avec Vol.1 + Vol.3) :
+      // Matching par nom de projet dans le texte de la tâche, sinon volume primaire
+      e.tasks.forEach(t => {
+        let assigned = false;
+        for (const vol of VOLUMES) {
+          if (!volsInWeek.has(vol.id)) continue;
+          for (const sec of vol.sections) {
+            for (const p of sec.projs) {
+              if (p.s === e.week && t.txt.includes(p.n)) {
+                taskVolMap[t.id] = vol.id;
+                assigned = true;
+                break;
+              }
+            }
+            if (assigned) break;
+          }
+          if (assigned) break;
+        }
+        if (!assigned) {
+          // Fallback : volume primaire déclaré dans e.vol
+          const pv = e.vol ? e.vol.replace('b-', '') : [...volsInWeek][0];
+          taskVolMap[t.id] = volsInWeek.has(pv) ? pv : [...volsInWeek][0];
+        }
+      });
+    }
+  });
 }
 
 // ══════════════════════════════════════════════════════════
@@ -848,96 +981,194 @@ function findCurrentWeek() {
   return null;
 }
 
-function taskCleanText(txt) { return txt.replace(/\s*\(\d+p\)/gi, '').trim(); }
-function taskPageBadge(txt) {
-  const m = txt.match(/\((\d+)p\)/i);
-  return m ? '<span class="task-pages-badge">' + m[1] + ' p</span>' : '';
+function isWeekDone(weekId) {
+  const e = PLANNING.find(e => e.week === weekId);
+  return e && e.tasks && e.tasks.length > 0 && e.tasks.every(t => isDone(t.id));
 }
 
+// Pages réalisées pour un volume, calculées tâche par tâche (pas all-or-nothing).
+// Pour chaque semaine contenant des projets du volume, on proratise les pages
+// selon la fraction de tâches attribuées à ce volume qui sont cochées.
+function calcVolDonePages(volId) {
+  const vol = VOLUMES.find(v => v.id === volId);
+  if (!vol) return { done: 0, total: 0, pct: 0 };
+
+  // Pages totales du volume dans chaque semaine
+  const weekPagesMap = {};
+  vol.sections.forEach(sec => sec.projs.forEach(p => {
+    weekPagesMap[p.s] = (weekPagesMap[p.s] || 0) + p.p;
+  }));
+
+  let doneP = 0;
+  Object.entries(weekPagesMap).forEach(([wk, pagesInWeek]) => {
+    const entry = PLANNING.find(x => x.week === wk);
+    if (!entry || !entry.tasks) return;
+    // Tâches de cette semaine rattachées à ce volume
+    const vTasks = entry.tasks.filter(t => taskVolMap[t.id] === volId);
+    if (!vTasks.length) return;
+    const done = vTasks.filter(t => isDone(t.id)).length;
+    doneP += (done / vTasks.length) * pagesInWeek;
+  });
+
+  doneP = Math.round(doneP);
+  const pct = vol.pages ? Math.round(doneP / vol.pages * 100) : 0;
+  return { done: doneP, total: vol.pages, pct };
+}
+
+function cleanTxt(txt) { return txt.replace(/\s*\(\d+p\)/gi,'').trim(); }
+function getP(txt) { const m = txt.match(/\((\d+)p\)/i); return m ? m[1] : null; }
+function circOffset(pct) { return (parseFloat(CIRC_C) * (1 - pct/100)).toFixed(1); }
+
 // ══════════════════════════════════════════════════════════
-// RENDER PLANNING
+// RENDER — PLANNING
 // ══════════════════════════════════════════════════════════
 function renderPlanning() {
-  const currentId = findCurrentWeek();
+  const curId = findCurrentWeek();
   let h = '';
+
   PLANNING.forEach(e => {
-    if (e.type === 'conges') return;
+    if (e.type === 'conges') {
+      h += `<div class="conges-row">
+        <span style="font-size:15px">🏖</span>
+        <div>
+          <div class="conges-dates">${e.dates}</div>
+          <span class="conges-tag">${e.lbl}</span>
+        </div>
+      </div>`;
+      return;
+    }
+
     const total = e.tasks.length;
     const done  = e.tasks.filter(t => isDone(t.id)).length;
-    const pct   = total ? Math.round(done / total * 100) : 0;
-    const isCur = e.id === currentId;
+    const pct   = total ? Math.round(done/total*100) : 0;
     const isAll = done === total;
+    const isCur = e.id === curId;
 
-    h += `<div class="wk ${e.type}${isAll ? ' done-all' : ''}${isCur ? ' current' : ''}" id="wk-${e.id}" style="--wk-pct:${pct}%">
+    const volBadge = e.vol
+      ? `<span class="badge b-${e.vol.replace('b-','')}">${e.volLbl}</span>` : '';
+
+    h += `<div class="wk t-${e.type}${isAll?' done-all':''}${isCur?' open is-current':''}" id="wk-${e.id}">
       <div class="wk-head" onclick="toggleWk('${e.id}')">
-        <div class="wk-left">
+        <div class="wk-pbar" id="wpb-${e.id}" style="width:${pct}%"></div>
+        <div class="wk-circ">
+          <svg viewBox="0 0 40 40" style="transform:rotate(-90deg)">
+            <circle class="circ-bg" cx="20" cy="20" r="16"/>
+            <circle class="circ-fg" cx="20" cy="20" r="16"
+              stroke-dasharray="${CIRC_C}" stroke-dashoffset="${circOffset(pct)}"
+              id="cfg-${e.id}"/>
+          </svg>
+          <div class="circ-num" id="cnum-${e.id}">${isAll?'✓':pct+'%'}</div>
+        </div>
+        <div class="wk-info">
           <div class="wk-badges">
-            <span class="badge b-${e.type}">${e.week}</span>
+            ${isCur?'<span class="badge b-now">▶ EN COURS</span>':''}
+            <span class="badge bw">${e.week}</span>
             <span class="badge b-${e.type}">${e.type.toUpperCase()}</span>
-            ${e.vol ? `<span class="badge ${e.vol}">${e.volLbl}</span>` : ''}
+            ${volBadge}
           </div>
           <div class="wk-title">${e.title}</div>
-          <div class="wk-sub">${e.dates} · ${e.section}</div>
+          <div class="wk-sub">${e.dates}${e.pages?' · '+e.pages:''}</div>
         </div>
         <div class="wk-right">
-          ${e.pages ? `<span class="wk-pages">${e.pages}</span>` : ''}
-          <span class="wk-prog-pct" id="wpp-${e.id}">${pct}%</span>
           <span class="chev">▾</span>
         </div>
       </div>
       <div class="wk-tasks" id="wkt-${e.id}">
-        ${e.tasks.map(t => `
-          <div class="task${isDone(t.id) ? ' done' : ''}" id="tr-${t.id}"
-            onclick="taskRowClick(event,'${t.id}','${e.id}')">
-            <input type="checkbox" class="task-cb" id="cb-${t.id}" ${isDone(t.id) ? 'checked' : ''}>
-            <span class="task-txt">${taskCleanText(t.txt)}</span>
-            ${taskPageBadge(t.txt)}
+        <div class="wk-prog">
+          <div class="wk-prog-fill" id="wpf-${e.id}" style="width:${pct}%"></div>
+          <div class="wk-prog-text">
+            <span class="wk-prog-pct" id="wpp-${e.id}">${pct}%</span>
+            <span class="wk-prog-count" id="wpc-${e.id}">${done} / ${total} tâches</span>
+          </div>
+        </div>
+        ${e.tasks.map((t,i) => `
+          <div class="task-step${isDone(t.id)?' done':''}" id="ts-${t.id}"
+            onclick="taskClick('${t.id}','${e.id}')">
+            <div class="step-num${isDone(t.id)?' done':''}"
+              data-num="${String(i+1).padStart(2,'0')}" id="sn-${t.id}">
+              ${isDone(t.id)?'✓':String(i+1).padStart(2,'0')}
+            </div>
+            <div class="step-body">
+              <div class="step-txt">${cleanTxt(t.txt)}</div>
+              ${getP(t.txt)?`<div class="step-pbadge">${getP(t.txt)} pages</div>`:''}
+            </div>
           </div>`).join('')}
-        ${e.note ? `<div class="wk-note${e.note.cls ? ' ' + e.note.cls : ''}">${e.note.txt}</div>` : ''}
+        ${e.note?`<div class="wk-note${e.note.cls?' '+e.note.cls:''}">${e.note.txt}</div>`:''}
       </div>
     </div>`;
   });
+
   document.getElementById('planCont').innerHTML = h;
 }
 
 // ══════════════════════════════════════════════════════════
-// RENDER VOLUMES
+// RENDER — VOLUMES
 // ══════════════════════════════════════════════════════════
-function isWeekDone(weekId) {
-  const e = PLANNING.find(e => e.week === weekId);
-  if (!e || !e.tasks || e.tasks.length === 0) return false;
-  return e.tasks.every(t => isDone(t.id));
-}
-
 function renderVolumes() {
-  let h = '<div class="vol-cards">';
-  VOLUMES.forEach(v => {
-    const pct = Math.round(v.pages / v.limit * 100);
-    h += `<div class="vol-card ${v.cls}">
-      <div class="vc-top"><span class="vc-lbl">${v.lbl}</span><span class="vc-title">${v.title}</span></div>
-      <div class="vc-bar-track"><div class="vc-bar-fill" style="width:${pct}%"></div></div>
-      <div class="vc-nums"><span class="big">${v.pages}p</span><span>/ ${v.limit}p max</span></div>
-      <div class="vc-marge">Marge : <span>+${v.marge}p</span></div>
-    </div>`;
-  });
-  h += '</div>';
+  let h = '<div class="vol-list">';
 
   VOLUMES.forEach(v => {
-    const bc = v.cls === 'v1' ? 'b-vol1' : v.cls === 'v2' ? 'b-vol2' : 'b-vol3';
-    h += `<div class="vol-detail">
-      <div class="vd-hdr">
-        <div class="vd-hdr-l"><span class="badge ${bc}">${v.lbl}</span>${v.title}</div>
-        <span class="vd-total">${v.pages}p / ${v.limit}p</span>
-      </div>`;
+    const { done, total, pct } = calcVolDonePages(v.id);
+    const isOpen = document.querySelector(`#vacc-${v.id}`)?.classList.contains('open') || false;
+
+    h += `<div class="vol-acc ${v.cls}${isOpen?' open':''}" id="vacc-${v.id}">
+      <div class="vacc-head" onclick="toggleVol('${v.id}')">
+        <div class="vacc-top">
+          <div class="vacc-meta">
+            <div class="vacc-lbl">${v.lbl}</div>
+            <div class="vacc-title">${v.title}</div>
+          </div>
+          <div class="vacc-right">
+            <div class="vacc-pct" id="vpct-${v.id}">${pct}%</div>
+            <span class="vacc-chev">▾</span>
+          </div>
+        </div>
+        <div class="vacc-bar-track">
+          <div class="vacc-bar-fill" id="vbar-${v.id}" style="width:${pct}%"></div>
+        </div>
+        <div class="vacc-stats">
+          <span><span class="hi" id="vdone-${v.id}">${done}p</span> mises en page</span>
+          <span>sur ${total}p planifiées</span>
+        </div>
+      </div>
+      <div class="vacc-body">`;
+
     v.sections.forEach(sec => {
-      h += `<div class="sec-head"><span>${sec.name}</span><span>${sec.total}p · ${sec.projs.length} proj.</span></div>`;
+      const doneProjs = sec.projs.filter(p => isWeekDone(p.s)).length;
+      const secPct = Math.round(doneProjs / sec.projs.length * 100);
+
+      h += `<div class="vsec">
+        <div class="vsec-hdr">
+          <span class="vsec-name">${sec.name}</span>
+          <div class="vsec-right">
+            <span class="vsec-total">${sec.total}p</span>
+            <div class="vsec-mini-bar">
+              <div class="vsec-mini-fill" style="width:${secPct}%"></div>
+            </div>
+          </div>
+        </div>`;
+
       sec.projs.forEach(p => {
-        h += `<div class="proj-row${isWeekDone(p.s) ? ' proj-done' : ''}"><span>${p.n}</span><div class="proj-right"><span class="proj-sem">${p.s}</span><span class="proj-p">${p.p}p</span></div></div>`;
+        const d = isWeekDone(p.s);
+        h += `<div class="proj-row${d?' proj-done':''}">
+          <div class="proj-left">
+            <div class="proj-dot">${d?'✓':''}</div>
+            <span>${p.n}</span>
+          </div>
+          <div class="proj-right">
+            <span class="proj-sem">${p.s}</span>
+            <span class="proj-p">${p.p}p</span>
+          </div>
+        </div>`;
       });
+
+      h += `</div>`; // vsec
     });
-    h += '</div>';
+
+    h += `</div></div>`; // vacc-body + vol-acc
   });
 
+  h += '</div>';
   document.getElementById('volCont').innerHTML = h;
 }
 
@@ -945,120 +1176,127 @@ function renderVolumes() {
 // INTERACTIONS
 // ══════════════════════════════════════════════════════════
 function toggleWk(id) {
-  document.getElementById('wk-' + id).classList.toggle('open');
+  document.getElementById('wk-'+id).classList.toggle('open');
 }
 
-function taskRowClick(e, tid, wid) {
-  const cb = document.getElementById('cb-' + tid);
-  cb.checked = !cb.checked;
-  toggleTask(tid, wid, cb.checked);
+function toggleVol(id) {
+  document.getElementById('vacc-'+id).classList.toggle('open');
 }
 
-function toggleTask(tid, wid, checked) {
-  setDone(tid, checked);
-  const row = document.getElementById('tr-' + tid);
-  if (row) checked ? row.classList.add('done') : row.classList.remove('done');
-  updateWeekProg(wid);
-  updateGlobalProg();
-  renderVolumes();
-}
+function taskClick(tid, wid) {
+  const newVal = !isDone(tid);
+  setDone(tid, newVal);
 
-function updateWeekProg(wid) {
-  const entry = PLANNING.find(e => e.id === wid);
-  if (!entry || !entry.tasks) return;
-  const total = entry.tasks.length;
-  const done  = entry.tasks.filter(t => isDone(t.id)).length;
-  const pct   = Math.round(done / total * 100);
-  const lbl   = document.getElementById('wpp-' + wid);
-  const card  = document.getElementById('wk-'  + wid);
-  if (lbl)  lbl.textContent  = pct + '%';
-  if (card) {
-    pct === 100 ? card.classList.add('done-all') : card.classList.remove('done-all');
-    card.style.setProperty('--wk-pct', pct + '%');
+  // Update step visuel
+  const row = document.getElementById('ts-'+tid);
+  if (row) {
+    row.classList.toggle('done', newVal);
+    const num = document.getElementById('sn-'+tid);
+    if (num) {
+      num.textContent = newVal ? '✓' : num.dataset.num;
+      num.classList.toggle('done', newVal);
+      num.classList.add('popping');
+      setTimeout(() => num.classList.remove('popping'), 300);
+    }
   }
+
+  updateWeekUI(wid);
+  updateGlobalProg();
+
+  // Mettre à jour la page Volumes si elle est active
+  const active = document.querySelector('.tab-page.active');
+  if (active && active.id === 'page-volumes') renderVolumes();
 }
 
-function parseTaskPages(txt) {
-  const m = txt.match(/\((\d+)p\)/);
-  return m ? parseInt(m[1]) : 0;
+function updateWeekUI(wid) {
+  const e = PLANNING.find(x => x.id === wid);
+  if (!e || !e.tasks) return;
+  const total = e.tasks.length;
+  const done  = e.tasks.filter(t => isDone(t.id)).length;
+  const pct   = total ? Math.round(done/total*100) : 0;
+  const isAll = done === total;
+
+  const card  = document.getElementById('wk-'+wid);
+  const cfg   = document.getElementById('cfg-'+wid);
+  const cnum  = document.getElementById('cnum-'+wid);
+  const wpb   = document.getElementById('wpb-'+wid);
+  const wpf   = document.getElementById('wpf-'+wid);
+  const wpp   = document.getElementById('wpp-'+wid);
+  const wpc   = document.getElementById('wpc-'+wid);
+
+  if (cfg)  cfg.setAttribute('stroke-dashoffset', circOffset(pct));
+  if (cnum) cnum.textContent = isAll ? '✓' : pct+'%';
+  if (wpb)  wpb.style.width = pct+'%';
+  if (wpf)  wpf.style.width = pct+'%';
+  if (wpp)  wpp.textContent = pct+'%';
+  if (wpc)  wpc.textContent = `${done} / ${total} tâches`;
+  if (card) card.classList.toggle('done-all', isAll);
 }
 
 function updateGlobalProg() {
   const all  = PLANNING.filter(e => e.tasks).flatMap(e => e.tasks);
   const done = all.filter(t => isDone(t.id)).length;
-  const pct  = Math.round(done / all.length * 100);
-  const fill = document.getElementById('gFill');
-  const lbl  = document.getElementById('gLabel');
-  if (fill) fill.style.width = pct + '%';
-  if (lbl)  lbl.textContent  = `${done} / ${all.length}`;
+  const pct  = all.length ? Math.round(done/all.length*100) : 0;
 
-  let totalPages = 0, donePages = 0;
-  PLANNING.forEach(e => {
-    if (!e.tasks) return;
-    e.tasks.forEach(t => {
-      const p = parseTaskPages(t.txt);
-      totalPages += p;
-      if (isDone(t.id)) donePages += p;
-    });
+  // Pages réelles calculées depuis les volumes (cohérent avec l'onglet Volumes)
+  let doneP = 0, totalP = 0;
+  VOLUMES.forEach(v => {
+    const { done: vd } = calcVolDonePages(v.id);
+    doneP += vd;
+    totalP += v.pages;
   });
-  const pPct  = totalPages ? Math.round(donePages / totalPages * 100) : 0;
-  const pFill = document.getElementById('pFill');
-  const pLbl  = document.getElementById('pLabel');
-  if (pFill) pFill.style.width = pPct + '%';
-  if (pLbl)  pLbl.textContent  = `${donePages} / ${totalPages}p`;
+
+  const fill = document.getElementById('gFill');
+  const gpct = document.getElementById('gPct');
+  const glbl = document.getElementById('gLabel');
+  const plbl = document.getElementById('pLabel');
+  if (fill) fill.style.width = pct+'%';
+  if (gpct) gpct.textContent = pct+'%';
+  if (glbl) glbl.textContent = `${done} / ${all.length} tâches`;
+  if (plbl) plbl.textContent = `${doneP}p / ${totalP}p`;
 }
 
 function switchTab(tab) {
   document.querySelectorAll('.tab-page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.hdr-tab').forEach(b => b.classList.remove('active'));
-  document.getElementById('page-' + tab).classList.add('active');
-  const btn = document.querySelector('.hdr-tab.tab-' + tab);
+  document.getElementById('page-'+tab).classList.add('active');
+  const btn = document.querySelector(`.hdr-tab[data-tab="${tab}"]`);
   if (btn) btn.classList.add('active');
-  const ind = document.getElementById('tabInd');
-  if (ind) ind.style.left = (tab === 'planning' ? '0' : '50') + '%';
+  const slider = document.getElementById('tabSlider');
+  if (slider) slider.style.left = (tab === 'planning' ? '0' : '50') + '%';
+  if (tab === 'volumes') renderVolumes();
 }
 
 // ══════════════════════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════════════════════
 state = loadLocal();
+buildTaskVolMap(); // Construire la carte tâche→volume avant tout rendu
 setSyncDot('syncing');
 renderPlanning();
-renderVolumes();
 updateGlobalProg();
 
-// Auto-ouvre la semaine en cours et scrolle dessus
-const _curId = findCurrentWeek();
-if (_curId) {
-  const _card = document.getElementById('wk-' + _curId);
-  if (_card) {
-    _card.classList.add('open');
-    setTimeout(() => {
-      const headerH = document.getElementById('header').offsetHeight;
-      const top = _card.getBoundingClientRect().top + window.scrollY - headerH - 4;
-      window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
-    }, 80);
-  }
+const _cur = findCurrentWeek();
+if (_cur) {
+  setTimeout(() => {
+    const card = document.getElementById('wk-'+_cur);
+    if (card) {
+      const top = card.getBoundingClientRect().top + window.scrollY
+                - document.getElementById('header').offsetHeight - 4;
+      window.scrollTo({ top: Math.max(0,top), behavior:'smooth' });
+    }
+  }, 80);
 }
 
 loadFromGS().then(ok => {
-  if (ok) {
-    // Mémoriser les cartes ouvertes avant le re-render
-    const openIds = [...document.querySelectorAll('.wk.open')].map(el => el.id.replace('wk-', ''));
-    renderPlanning();
-    updateGlobalProg();
-    // Restaurer les cartes ouvertes (sans scroll)
-    openIds.forEach(id => {
-      const c = document.getElementById('wk-' + id);
-      if (c) c.classList.add('open');
-    });
-    // La semaine en cours reste toujours ouverte
-    const curId = findCurrentWeek();
-    if (curId) {
-      const c = document.getElementById('wk-' + curId);
-      if (c) c.classList.add('open');
-    }
-  }
+  if (!ok) return;
+  const openIds = [...document.querySelectorAll('.wk.open')].map(el => el.id.replace('wk-',''));
+  renderPlanning();
+  updateGlobalProg();
+  openIds.forEach(id => { const c = document.getElementById('wk-'+id); if (c) c.classList.add('open'); });
+  const curId = findCurrentWeek();
+  if (curId) { const c = document.getElementById('wk-'+curId); if (c) c.classList.add('open'); }
+  if (document.querySelector('#page-volumes.active')) renderVolumes();
 });
 </script>
 </body>
