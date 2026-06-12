@@ -315,7 +315,7 @@ body {
 
 .wk-pbar {
   position: absolute; left: 0; top: 0; bottom: 0;
-  background: rgba(36,204,124,.07);
+  background: rgba(36,204,124,.22);
   pointer-events: none; z-index: 0;
   transition: width .5s cubic-bezier(.2,0,.4,1);
 }
@@ -343,7 +343,7 @@ body {
 
 /* Week info */
 .wk-info { flex: 1; min-width: 0; }
-.wk-badges { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 3px; }
+.wk-badges { display: flex; gap: 4px; flex-wrap: nowrap; overflow: hidden; margin-bottom: 3px; }
 .wk-title {
   font-size: 14px; font-weight: 700; color: var(--tx);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
