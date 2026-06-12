@@ -1,0 +1,9 @@
+{
+  "name": "Portfolio Planning",
+  "short_name": "Portfolio",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0B0B12",
+  "theme_color": "#0B0B12",
+  "icons": []
+}
