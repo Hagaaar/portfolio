@@ -15,8 +15,8 @@
   --b1:    #1E1E2A;
   --b2:    #26263A;
   --tx:    #EEEAFF;
-  --tx2:   #7C7A9A;
-  --tx3:   #3E3C5A;
+  --tx2:   #A8A6C8;
+  --tx3:   #6A6888;
 
   --c1:    #F06020;  --c1t: #F89668;  --c1bg: #1A0C06;
   --c2:    #3A76F0;  --c2t: #7AAEFF;  --c2bg: #060C1E;
@@ -51,7 +51,7 @@ body {
 .hdr-title {
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
-  color: var(--tx3);
+  color: var(--tx2);
 }
 .hdr-sync { display: flex; align-items: center; gap: 6px; }
 .sync-dot {
@@ -91,7 +91,7 @@ body {
 }
 .hero-pages {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 9px; color: rgba(255,255,255,.45); margin-top: 1px;
+  font-size: 9px; color: rgba(255,255,255,.72); margin-top: 1px;
 }
 
 /* 2-tab bar */
@@ -199,9 +199,9 @@ body {
 
 .vacc-stats {
   display: flex; justify-content: space-between;
-  font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--tx3);
+  font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--tx2);
 }
-.vacc-stats .hi { color: var(--tx2); font-weight: 600; }
+.vacc-stats .hi { color: var(--tx); font-weight: 600; }
 
 .vacc-body { display: none; border-top: 1px solid var(--b1); }
 .vol-acc.open .vacc-body { display: block; }
@@ -237,7 +237,7 @@ body {
   padding: 8px 16px 8px 22px;
   display: flex; justify-content: space-between; align-items: center;
   border-bottom: 1px solid var(--b1);
-  font-size: 12px; color: var(--tx2);
+  font-size: 12px; color: var(--tx);
 }
 .proj-row:last-child { border-bottom: none; }
 .proj-left { display: flex; align-items: center; gap: 8px; }
@@ -294,7 +294,7 @@ body {
   pointer-events: none; z-index: 0;
   transition: width .5s cubic-bezier(.2,0,.4,1);
 }
-.wk-head > * { position: relative; z-index: 1; }
+.wk-head > *:not(.wk-pbar) { position: relative; z-index: 1; }
 
 /* SVG circle */
 .wk-circ {
@@ -325,7 +325,7 @@ body {
   line-height: 1.3; margin-bottom: 2px;
 }
 .wk.done-all .wk-title { color: var(--done); }
-.wk-sub { font-size: 10px; color: var(--tx3); }
+.wk-sub { font-size: 10px; color: var(--tx2); }
 .wk-right { flex-shrink: 0; }
 .chev { font-size: 8px; color: var(--tx3); transition: transform .2s; }
 .wk.open .chev { transform: rotate(180deg); }
@@ -389,11 +389,11 @@ body {
 .step-num.popping { animation: pop .22s ease-out; }
 
 .step-body { flex: 1; min-width: 0; }
-.step-txt { font-size: 12px; color: var(--tx2); line-height: 1.5; }
+.step-txt { font-size: 12px; color: var(--tx); line-height: 1.5; }
 .task-step.done .step-txt { color: var(--done); }
 .step-pbadge {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 9px; color: var(--tx3); margin-top: 1px;
+  font-size: 9px; color: var(--tx2); margin-top: 1px;
 }
 .task-step.done .step-pbadge { color: rgba(36,204,124,.45); }
 
@@ -413,7 +413,7 @@ body {
   border-bottom: 1px solid var(--b1);
   display: flex; align-items: center; gap: 10px;
 }
-.conges-dates { font-size: 11px; color: var(--tx3); }
+.conges-dates { font-size: 11px; color: var(--tx2); }
 .conges-tag {
   display: inline-block; margin-top: 2px;
   font-family: 'JetBrains Mono', monospace;
@@ -1050,15 +1050,6 @@ function renderPlanning() {
     h += `<div class="wk t-${e.type}${isAll?' done-all':''}${isCur?' open is-current':''}" id="wk-${e.id}">
       <div class="wk-head" onclick="toggleWk('${e.id}')">
         <div class="wk-pbar" id="wpb-${e.id}" style="width:${pct}%"></div>
-        <div class="wk-circ">
-          <svg viewBox="0 0 40 40" style="transform:rotate(-90deg)">
-            <circle class="circ-bg" cx="20" cy="20" r="16"/>
-            <circle class="circ-fg" cx="20" cy="20" r="16"
-              stroke-dasharray="${CIRC_C}" stroke-dashoffset="${circOffset(pct)}"
-              id="cfg-${e.id}"/>
-          </svg>
-          <div class="circ-num" id="cnum-${e.id}">${isAll?'✓':pct+'%'}</div>
-        </div>
         <div class="wk-info">
           <div class="wk-badges">
             ${isCur?'<span class="badge b-now">▶ EN COURS</span>':''}
@@ -1069,9 +1060,16 @@ function renderPlanning() {
           <div class="wk-title">${e.title}</div>
           <div class="wk-sub">${e.dates}${e.pages?' · '+e.pages:''}</div>
         </div>
-        <div class="wk-right">
-          <span class="chev">▾</span>
+        <div class="wk-circ">
+          <svg viewBox="0 0 40 40" style="transform:rotate(-90deg)">
+            <circle class="circ-bg" cx="20" cy="20" r="16"/>
+            <circle class="circ-fg" cx="20" cy="20" r="16"
+              stroke-dasharray="${CIRC_C}" stroke-dashoffset="${circOffset(pct)}"
+              id="cfg-${e.id}"/>
+          </svg>
+          <div class="circ-num" id="cnum-${e.id}">${isAll?'✓':pct+'%'}</div>
         </div>
+        <span class="chev">▾</span>
       </div>
       <div class="wk-tasks" id="wkt-${e.id}">
         <div class="wk-prog">
