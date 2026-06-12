@@ -1,5 +1,5 @@
 // Incrémenter CACHE à chaque déploiement pour forcer la mise à jour sur iOS
-const CACHE = 'portfolio-2026-06-12b';
+const CACHE = 'portfolio-2026-06-12c';
 
 self.addEventListener('install', () => {
   self.skipWaiting(); // Active immédiatement sans attendre la fermeture des onglets

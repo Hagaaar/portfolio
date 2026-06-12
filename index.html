@@ -289,9 +289,11 @@ body {
 .proj-row.proj-done .proj-p { color: var(--done); }
 
 /* ── PLANNING — WEEK CARDS ──────────────────────────────── */
+#planCont { padding: 10px 14px; display: flex; flex-direction: column; gap: 8px; }
 .wk {
   background: var(--s1);
-  border-bottom: 1px solid var(--b1);
+  border-radius: 14px;
+  border: 1px solid var(--b1);
   border-left: 3px solid var(--b2);
   overflow: hidden;
 }
@@ -362,6 +364,8 @@ body {
   position: relative; height: 44px;
   border-bottom: 1px solid var(--b1); overflow: hidden;
   background: var(--bg);
+  margin: 0 6px 2px;
+  border-radius: 10px 10px 0 0;
 }
 .wk-prog-fill {
   position: absolute; left: 0; top: 0; bottom: 0;
@@ -389,11 +393,13 @@ body {
 /* Task step */
 .task-step {
   display: flex; align-items: flex-start; gap: 12px;
-  padding: 10px 16px; min-height: 48px;
-  border-bottom: 1px solid var(--b1);
+  padding: 10px 12px; min-height: 44px;
+  border-radius: 10px;
+  margin: 1px 6px;
   cursor: pointer; transition: background .12s;
 }
-.task-step:last-of-type { border-bottom: none; }
+.task-step:first-of-type { margin-top: 6px; }
+.task-step:last-of-type  { margin-bottom: 6px; }
 .task-step:active { background: var(--s2); }
 .task-step.done   { background: var(--done); }
 .task-step.done:active { background: rgba(0,0,0,.06); }
@@ -423,8 +429,10 @@ body {
 
 /* Note */
 .wk-note {
-  padding: 9px 14px;
-  border-top: 1px solid var(--b1); border-left: 3px solid var(--b2);
+  padding: 9px 12px;
+  margin: 0 6px 6px;
+  border-radius: 10px;
+  border-left: 3px solid var(--b2);
   font-size: 11px; color: var(--tx2); line-height: 1.6;
   background: var(--s2);
 }
