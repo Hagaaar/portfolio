@@ -423,9 +423,12 @@ body {
 .task-step.done .step-txt { color: rgba(0,0,0,.82); font-weight: 500; }
 .step-pbadge {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 9px; color: var(--tx2); margin-top: 1px;
+  font-size: 12px; font-weight: 700;
+  color: var(--tx2); background: var(--b2);
+  padding: 3px 8px; border-radius: 99px;
+  flex-shrink: 0; align-self: center; white-space: nowrap;
 }
-.task-step.done .step-pbadge { color: rgba(0,0,0,.55); }
+.task-step.done .step-pbadge { color: rgba(0,0,0,.55); background: rgba(0,0,0,.12); }
 
 /* Note */
 .wk-note {
@@ -468,7 +471,9 @@ body {
 .wk.done-all .circ-num        { color: rgba(0,0,0,.72) !important; font-size: 13px; }
 .wk.done-all .chev            { color: rgba(0,0,0,.40); }
 .wk.done-all .wk-tasks        { background: var(--donedk); }
-.wk.done-all .wk-prog-fill    { background: rgba(255,255,255,.25) !important; }
+.wk.done-all .wk-prog-fill    { background: var(--done) !important; }
+.wk.done-all .wk-prog-pct    { color: rgba(0,0,0,.82); text-shadow: none; }
+.wk.done-all .wk-prog-count  { color: rgba(0,0,0,.55); }
 .wk.done-all .wk-note,
 .wk.done-all .wk-note.warn,
 .wk.done-all .wk-note.ok     { background: var(--done); color: rgba(0,0,0,.72); }
@@ -1121,8 +1126,8 @@ function renderPlanning() {
             </div>
             <div class="step-body">
               <div class="step-txt">${cleanTxt(t.txt)}</div>
-              ${getP(t.txt)?`<div class="step-pbadge">${getP(t.txt)} pages</div>`:''}
             </div>
+            ${getP(t.txt)?`<div class="step-pbadge">${getP(t.txt)}p</div>`:''}
           </div>`).join('')}
         ${e.note?`<div class="wk-note${e.note.cls?' '+e.note.cls:''}">${stripEmoji(e.note.txt)}</div>`:''}
       </div>
