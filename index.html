@@ -324,6 +324,7 @@ body {
 /* SVG circle */
 .wk-circ {
   flex-shrink: 0; width: 42px; height: 42px; position: relative;
+  border-radius: 10px; background: var(--b1);
 }
 .wk-circ svg { width: 42px; height: 42px; transform: rotate(-90deg); }
 .circ-bg { fill: none; stroke: var(--b2); stroke-width: 3.5; }
@@ -356,16 +357,16 @@ body {
 .wk.open .chev { transform: rotate(180deg); }
 
 /* Tasks panel */
-.wk-tasks { display: none; border-top: 1px solid var(--b1); }
+.wk-tasks { display: none; border-top: 1px solid var(--b1); padding-bottom: 8px; }
 .wk.open .wk-tasks { display: block; }
 
 /* Week progress bar inside tasks panel */
 .wk-prog {
   position: relative; height: 44px;
-  border-bottom: 1px solid var(--b1); overflow: hidden;
+  overflow: hidden;
   background: var(--bg);
-  margin: 0 6px 2px;
-  border-radius: 10px 10px 0 0;
+  margin: 6px 6px 4px;
+  border-radius: 10px;
 }
 .wk-prog-fill {
   position: absolute; left: 0; top: 0; bottom: 0;
