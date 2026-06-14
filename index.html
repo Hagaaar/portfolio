@@ -430,14 +430,13 @@ body {
 /* Note */
 .wk-note {
   padding: 9px 12px;
-  margin: 0 6px 6px;
+  margin: 1px 6px 6px;
   border-radius: 10px;
-  border-left: 3px solid var(--b2);
   font-size: 11px; color: var(--tx2); line-height: 1.6;
   background: var(--s2);
 }
-.wk-note.warn { border-left-color: var(--amber); color: var(--ambrt); background: var(--amberdk); }
-.wk-note.ok   { border-left-color: var(--done);  color: var(--done);  background: var(--donedk); }
+.wk-note.warn { color: var(--ambrt); background: var(--amberdk); }
+.wk-note.ok   { color: var(--done);  background: var(--donedk); }
 
 /* Vacation separator */
 .conges-row {
@@ -470,6 +469,9 @@ body {
 .wk.done-all .chev            { color: rgba(0,0,0,.40); }
 .wk.done-all .wk-tasks        { background: var(--donedk); }
 .wk.done-all .wk-prog-fill    { background: rgba(255,255,255,.25) !important; }
+.wk.done-all .wk-note,
+.wk.done-all .wk-note.warn,
+.wk.done-all .wk-note.ok     { background: var(--done); color: rgba(0,0,0,.72); }
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 3px; }
