@@ -314,11 +314,16 @@ body {
 .wk-head:active { background: var(--s2); }
 
 .wk-pbar {
-  position: absolute; left: 0; top: 0; bottom: 0;
-  background: rgba(36,204,124,.22);
-  pointer-events: none; z-index: 0;
+  position: absolute; left: 0; right: 0; top: 0;
+  height: 3px;
+  pointer-events: none; z-index: 2;
   transition: width .5s cubic-bezier(.2,0,.4,1);
 }
+.wk.t-reformat  .wk-pbar { background: var(--c1); }
+.wk.t-nouveau   .wk-pbar { background: var(--c2); }
+.wk.t-setup     .wk-pbar { background: var(--setup); }
+.wk.t-finitions .wk-pbar { background: var(--amber); }
+.wk.done-all    .wk-pbar { background: var(--done); }
 .wk-head > *:not(.wk-pbar) { position: relative; z-index: 1; }
 
 /* SVG circle */
@@ -1099,15 +1104,6 @@ function renderPlanning() {
           <div class="wk-sub">${e.dates}${e.pages?' · '+e.pages:''}</div>
         </div>
         ${isCur?'<span class="badge b-now">EN COURS</span>':''}
-        <div class="wk-circ">
-          <svg viewBox="0 0 40 40" style="transform:rotate(-90deg)">
-            <circle class="circ-bg" cx="20" cy="20" r="16"/>
-            <circle class="circ-fg" cx="20" cy="20" r="16"
-              stroke-dasharray="${CIRC_C}" stroke-dashoffset="${circOffset(pct)}"
-              id="cfg-${e.id}"/>
-          </svg>
-          <div class="circ-num" id="cnum-${e.id}">${isAll?'✓':pct+'%'}</div>
-        </div>
         <span class="chev">▾</span>
       </div>
       <div class="wk-tasks" id="wkt-${e.id}">
