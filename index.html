@@ -293,15 +293,14 @@ body {
 .wk {
   background: var(--s1);
   border-radius: 14px;
-  border: 1px solid var(--b1);
-  border-left: 3px solid var(--b2);
+  border: 2px solid var(--b2);
   overflow: hidden;
 }
-.wk.t-reformat  { border-left-color: var(--c1); }
-.wk.t-nouveau   { border-left-color: var(--c2); }
-.wk.t-setup     { border-left-color: var(--setup); }
-.wk.t-finitions { border-left-color: var(--amber); }
-.wk.done-all    { border-left-color: var(--done); }
+.wk.t-reformat  { border-color: var(--c1); }
+.wk.t-nouveau   { border-color: var(--c2); }
+.wk.t-setup     { border-color: var(--setup); }
+.wk.t-finitions { border-color: var(--amber); }
+.wk.done-all    { border-color: var(--done); }
 
 /* Week header */
 .wk-head {
@@ -314,17 +313,24 @@ body {
 .wk-head:active { background: var(--s2); }
 
 .wk-pbar {
-  position: absolute; left: 0; right: 0; top: 0;
-  height: 3px;
-  pointer-events: none; z-index: 2;
+  position: absolute; left: 0; top: 0; bottom: 0;
+  pointer-events: none; z-index: 0;
   transition: width .5s cubic-bezier(.2,0,.4,1);
 }
-.wk.t-reformat  .wk-pbar { background: var(--c1); }
-.wk.t-nouveau   .wk-pbar { background: var(--c2); }
-.wk.t-setup     .wk-pbar { background: var(--setup); }
-.wk.t-finitions .wk-pbar { background: var(--amber); }
-.wk.done-all    .wk-pbar { background: var(--done); }
+.wk.t-reformat  .wk-pbar { background: rgba(240,96,32,.32); }
+.wk.t-nouveau   .wk-pbar { background: rgba(58,118,240,.32); }
+.wk.t-setup     .wk-pbar { background: rgba(104,120,162,.32); }
+.wk.t-finitions .wk-pbar { background: rgba(224,152,32,.32); }
+.wk.done-all    .wk-pbar { background: rgba(255,255,255,.18); }
 .wk-head > *:not(.wk-pbar) { position: relative; z-index: 1; }
+
+.wk-head-pct {
+  flex-shrink: 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 22px; font-weight: 900;
+  color: #fff; text-shadow: 0 1px 5px rgba(0,0,0,.45); line-height: 1;
+}
+.wk.done-all .wk-head-pct { color: rgba(0,0,0,.75); text-shadow: none; }
 
 /* SVG circle */
 .wk-circ {
@@ -1104,16 +1110,10 @@ function renderPlanning() {
           <div class="wk-sub">${e.dates}${e.pages?' · '+e.pages:''}</div>
         </div>
         ${isCur?'<span class="badge b-now">EN COURS</span>':''}
+        <span class="wk-head-pct" id="wpp-${e.id}">${pct}%</span>
         <span class="chev">▾</span>
       </div>
       <div class="wk-tasks" id="wkt-${e.id}">
-        <div class="wk-prog">
-          <div class="wk-prog-fill" id="wpf-${e.id}" style="width:${pct}%"></div>
-          <div class="wk-prog-text">
-            <span class="wk-prog-pct" id="wpp-${e.id}">${pct}%</span>
-            <span class="wk-prog-count" id="wpc-${e.id}">${done} / ${total} tâches</span>
-          </div>
-        </div>
         ${e.tasks.map((t,i) => `
           <div class="task-step${isDone(t.id)?' done':''}" id="ts-${t.id}"
             onclick="taskClick('${t.id}','${e.id}')">
