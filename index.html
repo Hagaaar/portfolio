@@ -10,7 +10,7 @@
 <meta name="apple-mobile-web-app-title" content="Portfolio">
 <meta name="theme-color" content="#0B0B12">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 /* ── TOKENS ────────────────────────────────────────────── */
 :root {
@@ -54,7 +54,7 @@ body {
   padding: 12px 16px 0;
 }
 .hdr-title {
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
   color: var(--tx2);
 }
@@ -66,7 +66,7 @@ body {
 .sync-dot.ok      { background: var(--done); }
 .sync-dot.syncing { background: var(--amber); animation: blink .8s infinite; }
 .sync-dot.offline { background: var(--red); }
-.sync-lbl { font-family: 'Barlow Condensed', sans-serif; font-size: 9px; color: var(--tx3); }
+.sync-lbl { font-family: 'Inter', sans-serif; font-size: 9px; color: var(--tx3); }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
 
 /* Hero progress bar */
@@ -91,11 +91,11 @@ body {
 }
 .hero-stats { text-align: right; }
 .hero-tasks {
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 11px; font-weight: 600; color: rgba(255,255,255,.88);
 }
 .hero-pages {
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 9px; color: rgba(255,255,255,.72); margin-top: 1px;
 }
 
@@ -145,7 +145,7 @@ body {
 
 /* ── BADGES — fully rounded (pill) ─────────────────────── */
 .badge {
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 8px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
   padding: 2px 8px; border-radius: 99px; line-height: 1.6; white-space: nowrap;
 }
@@ -165,25 +165,46 @@ body {
 .vol-acc {
   background: var(--s1);
   border-radius: 14px;
-  border: 1px solid var(--b1);
+  border: 2px solid var(--b2);
   overflow: hidden;
 }
-.vol-acc.v1 { border-left: 4px solid var(--c1); }
-.vol-acc.v2 { border-left: 4px solid var(--c2); }
-.vol-acc.v3 { border-left: 4px solid var(--c3); }
+.vol-acc.v1 { border-color: var(--c1); }
+.vol-acc.v2 { border-color: var(--c2); }
+.vol-acc.v3 { border-color: var(--c3); }
 
 .vacc-head {
   padding: 16px 16px 14px;
   cursor: pointer; user-select: none;
+  position: relative; overflow: hidden;
 }
-.vacc-head:active { background: var(--s2); }
+.vacc-fill {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  pointer-events: none; z-index: 0;
+  transition: width .6s cubic-bezier(.2,0,.4,1);
+}
+.vol-acc.v1 .vacc-fill { background: rgba(240,96,32,.75); }
+.vol-acc.v2 .vacc-fill { background: rgba(58,118,240,.75); }
+.vol-acc.v3 .vacc-fill { background: rgba(18,184,136,.75); }
+.vacc-head > *:not(.vacc-fill) { position: relative; z-index: 1; }
+
+.vacc-body { display: none; border-top: 1px solid var(--b1); position: relative; overflow: hidden; }
+.vol-acc.open .vacc-body { display: block; }
+.vacc-body-fill {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  pointer-events: none; z-index: 0;
+  transition: width .6s cubic-bezier(.2,0,.4,1);
+}
+.vol-acc.v1 .vacc-body-fill { background: rgba(240,96,32,.75); }
+.vol-acc.v2 .vacc-body-fill { background: rgba(58,118,240,.75); }
+.vol-acc.v3 .vacc-body-fill { background: rgba(18,184,136,.75); }
+.vacc-body > *:not(.vacc-body-fill) { position: relative; z-index: 1; }
 
 .vacc-top {
   display: flex; justify-content: space-between; align-items: flex-start;
   margin-bottom: 14px;
 }
 .vacc-lbl {
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 9px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
   margin-bottom: 3px;
 }
@@ -208,26 +229,11 @@ body {
 }
 .vol-acc.open .vacc-chev { transform: rotate(180deg); }
 
-.vacc-bar-track {
-  height: 8px; background: var(--b2);
-  border-radius: 99px; overflow: hidden; margin-bottom: 8px;
-}
-.vacc-bar-fill {
-  height: 100%; border-radius: 99px;
-  transition: width .6s cubic-bezier(.2,0,.4,1);
-}
-.vol-acc.v1 .vacc-bar-fill { background: var(--c1); }
-.vol-acc.v2 .vacc-bar-fill { background: var(--c2); }
-.vol-acc.v3 .vacc-bar-fill { background: var(--c3); }
-
 .vacc-stats {
   display: flex; justify-content: space-between;
-  font-family: 'Barlow Condensed', sans-serif; font-size: 9px; color: var(--tx2);
+  font-family: 'Inter', sans-serif; font-size: 9px; color: var(--tx2);
 }
 .vacc-stats .hi { color: var(--tx); font-weight: 600; }
-
-.vacc-body { display: none; border-top: 1px solid var(--b1); }
-.vol-acc.open .vacc-body { display: block; }
 
 .vsec { border-bottom: 1px solid var(--b1); }
 .vsec:last-child { border-bottom: none; }
@@ -238,12 +244,12 @@ body {
   border-bottom: 1px solid var(--b1);
 }
 .vsec-name {
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 9px; font-weight: 600; letter-spacing: .10em; text-transform: uppercase;
   color: var(--tx2);
 }
 .vsec-right { display: flex; align-items: center; gap: 8px; }
-.vsec-total { font-family: 'Barlow Condensed', sans-serif; font-size: 9px; color: var(--tx3); }
+.vsec-total { font-family: 'Inter', sans-serif; font-size: 9px; color: var(--tx3); }
 
 .vsec-mini-bar {
   width: 50px; height: 4px;
@@ -276,13 +282,13 @@ body {
 .proj-row.proj-done { color: var(--done); }
 .proj-right { display: flex; gap: 8px; align-items: center; }
 .proj-sem {
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 8px; color: var(--tx3);
   background: var(--b2); padding: 1px 6px; border-radius: 99px;
 }
 .proj-row.proj-done .proj-sem { background: rgba(36,204,124,.12); color: var(--done); }
 .proj-p {
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 11px; font-weight: 600; color: var(--tx);
   min-width: 28px; text-align: right;
 }
@@ -316,14 +322,14 @@ body {
   pointer-events: none; z-index: 0;
   transition: width .5s cubic-bezier(.2,0,.4,1);
 }
-.wk.t-reformat  .wk-pbar { background: rgba(240,96,32,.50); }
-.wk.t-nouveau   .wk-pbar { background: rgba(58,118,240,.50); }
-.wk.t-setup     .wk-pbar { background: rgba(104,120,162,.50); }
-.wk.t-finitions .wk-pbar { background: rgba(224,152,32,.50); }
-.wk.done-all.t-reformat  .wk-pbar { background: rgba(240,96,32,.80) !important; }
-.wk.done-all.t-nouveau   .wk-pbar { background: rgba(58,118,240,.80) !important; }
-.wk.done-all.t-setup     .wk-pbar { background: rgba(104,120,162,.80) !important; }
-.wk.done-all.t-finitions .wk-pbar { background: rgba(224,152,32,.80) !important; }
+.wk.t-reformat  .wk-pbar { background: rgba(240,96,32,.75); }
+.wk.t-nouveau   .wk-pbar { background: rgba(58,118,240,.75); }
+.wk.t-setup     .wk-pbar { background: rgba(104,120,162,.75); }
+.wk.t-finitions .wk-pbar { background: rgba(224,152,32,.75); }
+.wk.done-all.t-reformat  .wk-pbar { background: rgba(240,96,32,.95) !important; }
+.wk.done-all.t-nouveau   .wk-pbar { background: rgba(58,118,240,.95) !important; }
+.wk.done-all.t-setup     .wk-pbar { background: rgba(104,120,162,.95) !important; }
+.wk.done-all.t-finitions .wk-pbar { background: rgba(224,152,32,.95) !important; }
 .wk-head > *:not(.wk-pbar) { position: relative; z-index: 1; }
 
 .wk-head-pct {
@@ -348,7 +354,7 @@ body {
 .circ-num {
   position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center;
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 9px; font-weight: 700; color: var(--tx2);
 }
 .wk.is-current .circ-num { color: var(--tx); }
@@ -367,8 +373,23 @@ body {
 .wk.open .chev { transform: rotate(180deg); }
 
 /* Tasks panel */
-.wk-tasks { display: none; border-top: 1px solid var(--b1); border-radius: 0 0 12px 12px; }
+.wk-tasks { display: none; border-top: 1px solid var(--b1); border-radius: 0 0 12px 12px; position: relative; overflow: hidden; }
 .wk.open .wk-tasks { display: block; }
+.wk-tasks-fill {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  pointer-events: none; z-index: 0;
+  transition: width .5s cubic-bezier(.2,0,.4,1);
+}
+.wk.t-reformat  .wk-tasks-fill { background: rgba(240,96,32,.75); }
+.wk.t-nouveau   .wk-tasks-fill { background: rgba(58,118,240,.75); }
+.wk.t-setup     .wk-tasks-fill { background: rgba(104,120,162,.75); }
+.wk.t-finitions .wk-tasks-fill { background: rgba(224,152,32,.75); }
+.wk.done-all.t-reformat  .wk-tasks-fill { background: rgba(240,96,32,.95); }
+.wk.done-all.t-nouveau   .wk-tasks-fill { background: rgba(58,118,240,.95); }
+.wk.done-all.t-setup     .wk-tasks-fill { background: rgba(104,120,162,.95); }
+.wk.done-all.t-finitions .wk-tasks-fill { background: rgba(224,152,32,.95); }
+.wk-tasks > *:not(.wk-tasks-fill) { position: relative; z-index: 1; }
+.task-step:not(.done) { background: rgba(0,0,0,.22); }
 
 /* Week progress bar inside tasks panel */
 .wk-prog {
@@ -397,7 +418,7 @@ body {
   text-shadow: 0 1px 5px rgba(0,0,0,.5); line-height: 1;
 }
 .wk-prog-count {
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 10px; color: rgba(255,255,255,.6);
 }
 
@@ -419,7 +440,7 @@ body {
   flex-shrink: 0;
   width: 24px; height: 24px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 9px; font-weight: 700;
   background: var(--b2); color: var(--tx3);
   margin-top: 1px;
@@ -433,7 +454,7 @@ body {
 .step-txt { font-size: 12px; color: var(--tx); line-height: 1.5; }
 .task-step.done .step-txt { color: rgba(0,0,0,.82); font-weight: 500; }
 .step-pbadge {
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 12px; font-weight: 700;
   color: var(--tx2); background: var(--b2);
   padding: 3px 8px; border-radius: 99px;
@@ -456,14 +477,14 @@ body {
   pointer-events: none; z-index: 0;
   transition: width .5s cubic-bezier(.2,0,.4,1);
 }
-.wk.t-reformat  .wk-note-fill { background: rgba(240,96,32,.45); }
-.wk.t-nouveau   .wk-note-fill { background: rgba(58,118,240,.45); }
-.wk.t-setup     .wk-note-fill { background: rgba(104,120,162,.45); }
-.wk.t-finitions .wk-note-fill { background: rgba(224,152,32,.45); }
-.wk.done-all.t-reformat  .wk-note-fill { background: rgba(240,96,32,.80); }
-.wk.done-all.t-nouveau   .wk-note-fill { background: rgba(58,118,240,.80); }
-.wk.done-all.t-setup     .wk-note-fill { background: rgba(104,120,162,.80); }
-.wk.done-all.t-finitions .wk-note-fill { background: rgba(224,152,32,.80); }
+.wk.t-reformat  .wk-note-fill { background: rgba(240,96,32,.75); }
+.wk.t-nouveau   .wk-note-fill { background: rgba(58,118,240,.75); }
+.wk.t-setup     .wk-note-fill { background: rgba(104,120,162,.75); }
+.wk.t-finitions .wk-note-fill { background: rgba(224,152,32,.75); }
+.wk.done-all.t-reformat  .wk-note-fill { background: rgba(240,96,32,.95); }
+.wk.done-all.t-nouveau   .wk-note-fill { background: rgba(58,118,240,.95); }
+.wk.done-all.t-setup     .wk-note-fill { background: rgba(104,120,162,.95); }
+.wk.done-all.t-finitions .wk-note-fill { background: rgba(224,152,32,.95); }
 .wk-note-txt { position: relative; z-index: 1; }
 
 /* Vacation separator */
@@ -475,7 +496,7 @@ body {
 .conges-dates { font-size: 11px; color: var(--tx2); }
 .conges-tag {
   display: inline-block; margin-top: 2px;
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 8px; font-weight: 600; letter-spacing: .08em;
   padding: 2px 8px; border-radius: 99px;
   background: var(--b2); color: var(--tx3); text-transform: uppercase;
@@ -1108,6 +1129,7 @@ function renderPlanning() {
         <span class="chev">▾</span>
       </div>
       <div class="wk-tasks" id="wkt-${e.id}">
+        <div class="wk-tasks-fill" id="wtf-${e.id}" style="width:${pct}%"></div>
         ${e.tasks.map((t,i) => `
           <div class="task-step${isDone(t.id)?' done':''}" id="ts-${t.id}"
             onclick="taskClick('${t.id}','${e.id}')">
@@ -1143,6 +1165,7 @@ function renderVolumes() {
 
     h += `<div class="vol-acc ${v.cls}${isOpen?' open':''}" id="vacc-${v.id}">
       <div class="vacc-head" onclick="toggleVol('${v.id}')">
+        <div class="vacc-fill" style="width:${pct}%"></div>
         <div class="vacc-top">
           <div class="vacc-meta">
             <div class="vacc-lbl">${v.lbl}</div>
@@ -1153,15 +1176,13 @@ function renderVolumes() {
             <span class="vacc-chev">▾</span>
           </div>
         </div>
-        <div class="vacc-bar-track">
-          <div class="vacc-bar-fill" id="vbar-${v.id}" style="width:${pct}%"></div>
-        </div>
         <div class="vacc-stats">
           <span><span class="hi" id="vdone-${v.id}">${done}p</span> mises en page</span>
           <span>sur ${total}p planifiées</span>
         </div>
       </div>
-      <div class="vacc-body">`;
+      <div class="vacc-body">
+        <div class="vacc-body-fill" style="width:${pct}%"></div>`;
 
     v.sections.forEach(sec => {
       const doneProjs = sec.projs.filter(p => isWeekDone(p.s)).length;
@@ -1254,6 +1275,7 @@ function updateWeekUI(wid) {
   const wpp   = document.getElementById('wpp-'+wid);
   const wpc   = document.getElementById('wpc-'+wid);
   const wnf   = document.getElementById('wnf-'+wid);
+  const wtf   = document.getElementById('wtf-'+wid);
 
   if (cfg)  cfg.setAttribute('stroke-dashoffset', circOffset(pct));
   if (cnum) cnum.textContent = isAll ? '✓' : pct+'%';
@@ -1262,6 +1284,7 @@ function updateWeekUI(wid) {
   if (wpp)  wpp.textContent = pct+'%';
   if (wpc)  wpc.textContent = `${done} / ${total} tâches`;
   if (wnf)  wnf.style.width = pct+'%';
+  if (wtf)  wtf.style.width = pct+'%';
   if (card) card.classList.toggle('done-all', isAll);
 }
 
