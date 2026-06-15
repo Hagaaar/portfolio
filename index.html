@@ -300,7 +300,6 @@ body {
 .wk.t-nouveau   { border-color: var(--c2); }
 .wk.t-setup     { border-color: var(--setup); }
 .wk.t-finitions { border-color: var(--amber); }
-.wk.done-all    { border-color: var(--done); }
 
 /* Week header */
 .wk-head {
@@ -329,7 +328,7 @@ body {
 
 .wk-head-pct {
   flex-shrink: 0;
-  font-family: 'Barlow Condensed', sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 22px; font-weight: 900;
   color: #fff; text-shadow: 0 1px 5px rgba(0,0,0,.45); line-height: 1;
 }
@@ -442,16 +441,30 @@ body {
 }
 .task-step.done .step-pbadge { color: rgba(0,0,0,.55); background: rgba(0,0,0,.12); }
 
-/* Note */
+/* Note — fill animé bord à bord, même logique que wk-pbar */
 .wk-note {
+  position: relative; overflow: hidden;
+  margin: 0;
+  border-top: 1px solid rgba(255,255,255,.07);
+  border-radius: 0 0 12px 12px;
   padding: 9px 12px;
-  margin: 1px 6px 6px;
-  border-radius: 10px;
   font-size: 11px; color: var(--tx2); line-height: 1.6;
-  background: var(--s2);
+  background: var(--s1);
 }
-.wk-note.warn { color: var(--ambrt); background: var(--amberdk); }
-.wk-note.ok   { color: var(--done);  background: var(--donedk); }
+.wk-note-fill {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  pointer-events: none; z-index: 0;
+  transition: width .5s cubic-bezier(.2,0,.4,1);
+}
+.wk.t-reformat  .wk-note-fill { background: rgba(240,96,32,.45); }
+.wk.t-nouveau   .wk-note-fill { background: rgba(58,118,240,.45); }
+.wk.t-setup     .wk-note-fill { background: rgba(104,120,162,.45); }
+.wk.t-finitions .wk-note-fill { background: rgba(224,152,32,.45); }
+.wk.done-all.t-reformat  .wk-note-fill { background: rgba(240,96,32,.80); }
+.wk.done-all.t-nouveau   .wk-note-fill { background: rgba(58,118,240,.80); }
+.wk.done-all.t-setup     .wk-note-fill { background: rgba(104,120,162,.80); }
+.wk.done-all.t-finitions .wk-note-fill { background: rgba(224,152,32,.80); }
+.wk-note-txt { position: relative; z-index: 1; }
 
 /* Vacation separator */
 .conges-row {
@@ -1107,7 +1120,10 @@ function renderPlanning() {
             </div>
             ${getP(t.txt)?`<div class="step-pbadge">${getP(t.txt)}p</div>`:''}
           </div>`).join('')}
-        ${e.note?`<div class="wk-note${e.note.cls?' '+e.note.cls:''}">${stripEmoji(e.note.txt)}</div>`:''}
+        ${e.note?`<div class="wk-note">
+          <div class="wk-note-fill" id="wnf-${e.id}" style="width:${pct}%"></div>
+          <div class="wk-note-txt">${stripEmoji(e.note.txt)}</div>
+        </div>`:''}
       </div>
     </div>`;
   });
@@ -1237,6 +1253,7 @@ function updateWeekUI(wid) {
   const wpf   = document.getElementById('wpf-'+wid);
   const wpp   = document.getElementById('wpp-'+wid);
   const wpc   = document.getElementById('wpc-'+wid);
+  const wnf   = document.getElementById('wnf-'+wid);
 
   if (cfg)  cfg.setAttribute('stroke-dashoffset', circOffset(pct));
   if (cnum) cnum.textContent = isAll ? '✓' : pct+'%';
@@ -1244,6 +1261,7 @@ function updateWeekUI(wid) {
   if (wpf)  wpf.style.width = pct+'%';
   if (wpp)  wpp.textContent = pct+'%';
   if (wpc)  wpc.textContent = `${done} / ${total} tâches`;
+  if (wnf)  wnf.style.width = pct+'%';
   if (card) card.classList.toggle('done-all', isAll);
 }
 
