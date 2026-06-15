@@ -187,7 +187,7 @@ body {
 .vol-acc.v3 .vacc-fill { background: rgba(18,184,136,.75); }
 .vacc-head > *:not(.vacc-fill) { position: relative; z-index: 1; }
 
-.vacc-body { display: none; border-top: 1px solid var(--b1); position: relative; overflow: hidden; }
+.vacc-body { display: none; position: relative; overflow: hidden; }
 .vol-acc.open .vacc-body { display: block; }
 .vacc-body-fill {
   position: absolute; left: 0; top: 0; bottom: 0;
@@ -373,7 +373,7 @@ body {
 .wk.open .chev { transform: rotate(180deg); }
 
 /* Tasks panel */
-.wk-tasks { display: none; border-top: 1px solid var(--b1); border-radius: 0 0 12px 12px; position: relative; overflow: hidden; }
+.wk-tasks { display: none; border-radius: 0 0 12px 12px; position: relative; overflow: hidden; }
 .wk.open .wk-tasks { display: block; }
 .wk-tasks-fill {
   position: absolute; left: 0; top: 0; bottom: 0;
@@ -466,7 +466,6 @@ body {
 .wk-note {
   position: relative; overflow: hidden;
   margin: 0;
-  border-top: 1px solid rgba(255,255,255,.07);
   border-radius: 0 0 12px 12px;
   padding: 9px 12px;
   font-size: 11px; color: var(--tx2); line-height: 1.6;
