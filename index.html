@@ -10,7 +10,7 @@
 <meta name="apple-mobile-web-app-title" content="Portfolio">
 <meta name="theme-color" content="#0B0B12">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 /* ── TOKENS ────────────────────────────────────────────── */
 :root {
@@ -54,7 +54,7 @@ body {
   padding: 12px 16px 0;
 }
 .hdr-title {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Barlow Condensed', sans-serif;
   font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
   color: var(--tx2);
 }
@@ -66,7 +66,7 @@ body {
 .sync-dot.ok      { background: var(--done); }
 .sync-dot.syncing { background: var(--amber); animation: blink .8s infinite; }
 .sync-dot.offline { background: var(--red); }
-.sync-lbl { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--tx3); }
+.sync-lbl { font-family: 'Barlow Condensed', sans-serif; font-size: 9px; color: var(--tx3); }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
 
 /* Hero progress bar */
@@ -91,11 +91,11 @@ body {
 }
 .hero-stats { text-align: right; }
 .hero-tasks {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Barlow Condensed', sans-serif;
   font-size: 11px; font-weight: 600; color: rgba(255,255,255,.88);
 }
 .hero-pages {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Barlow Condensed', sans-serif;
   font-size: 9px; color: rgba(255,255,255,.72); margin-top: 1px;
 }
 
@@ -145,7 +145,7 @@ body {
 
 /* ── BADGES — fully rounded (pill) ─────────────────────── */
 .badge {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Barlow Condensed', sans-serif;
   font-size: 8px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
   padding: 2px 8px; border-radius: 99px; line-height: 1.6; white-space: nowrap;
 }
@@ -183,7 +183,7 @@ body {
   margin-bottom: 14px;
 }
 .vacc-lbl {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Barlow Condensed', sans-serif;
   font-size: 9px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
   margin-bottom: 3px;
 }
@@ -222,7 +222,7 @@ body {
 
 .vacc-stats {
   display: flex; justify-content: space-between;
-  font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--tx2);
+  font-family: 'Barlow Condensed', sans-serif; font-size: 9px; color: var(--tx2);
 }
 .vacc-stats .hi { color: var(--tx); font-weight: 600; }
 
@@ -238,12 +238,12 @@ body {
   border-bottom: 1px solid var(--b1);
 }
 .vsec-name {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Barlow Condensed', sans-serif;
   font-size: 9px; font-weight: 600; letter-spacing: .10em; text-transform: uppercase;
   color: var(--tx2);
 }
 .vsec-right { display: flex; align-items: center; gap: 8px; }
-.vsec-total { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--tx3); }
+.vsec-total { font-family: 'Barlow Condensed', sans-serif; font-size: 9px; color: var(--tx3); }
 
 .vsec-mini-bar {
   width: 50px; height: 4px;
@@ -276,13 +276,13 @@ body {
 .proj-row.proj-done { color: var(--done); }
 .proj-right { display: flex; gap: 8px; align-items: center; }
 .proj-sem {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Barlow Condensed', sans-serif;
   font-size: 8px; color: var(--tx3);
   background: var(--b2); padding: 1px 6px; border-radius: 99px;
 }
 .proj-row.proj-done .proj-sem { background: rgba(36,204,124,.12); color: var(--done); }
 .proj-p {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Barlow Condensed', sans-serif;
   font-size: 11px; font-weight: 600; color: var(--tx);
   min-width: 28px; text-align: right;
 }
@@ -317,20 +317,22 @@ body {
   pointer-events: none; z-index: 0;
   transition: width .5s cubic-bezier(.2,0,.4,1);
 }
-.wk.t-reformat  .wk-pbar { background: rgba(240,96,32,.32); }
-.wk.t-nouveau   .wk-pbar { background: rgba(58,118,240,.32); }
-.wk.t-setup     .wk-pbar { background: rgba(104,120,162,.32); }
-.wk.t-finitions .wk-pbar { background: rgba(224,152,32,.32); }
-.wk.done-all    .wk-pbar { background: rgba(255,255,255,.18); }
+.wk.t-reformat  .wk-pbar { background: rgba(240,96,32,.50); }
+.wk.t-nouveau   .wk-pbar { background: rgba(58,118,240,.50); }
+.wk.t-setup     .wk-pbar { background: rgba(104,120,162,.50); }
+.wk.t-finitions .wk-pbar { background: rgba(224,152,32,.50); }
+.wk.done-all.t-reformat  .wk-pbar { background: rgba(240,96,32,.80) !important; }
+.wk.done-all.t-nouveau   .wk-pbar { background: rgba(58,118,240,.80) !important; }
+.wk.done-all.t-setup     .wk-pbar { background: rgba(104,120,162,.80) !important; }
+.wk.done-all.t-finitions .wk-pbar { background: rgba(224,152,32,.80) !important; }
 .wk-head > *:not(.wk-pbar) { position: relative; z-index: 1; }
 
 .wk-head-pct {
   flex-shrink: 0;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Barlow Condensed', sans-serif;
   font-size: 22px; font-weight: 900;
   color: #fff; text-shadow: 0 1px 5px rgba(0,0,0,.45); line-height: 1;
 }
-.wk.done-all .wk-head-pct { color: rgba(0,0,0,.75); text-shadow: none; }
 
 /* SVG circle */
 .wk-circ {
@@ -347,10 +349,9 @@ body {
 .circ-num {
   position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Barlow Condensed', sans-serif;
   font-size: 9px; font-weight: 700; color: var(--tx2);
 }
-.wk.done-all .circ-num { color: var(--done); font-size: 12px; }
 .wk.is-current .circ-num { color: var(--tx); }
 
 /* Week info */
@@ -361,14 +362,13 @@ body {
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   line-height: 1.3; margin-bottom: 2px;
 }
-.wk.done-all .wk-title { color: var(--done); }
 .wk-sub { font-size: 10px; color: var(--tx2); }
 .wk-right { flex-shrink: 0; }
 .chev { font-size: 8px; color: var(--tx3); transition: transform .2s; }
 .wk.open .chev { transform: rotate(180deg); }
 
 /* Tasks panel */
-.wk-tasks { display: none; border-top: 1px solid var(--b1); padding-bottom: 8px; }
+.wk-tasks { display: none; border-top: 1px solid var(--b1); border-radius: 0 0 12px 12px; }
 .wk.open .wk-tasks { display: block; }
 
 /* Week progress bar inside tasks panel */
@@ -398,7 +398,7 @@ body {
   text-shadow: 0 1px 5px rgba(0,0,0,.5); line-height: 1;
 }
 .wk-prog-count {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Barlow Condensed', sans-serif;
   font-size: 10px; color: rgba(255,255,255,.6);
 }
 
@@ -420,7 +420,7 @@ body {
   flex-shrink: 0;
   width: 24px; height: 24px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Barlow Condensed', sans-serif;
   font-size: 9px; font-weight: 700;
   background: var(--b2); color: var(--tx3);
   margin-top: 1px;
@@ -434,7 +434,7 @@ body {
 .step-txt { font-size: 12px; color: var(--tx); line-height: 1.5; }
 .task-step.done .step-txt { color: rgba(0,0,0,.82); font-weight: 500; }
 .step-pbadge {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Barlow Condensed', sans-serif;
   font-size: 12px; font-weight: 700;
   color: var(--tx2); background: var(--b2);
   padding: 3px 8px; border-radius: 99px;
@@ -462,33 +462,14 @@ body {
 .conges-dates { font-size: 11px; color: var(--tx2); }
 .conges-tag {
   display: inline-block; margin-top: 2px;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Barlow Condensed', sans-serif;
   font-size: 8px; font-weight: 600; letter-spacing: .08em;
   padding: 2px 8px; border-radius: 99px;
   background: var(--b2); color: var(--tx3); text-transform: uppercase;
 }
 
-/* ── DONE-ALL : full green card (satisfaction visuelle) ─── */
-.wk.done-all {
-  background: var(--done);
-  border-left-color: var(--done);
-}
-.wk.done-all .wk-pbar        { background: rgba(0,0,0,.10) !important; }
-.wk.done-all .wk-head:active  { background: rgba(0,0,0,.06); }
-.wk.done-all .wk-title        { color: rgba(0,0,0,.85) !important; }
-.wk.done-all .wk-sub          { color: rgba(0,0,0,.5); }
-.wk.done-all .badge           { background: rgba(0,0,0,.14) !important; color: rgba(0,0,0,.6) !important; }
-.wk.done-all .circ-bg         { stroke: rgba(0,0,0,.15); }
-.wk.done-all .circ-fg         { stroke: rgba(0,0,0,.30) !important; }
-.wk.done-all .circ-num        { color: rgba(0,0,0,.72) !important; font-size: 13px; }
-.wk.done-all .chev            { color: rgba(0,0,0,.40); }
-.wk.done-all .wk-tasks        { background: var(--donedk); }
-.wk.done-all .wk-prog-fill    { background: var(--done) !important; }
-.wk.done-all .wk-prog-pct    { color: rgba(0,0,0,.82); text-shadow: none; }
-.wk.done-all .wk-prog-count  { color: rgba(0,0,0,.55); }
-.wk.done-all .wk-note,
-.wk.done-all .wk-note.warn,
-.wk.done-all .wk-note.ok     { background: var(--done); color: rgba(0,0,0,.72); }
+/* ── DONE-ALL : header rempli à 100% avec la couleur du type ─── */
+.wk.done-all .wk-head-pct { color: #fff; text-shadow: 0 1px 5px rgba(0,0,0,.45); }
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 3px; }
