@@ -700,6 +700,7 @@ const PLANNING = [
     sub:'Mise en page complète 10p + Behance',
     note:{cls:'warn',txt:'⚠️ Rassembler TOUS les visuels en début de semaine avant de commencer la mise en page.'},
     tasks:[
+      {id:'s04-00', txt:'Écrire le texte portfolio — ALSH Spechbach (1-2h avant d\'ouvrir InDesign · registre sobre, 80-120 mots · parti architectural, contraintes site, choix constructifs)'},
       {id:'s03-01',txt:'Rassembler et trier tous les visuels : esquisses, plans EXE, coupes, façades, photos chantier'},
       {id:'s03-02',txt:'Définir la structure narrative des 10 pages (parti → plans EXE → détails/photos)'},
       {id:'s03-03',txt:'Mise en page pages 1–5 : présentation, contexte, plans principaux'},
@@ -716,6 +717,7 @@ const PLANNING = [
     sub:'Mise en page complète 20p + Behance · ~4p/jour',
     note:{cls:'warn',txt:'⚠️ Projet lourd 20p depuis zéro. Rassembler les visuels le lundi impérativement.'},
     tasks:[
+      {id:'s05-00', txt:'Écrire le texte portfolio — ALSH Muespach (1-2h avant InDesign · même registre · noter aussi 5-10 lignes brutes pour le carnet mémoire Phase 3C)'},
       {id:'s05-01',txt:'Rassembler et trier : esquisses, plans EXE, coupes, façades, photos chantier'},
       {id:'s05-02',txt:'Définir la structure narrative des 20 pages'},
       {id:'s05-03',txt:'Mise en page pages 1–5 : présentation, contexte, implantation'},
@@ -748,6 +750,7 @@ const PLANNING = [
     sub:'Mise en page complète 16p + Behance · Fin des 3 lourds',
     note:{cls:'ok',txt:'Fin des 3 projets lourds Vol.2. Une fois Sovia livré, la partie la plus exigeante est terminée.'},
     tasks:[
+      {id:'s07-00', txt:'Écrire le texte portfolio — Sovia Logement Collectif (1-2h avant InDesign · logement collectif, programme, complexité de coordination)'},
       {id:'s07-01',txt:'Rassembler visuels : plans masse, plans niveaux, façades, rendus, coupes'},
       {id:'s07-02',txt:'Définir structure narrative des 16 pages'},
       {id:'s07-03',txt:'Mise en page pages 1–8 : présentation, plans principaux'},
@@ -778,6 +781,7 @@ const PLANNING = [
     sub:'Mise en page complète 24p + Behance · ~5p/jour',
     note:{cls:'warn',txt:'⚠️ 24p depuis zéro = semaine la plus chargée en NOUVEAU. Commencer les visuels le lundi matin tôt.'},
     tasks:[
+      {id:'s09-00', txt:'Écrire le texte portfolio — Atelier Urbain Montpellier EST (1-2h avant InDesign · posture urbaniste, diagnostic territorial, stratégie)'},
       {id:'s09-01',txt:'Rassembler visuels : cartes, schémas urbains, photos terrain, rendus, planches'},
       {id:'s09-02',txt:'Définir structure narrative des 24 pages'},
       {id:'s09-03',txt:'Mise en page pages 1–8 : introduction, diagnostic territorial, cartes'},
@@ -811,6 +815,7 @@ const PLANNING = [
     sub:'Mise en page complète 16p + Behance',
     note:{cls:'ok',txt:'Fin des 2 projets urbanisme pro (Montpellier EST + ZAC = 40p).'},
     tasks:[
+      {id:'s11-00', txt:'Écrire le texte portfolio — ZAC St. Jacques (1-2h avant InDesign)'},
       {id:'s11-01',txt:'Rassembler visuels : plans masse, OAP, schémas, photos terrain, rendus'},
       {id:'s11-02',txt:'Définir structure narrative des 16 pages'},
       {id:'s11-03',txt:'Mise en page pages 1–8 : contexte, diagnostic, stratégie'},
@@ -849,6 +854,7 @@ const PLANNING = [
     sub:'5 projets × 4p · Mise en page + Behance',
     note:{cls:'',txt:'Structure identique pour chaque standard : 1p présentation, 1p plans, 1p façades/détails, 1p photos.'},
     tasks:[
+      {id:'s13-00', txt:'Écrire les 5 textes portfolio — Standards 1→5 (30 min par projet · structure identique : programme, contrainte principale, réponse architecturale)'},
       {id:'s13-01',txt:'Mobilier Tuilerie (4p) — mise en page complète'},
       {id:'s13-02',txt:'Maison Blind (4p) — mise en page complète'},
       {id:'s13-03',txt:'Restaurant Haller (4p) — mise en page complète'},
@@ -879,6 +885,7 @@ const PLANNING = [
     sub:'5 projets × 4p · 10 standards terminés',
     note:{cls:'ok',txt:'Fin Archi agence standards (10 projets, 40p). Vol.2 ne manque plus que les 2 concours agence.'},
     tasks:[
+      {id:'s15-00', txt:'Écrire les 5 textes portfolio — Standards 6→10 (30 min par projet · même structure)'},
       {id:'s15-01',txt:'Rénovation Mermoz (4p) — mise en page complète'},
       {id:'s15-02',txt:'Biocoop (4p) — mise en page complète'},
       {id:'s15-03',txt:'Oltingue (4p) — mise en page complète'},
@@ -911,6 +918,7 @@ const PLANNING = [
     sub:'20p + 10p · Vol.2 Practice complet · Semaine la plus chargée',
     note:{cls:'warn',txt:'⚠️ Semaine la plus chargée (30p NOUVEAU). Commencer par Lycée Mermoz (le plus complexe).'},
     tasks:[
+      {id:'s17-00', txt:'Écrire les textes portfolio — Lycée Mermoz + ALSH Aspach (1-2h avant InDesign · concours agence, posture de concepteur)'},
       {id:'s17-01',txt:'Rassembler visuels Lycée Mermoz : plans concours, perspectives, planches complètes'},
       {id:'s17-02',txt:'Lycée Mermoz (20p) — mise en page pages 1–10'},
       {id:'s17-03',txt:'Lycée Mermoz (20p) — mise en page pages 11–20'},
@@ -1060,8 +1068,8 @@ const MEMO_PHASES = [
   {
     id: 'mp2',
     label: 'Phase 2', title: 'Structuration',
-    parallelPortfolio: 'Parallèle S06-S07 · 6-19 juillet',
-    note: 'Un plan mal stabilisé coûte plusieurs semaines de réécriture. Ne pas démarrer Phase 3 sans problématique validée.',
+    parallelPortfolio: 'Démarre maintenant · S04-S06 · juin → juillet',
+    note: 'Démarrer pendant les semaines REFORMAT (mains sur Adjust Layout, tête disponible pour structurer). Un plan mal stabilisé coûte plusieurs semaines de réécriture. Ne pas démarrer Phase 3 sans problématique validée.',
     tasks: [
       {id:'m2-01', txt:'Construire le plan en 3 parties / 2-3 sous-parties — tester plusieurs architectures'},
       {id:'m2-02', txt:'Valider que chaque partie porte un argument, pas seulement un sujet'},
@@ -1171,8 +1179,9 @@ const MEMO_PHASES = [
 
 // Semaine portfolio → IDs tâches mémoire liées (pour les badges MÉMO sur les week cards)
 const WEEK_MEMO_LINKS = {
-  's04': ['m3-07'],
-  's05': ['m3-c1'],
+  's03': ['m0-01','m0-02','m0-03','m0-04','m0-05'],
+  's04': ['m3-07','m2-01','m2-02','m2-03'],
+  's05': ['m3-c1','m2-04','m2-05','m2-06'],
   's07': ['m3-08', 'm3-c2'],
   's09': ['m3-09'],
   's11': ['m3-10'],
@@ -1185,6 +1194,17 @@ const WEEK_MEMO_LINKS = {
 
 // clé: ID tâche mémoire → valeur: ID semaine portfolio liée
 const MEMO_LINKS = {
+  'm0-01':  's03',
+  'm0-02':  's03',
+  'm0-03':  's03',
+  'm0-04':  's03',
+  'm0-05':  's03',
+  'm2-01':  's04',
+  'm2-02':  's04',
+  'm2-03':  's04',
+  'm2-04':  's05',
+  'm2-05':  's05',
+  'm2-06':  's05',
   'm3-07':  's04',
   'm3-08':  's07',
   'm3-09':  's09',
