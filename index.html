@@ -565,8 +565,15 @@ body {
   color: #fff; text-shadow: 0 1px 5px rgba(0,0,0,.45); line-height: 1;
 }
 
-.mp-tasks { display: none; }
+.mp-tasks { display: none; position: relative; overflow: hidden; }
 .memo-phase.open .mp-tasks { display: block; }
+.mp-tasks-fill {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  background: rgba(224,152,32,.75);
+  pointer-events: none; z-index: 0;
+  transition: width .5s cubic-bezier(.2,0,.4,1);
+}
+.mp-tasks > *:not(.mp-tasks-fill) { position: relative; z-index: 1; }
 
 .mp-note {
   position: relative; overflow: hidden;
@@ -1563,6 +1570,7 @@ function renderMemoire() {
         <span class="chev">▾</span>
       </div>
       <div class="mp-tasks" id="mpt-${p.id}">
+        <div class="mp-tasks-fill" id="mtf-${p.id}" style="width:${pct}%"></div>
         ${p.tasks.map((t,i) => {
           const showPortfolioOk = t.portfolioLink && isWeekDone(t.portfolioLink) && !isDone(t.id);
           return `
@@ -1635,6 +1643,8 @@ function updateMemoPhaseUI(phaseId) {
   if (ppct) ppct.textContent = pct+'%';
   if (card) card.classList.toggle('done-all', isAll);
 
+  const tasksFill = document.getElementById('mtf-'+phaseId);
+  if (tasksFill) tasksFill.style.width = pct+'%';
   const noteFill = document.getElementById('mnf-'+phaseId);
   if (noteFill) noteFill.style.width = pct+'%';
 
