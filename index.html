@@ -569,11 +569,20 @@ body {
 .memo-phase.open .mp-tasks { display: block; }
 
 .mp-note {
-  margin: 6px 12px 10px;
-  padding-left: 10px;
-  border-left: 2px solid #E09820;
-  font-size: 10px; color: rgba(255,255,255,.7); line-height: 1.5;
+  position: relative; overflow: hidden;
+  margin: 0;
+  border-radius: 0 0 12px 12px;
+  padding: 9px 12px;
+  font-size: 11px; color: #fff; line-height: 1.6;
+  background: var(--s1);
 }
+.mp-note-fill {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  background: rgba(224,152,32,.75);
+  pointer-events: none; z-index: 0;
+  transition: width .5s cubic-bezier(.2,0,.4,1);
+}
+.mp-note-txt { position: relative; z-index: 1; }
 
 .memo-portfolio-ok {
   font-size: 9px; color: #E09820; display: block; margin-top: 3px;
@@ -609,7 +618,7 @@ body {
     </div>
   </div>
 
-  <div class="hdr-hero-memo" id="hdrHeroMemo" style="display:none">
+  <div class="hdr-hero-memo" id="hdrHeroMemo" style="display:block">
     <div class="hero-bar hero-bar-memo">
       <div class="hero-bar-fill hero-bar-fill-memo" id="mFill" style="width:0%"></div>
       <div class="hero-bar-content">
@@ -1569,7 +1578,10 @@ function renderMemoire() {
             </div>
           </div>`;
         }).join('')}
-        ${p.note?`<div class="mp-note">${p.note}</div>`:''}
+        ${p.note?`<div class="mp-note">
+          <div class="mp-note-fill" id="mnf-${p.id}" style="width:${pct}%"></div>
+          <div class="mp-note-txt">${p.note}</div>
+        </div>`:''}
       </div>
     </div>`;
   });
@@ -1622,6 +1634,9 @@ function updateMemoPhaseUI(phaseId) {
   if (pbar) pbar.style.width = pct+'%';
   if (ppct) ppct.textContent = pct+'%';
   if (card) card.classList.toggle('done-all', isAll);
+
+  const noteFill = document.getElementById('mnf-'+phaseId);
+  if (noteFill) noteFill.style.width = pct+'%';
 
   // Mettre à jour les badges "portfolio OK" des tâches de cette phase
   p.tasks.forEach(t => {
@@ -1800,7 +1815,7 @@ function switchTab(tab) {
   }
 
   const heroMemo = document.getElementById('hdrHeroMemo');
-  if (heroMemo) heroMemo.style.display = tab === 'memoire' ? 'block' : 'none';
+  if (heroMemo) heroMemo.style.display = tab === 'volumes' ? 'none' : 'block';
 
   if (tab === 'volumes') renderVolumes();
   if (tab === 'memoire') {
