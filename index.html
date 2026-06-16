@@ -99,6 +99,18 @@ body {
   font-size: 9px; color: rgba(255,255,255,.72); margin-top: 1px;
 }
 
+/* Memo hero bar */
+.hdr-hero-memo { padding: 6px 14px 0; }
+.hero-bar-memo {
+  position: relative; height: 48px;
+  background: var(--s1); border-radius: 14px; overflow: hidden;
+}
+.hero-bar-fill-memo {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  background: #E09820;
+  transition: width .7s cubic-bezier(.2,0,.4,1);
+}
+
 /* ── BOTTOM NAV ──────────────────────────────────────────── */
 .bottom-nav {
   position: fixed;
@@ -117,7 +129,7 @@ body {
 .bnav-slider {
   position: absolute;
   top: 4px; bottom: 4px;
-  width: calc(50% - 4px);
+  width: calc(33.333% - 4px);
   background: var(--b2);
   border-radius: 18px;
   transition: left .22s ease;
@@ -138,6 +150,16 @@ body {
   white-space: nowrap;
 }
 .bnav-btn.active { color: var(--tx); }
+.bnav-btn[data-tab="memoire"].active { color: #E09820; }
+.memo-alert-badge {
+  position: absolute; top: 0; right: 0;
+  display: none;
+  background: #E09820; color: #000;
+  border-radius: 99px;
+  font-size: 8px; font-weight: 700;
+  padding: 1px 5px; line-height: 1.4;
+}
+.memo-alert-badge.show { display: inline-block; }
 
 /* ── TAB PAGES ──────────────────────────────────────────── */
 .tab-page { display: none; padding-bottom: calc(110px + var(--safe-bot)); }
@@ -158,6 +180,9 @@ body {
 .b-vol1      { background: rgba(240,96,32,.12);          color: var(--c1t); }
 .b-vol2      { background: rgba(58,118,240,.12);         color: var(--c2t); }
 .b-vol3      { background: rgba(18,184,136,.12);         color: var(--c3t); }
+.b-memo-linked { background: rgba(224,152,32,.14);        color: #F0C040; }
+.b-memo-done   { background: rgba(36,204,124,.14);        color: var(--done); }
+.b-memo-phase  { background: rgba(224,152,32,.14);        color: #F0C040; }
 
 /* ── VOLUME ACCORDIONS ──────────────────────────────────── */
 .vol-list { padding: 10px 14px; display: flex; flex-direction: column; gap: 10px; }
@@ -504,6 +529,56 @@ body {
 /* ── DONE-ALL : header rempli à 100% avec la couleur du type ─── */
 .wk.done-all .wk-head-pct { color: #fff; text-shadow: 0 1px 5px rgba(0,0,0,.45); }
 
+/* ── MEMOIRE — PHASE CARDS ──────────────────────────────── */
+#memoCont { padding: 10px 14px; display: flex; flex-direction: column; gap: 8px; }
+.memo-phase {
+  background: var(--s1);
+  border-radius: 14px;
+  border: 2px solid #E09820;
+  overflow: hidden;
+}
+.memo-phase.done-all { background: rgba(36,204,124,.08); }
+.memo-phase.mp3c { border-left: 3px solid #E09820; }
+
+.mp-head {
+  padding: 10px 14px;
+  cursor: pointer; user-select: none;
+  display: flex; align-items: center; gap: 12px;
+  min-height: 60px; position: relative; overflow: hidden;
+}
+.mp-pbar {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  pointer-events: none; z-index: 0;
+  background: rgba(224,152,32,.75);
+  transition: width .5s cubic-bezier(.2,0,.4,1);
+}
+.mp-head > *:not(.mp-pbar) { position: relative; z-index: 1; }
+
+.mp-info { flex: 1; min-width: 0; }
+.mp-badges { display: flex; gap: 4px; flex-wrap: nowrap; overflow: hidden; margin-bottom: 3px; }
+.mp-title { font-size: 14px; font-weight: 700; color: var(--tx); line-height: 1.3; }
+.mp-sub-continu { font-size: 10px; color: #F0C040; font-style: italic; margin-top: 2px; }
+.mp-head-pct {
+  flex-shrink: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 22px; font-weight: 900;
+  color: #fff; text-shadow: 0 1px 5px rgba(0,0,0,.45); line-height: 1;
+}
+
+.mp-tasks { display: none; }
+.memo-phase.open .mp-tasks { display: block; }
+
+.mp-note {
+  margin: 6px 12px 10px;
+  padding-left: 10px;
+  border-left: 2px solid #E09820;
+  font-size: 10px; color: rgba(255,255,255,.7); line-height: 1.5;
+}
+
+.memo-portfolio-ok {
+  font-size: 9px; color: #E09820; display: block; margin-top: 3px;
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar { width: 3px; }
 ::-webkit-scrollbar-thumb { background: var(--b2); }
@@ -534,17 +609,35 @@ body {
     </div>
   </div>
 
+  <div class="hdr-hero-memo" id="hdrHeroMemo" style="display:none">
+    <div class="hero-bar hero-bar-memo">
+      <div class="hero-bar-fill hero-bar-fill-memo" id="mFill" style="width:0%"></div>
+      <div class="hero-bar-content">
+        <span class="hero-pct" id="mPct">0%</span>
+        <div class="hero-stats">
+          <div class="hero-tasks" id="mLabel">0 / 0 tâches</div>
+          <div class="hero-pages" id="mPhaseLabel">Phase 0 — Style</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <!-- ═══ PAGES ═══ -->
 <div id="page-planning" class="tab-page active"><div id="planCont"></div></div>
 <div id="page-volumes"  class="tab-page"><div id="volCont"></div></div>
+<div id="page-memoire"  class="tab-page">
+  <div id="memoHeaderExtra"></div>
+  <div id="memoCont"></div>
+</div>
 
 <!-- ═══ BOTTOM NAV ═══ -->
 <nav class="bottom-nav" id="bottomNav">
   <div class="bnav-slider" id="bnavSlider"></div>
   <button class="bnav-btn active" data-tab="planning" onclick="switchTab('planning')">Planning</button>
   <button class="bnav-btn" data-tab="volumes" onclick="switchTab('volumes')">Volumes</button>
+  <button class="bnav-btn" data-tab="memoire" onclick="switchTab('memoire')">Mémoire<span class="memo-alert-badge" id="memoAlertBadge"></span></button>
 </nav>
 
 <script>
@@ -588,6 +681,20 @@ const PLANNING = [
   },
   {
     id:'s03', week:'S03', dates:'15–21 juin 2026',
+    type:'reformat', vol:'b-vol1', volLbl:'Vol.1 — Formation', section:'Architecture école', pages:'56p',
+    title:'Architecture école -2',
+    sub:'4 projets denses · 56p · Fin section Architecture école',
+    note:{cls:'warn',txt:'⚠️ Semaine très chargée (56p). Si débordement, les derniers projets peuvent glisser en début de S06.'},
+    tasks:[
+      {id:'s04-01',txt:'Specifi(cités) (16p) — Adjust Layout + ajustements manuels'},
+      {id:'s04-02',txt:'Corps Sonore (12p) — Adjust Layout + ajustements manuels'},
+      {id:'s04-03',txt:'Hypothèse C.U (16p) — Adjust Layout + ajustements manuels'},
+      {id:'s04-04',txt:'En Finir avec la Zone (12p) — Adjust Layout + ajustements manuels'},
+      {id:'s04-05',txt:'Vérification cohérence Architecture école complète (88p)'},
+    ]
+  },
+  {
+    id:'s04', week:'S04', dates:'22–28 juin 2026',
     type:'nouveau', vol:'b-vol2', volLbl:'Vol.2 — Practice', section:'Archi agence — lourd', pages:'10p',
     title:'ALSH Spechbach',
     sub:'Mise en page complète 10p + Behance',
@@ -600,20 +707,6 @@ const PLANNING = [
       {id:'s03-05',txt:'Vérification preflight : 300 DPI, CMJN, fond perdu sur toutes les pages'},
       {id:'s03-06',txt:'Export JPEG 72 DPI sRGB pour Behance (toutes pages)'},
       {id:'s03-07',txt:'Upload Behance — ALSH Spechbach : titre EN, description EN ~150 mots, tags'},
-    ]
-  },
-  {
-    id:'s04', week:'S04', dates:'22–28 juin 2026',
-    type:'reformat', vol:'b-vol1', volLbl:'Vol.1 — Formation', section:'Architecture école', pages:'56p',
-    title:'Architecture école -2',
-    sub:'4 projets denses · 56p · Fin section Architecture école',
-    note:{cls:'warn',txt:'⚠️ Semaine très chargée (56p). Si débordement, les derniers projets peuvent glisser en début de S06.'},
-    tasks:[
-      {id:'s04-01',txt:'Specifi(cités) (16p) — Adjust Layout + ajustements manuels'},
-      {id:'s04-02',txt:'Corps Sonore (12p) — Adjust Layout + ajustements manuels'},
-      {id:'s04-03',txt:'Hypothèse C.U (16p) — Adjust Layout + ajustements manuels'},
-      {id:'s04-04',txt:'En Finir avec la Zone (12p) — Adjust Layout + ajustements manuels'},
-      {id:'s04-05',txt:'Vérification cohérence Architecture école complète (88p)'},
     ]
   },
   {
@@ -877,8 +970,8 @@ const VOLUMES = [
       {n:'Maison Individuelle',p:4,s:'S02'},{n:'FAV',p:4,s:'S02'},
       {n:'Habitat Renouvelable',p:8,s:'S02'},{n:'Du Logement à la Ville',p:6,s:'S02'},
       {n:'Maison de Quartier',p:4,s:'S02'},{n:'Présence Concrète',p:6,s:'S02'},
-      {n:'Specifi(cités)',p:16,s:'S04'},{n:'Corps Sonore',p:12,s:'S04'},
-      {n:'Hypothèse C.U',p:16,s:'S04'},{n:'En Finir avec la Zone',p:12,s:'S04'},
+      {n:'Specifi(cités)',p:16,s:'S03'},{n:'Corps Sonore',p:12,s:'S03'},
+      {n:'Hypothèse C.U',p:16,s:'S03'},{n:'En Finir avec la Zone',p:12,s:'S03'},
     ]},
     { name:'Workshops', total:50, projs:[
       {n:'ZUT',p:16,s:'S06'},{n:'Morpharchitecture',p:6,s:'S06'},
@@ -893,7 +986,7 @@ const VOLUMES = [
   ]},
   { id:'vol2', cls:'v2', lbl:'VOL.2', title:'Practice', pages:156, limit:240, marge:84, sections:[
     { name:'Archi agence — lourds', total:46, projs:[
-      {n:'ALSH Spechbach',p:10,s:'S03'},{n:'ALSH Muespach',p:20,s:'S05'},
+      {n:'ALSH Spechbach',p:10,s:'S04'},{n:'ALSH Muespach',p:20,s:'S05'},
       {n:'Sovia Logement Collectif',p:16,s:'S07'},
     ]},
     { name:'Archi agence — standards', total:40, projs:[
@@ -929,6 +1022,194 @@ const VOLUMES = [
     ]},
   ]},
 ];
+
+// ══════════════════════════════════════════════════════════
+// MEMOIRE DATA
+// ══════════════════════════════════════════════════════════
+const MEMO_PHASES = [
+  {
+    id: 'mp0',
+    label: 'Phase 0', title: 'Extraction du style',
+    parallelPortfolio: 'Parallèle S03 · 15-21 juin',
+    note: 'Non négociable. Aucune rédaction avant la Fiche de Style validée.',
+    tasks: [
+      {id:'m0-01', txt:'Uploader les 4 mémoires précédents dans NotebookLM (notebook style dédié)'},
+      {id:'m0-02', txt:'Session Claude: extraction de style avec le prompt §0.2 du guide HMONP'},
+      {id:'m0-03', txt:'Relire et corriger manuellement la Fiche de Style'},
+      {id:'m0-04', txt:'Sauvegarder FICHE_STYLE_HJ.docx dans Cowork'},
+      {id:'m0-05', txt:'Créer BROUILLONS_HJ.docx dans Cowork'},
+    ]
+  },
+  {
+    id: 'mp1',
+    label: 'Phase 1', title: 'Collecte documentaire',
+    parallelPortfolio: 'Parallèle S03-S04 · 15-28 juin',
+    note: 'Aucune rédaction. Uniquement collecte et notes brutes personnelles.',
+    tasks: [
+      {id:'m1-01', txt:'NotebookLM projet: uploader mémoire Aurijoy Mitter (référence structurelle)'},
+      {id:'m1-02', txt:'NotebookLM projet: programme ALSH Muespach + données de projet'},
+      {id:'m1-03', txt:'NotebookLM projet: sources bois/paille + réglementation ERP petite enfance'},
+      {id:'m1-04', txt:'NotebookLM projet: sources maisons individuelles + projets Factory'},
+      {id:'m1-05', txt:'NotebookLM projet: sources Maroc/France, bioclimatisme, matériaux locaux'},
+      {id:'m1-06', txt:'Notes brutes Bloc 1: parcours architectural — des maisons individuelles à l\'ALSH'},
+      {id:'m1-07', txt:'Notes brutes Bloc 2: ALSH Muespach — programme, parti, bois/paille, chantier'},
+      {id:'m1-08', txt:'Notes brutes Bloc 3: la question Maroc/France dans la pratique'},
+      {id:'m1-09', txt:'Notes brutes Bloc 4: rapport aux matériaux et sensibilité constructive'},
+    ]
+  },
+  {
+    id: 'mp2',
+    label: 'Phase 2', title: 'Structuration',
+    parallelPortfolio: 'Parallèle S06-S07 · 6-19 juillet',
+    note: 'Un plan mal stabilisé coûte plusieurs semaines de réécriture. Ne pas démarrer Phase 3 sans problématique validée.',
+    tasks: [
+      {id:'m2-01', txt:'Construire le plan en 3 parties / 2-3 sous-parties — tester plusieurs architectures'},
+      {id:'m2-02', txt:'Valider que chaque partie porte un argument, pas seulement un sujet'},
+      {id:'m2-03', txt:'Problématique rédigée en 2-3 phrases — elle génère une tension réelle, pas une évidence'},
+      {id:'m2-04', txt:'Formuler 2-3 hypothèses de réponse qui structurent le développement'},
+      {id:'m2-05', txt:'ALSH Muespach positionné comme terrain d\'argumentation (pas description de projet)'},
+      {id:'m2-06', txt:'Validation finale: chaque sous-partie a un rôle clair — plan non flottant'},
+    ]
+  },
+  {
+    id: 'mp3a',
+    label: 'Phase 3A', title: 'Rédaction — Sections existantes',
+    parallelPortfolio: 'Parallèle S08-S12 · 20 juillet – 30 août',
+    note: 'Ces sections ont un brouillon de 10h existant. Affiner, pas réécrire.',
+    tasks: [
+      {id:'m3-01', txt:'Intro / Pourquoi architecture — nettoyer et consolider le brouillon existant'},
+      {id:'m3-02', txt:'École de Montpellier — affiner, calibrer la posture praticien (pas étudiant)'},
+      {id:'m3-03', txt:'DPEA urbanisme / SERM — compléter la phrase coupée, développer la section'},
+      {id:'m3-04', txt:'Métier de synthèse — affiner (l\'analogie chef d\'orchestre, vérifier sa justesse)'},
+      {id:'m3-05', txt:'Factory Architecture — affiner la présentation de l\'agence'},
+      {id:'m3-06', txt:'Claire Billot — affiner la section (déjà au bon niveau de détail)'},
+    ]
+  },
+  {
+    id: 'mp3b',
+    label: 'Phase 3B', title: 'Rédaction — Nouvelles sections pro',
+    parallelPortfolio: 'Parallèle S10-S17 · 10 août – 4 octobre',
+    note: 'Écrire la version mémo AVANT de faire la mise en page portfolio du projet correspondant.',
+    tasks: [
+      {id:'m3-07', txt:'ALSH Spechbach — section mémo dans la trajectoire professionnelle',
+        portfolioLink:'s04'},
+      {id:'m3-08', txt:'Sovia Logement Collectif — section mémo (logement collectif, programme, complexité)',
+        portfolioLink:'s07'},
+      {id:'m3-09', txt:'Atelier Urbain Montpellier EST — section mémo (posture d\'urbaniste)',
+        portfolioLink:'s09'},
+      {id:'m3-10', txt:'ZAC St. Jacques — section mémo',
+        portfolioLink:'s11'},
+      {id:'m3-11', txt:'Maisons individuelles — fil narratif transversal (pas par projet, mais comme point de départ pro)',
+        portfolioLink:'s13'},
+      {id:'m3-12', txt:'Biocoop / reconversion — curiosité programmatique, apprentissage d\'un secteur',
+        portfolioLink:'s15'},
+      {id:'m3-13', txt:'Lycée Mermoz — section mémo (concours agence, posture de concepteur)',
+        portfolioLink:'s17'},
+      {id:'m3-14', txt:'ALSH Aspach — section mémo',
+        portfolioLink:'s17'},
+      {id:'m3-15', txt:'Fil Maroc/France — développer et intégrer dans toutes les sections concernées',
+        portfolioLink: null},
+    ]
+  },
+  {
+    id: 'mp3c',
+    label: 'Phase 3C', title: 'Carnet ALSH Muespach',
+    parallelPortfolio: 'Notes progressives S05 → S17 · tout au long du chantier',
+    note: 'Pas de rédaction. Uniquement 5 à 10 lignes brutes après chaque visite ou décision de chantier, tant que les infos sont fraîches.',
+    tasks: [
+      {id:'m3-c1', txt:'Carnet ALSH — notes à chaud après layout S05: défis paille/EXE, décisions clés',
+        portfolioLink:'s05'},
+      {id:'m3-c2', txt:'Carnet ALSH — observations juillet: coordination entreprises, points bloquants',
+        portfolioLink:'s07'},
+      {id:'m3-c3', txt:'Carnet ALSH — premières semaines chantier septembre: ce qui change entre EXE et réalité',
+        portfolioLink:'s13'},
+      {id:'m3-c4', txt:'Carnet ALSH — observations avancées: matériaux en oeuvre, bois/paille sur site',
+        portfolioLink:'s17'},
+    ]
+  },
+  {
+    id: 'mp3d',
+    label: 'Phase 3D', title: 'ALSH Muespach — Section principale',
+    parallelPortfolio: 'Parallèle S14-S16 · 7-27 septembre · après démarrage chantier',
+    note: 'Section écrite EN DERNIER. Nécessite que le carnet Phase 3C soit bien nourri. Capture les 3 couches temporelles: HMO + EXE + chantier actif.',
+    tasks: [
+      {id:'m3-16', txt:'ALSH Muespach — écrire section EXE: paille, bois, défis réglementaires ERP, arbitrages',
+        portfolioLink:'s14'},
+      {id:'m3-17', txt:'ALSH Muespach — intégrer observations chantier: ce qui a résisté, ce qui a surpris',
+        portfolioLink:'s16'},
+      {id:'m3-18', txt:'ALSH Muespach — finaliser section complète: HMO + EXE + chantier, les 3 couches'},
+    ]
+  },
+  {
+    id: 'mp4',
+    label: 'Phase 4', title: 'Consolidation',
+    parallelPortfolio: 'Post S19 · à partir du 18 octobre',
+    note: 'Cowork prend le relais en mode global. Relecture à voix haute obligatoire: l\'oreille est le juge final, pas la fiche de style.',
+    tasks: [
+      {id:'m4-01', txt:'Assembler tous les chapitres en un fichier Word unique'},
+      {id:'m4-02', txt:'Révision Cowork globale avec fiche de style: cohérence terminologique de bout en bout'},
+      {id:'m4-03', txt:'Vérifier et renforcer le fil Maroc/France dans les 3 parties'},
+      {id:'m4-04', txt:'Identifier les redondances entre chapitres + transitions manquantes'},
+      {id:'m4-05', txt:'Relecture intégrale à voix haute: si ça sonne artificiel, corriger même si ça respecte la fiche'},
+      {id:'m4-06', txt:'Aucun passage ne sonne générique ou IA: correction systématique'},
+    ]
+  },
+  {
+    id: 'mp5',
+    label: 'Phase 5', title: 'Finition',
+    parallelPortfolio: 'Novembre 2026 · toujours en dernier',
+    note: 'Introduction et conclusion toujours en dernier. On les écrit quand on sait ce qu\'on a vraiment écrit.',
+    tasks: [
+      {id:'m5-01', txt:'Introduction finale: ancrage biographique fort + annonce de la problématique'},
+      {id:'m5-02', txt:'Conclusion: synthèse des 3 parties + ouverture sur la tension Maroc/France non résolue'},
+      {id:'m5-03', txt:'Vérifier que la conclusion répond réellement à la problématique posée en introduction'},
+      {id:'m5-04', txt:'Bibliographie complète'},
+      {id:'m5-05', txt:'Question finale: est-ce que ce mémoire me ressemble?'},
+    ]
+  },
+];
+
+// Semaine portfolio → IDs tâches mémoire liées (pour les badges MÉMO sur les week cards)
+const WEEK_MEMO_LINKS = {
+  's04': ['m3-07'],
+  's05': ['m3-c1'],
+  's07': ['m3-08', 'm3-c2'],
+  's09': ['m3-09'],
+  's11': ['m3-10'],
+  's13': ['m3-11', 'm3-c3'],
+  's14': ['m3-16'],
+  's15': ['m3-12'],
+  's16': ['m3-17', 'm3-18'],
+  's17': ['m3-13', 'm3-14', 'm3-c4'],
+};
+
+// clé: ID tâche mémoire → valeur: ID semaine portfolio liée
+const MEMO_LINKS = {
+  'm3-07':  's04',
+  'm3-08':  's07',
+  'm3-09':  's09',
+  'm3-10':  's11',
+  'm3-11':  's13',
+  'm3-12':  's15',
+  'm3-13':  's17',
+  'm3-14':  's17',
+  'm3-c1':  's05',
+  'm3-c2':  's07',
+  'm3-c3':  's13',
+  'm3-c4':  's17',
+  'm3-16':  's14',
+  'm3-17':  's16',
+};
+
+// Table inverse: semaine portfolio → liste de tâches mémoire liées
+let weekToMemoTasks = {}; // { 's04': ['m3-07'], 's07': ['m3-08','m3-c2'], ... }
+
+function buildWeekMemoMap() {
+  Object.entries(MEMO_LINKS).forEach(([memoId, weekId]) => {
+    if (!weekToMemoTasks[weekId]) weekToMemoTasks[weekId] = [];
+    weekToMemoTasks[weekId].push(memoId);
+  });
+}
 
 // ══════════════════════════════════════════════════════════
 // STATE
@@ -1049,7 +1330,7 @@ function findCurrentWeek() {
 }
 
 function isWeekDone(weekId) {
-  const e = PLANNING.find(e => e.week === weekId);
+  const e = PLANNING.find(e => e.week === weekId || e.id === weekId);
   return e && e.tasks && e.tasks.length > 0 && e.tasks.every(t => isDone(t.id));
 }
 
@@ -1110,15 +1391,17 @@ function renderPlanning() {
 
     const volBadge = e.vol
       ? `<span class="badge b-${e.vol.replace('b-','')}">${e.volLbl}</span>` : '';
+    const memoBadge = WEEK_MEMO_LINKS[e.id] ? memoBadgeHtml(e.id) : '';
 
     h += `<div class="wk t-${e.type}${isAll?' done-all':''}${isCur?' open is-current':''}" id="wk-${e.id}">
       <div class="wk-head" onclick="toggleWk('${e.id}')">
         <div class="wk-pbar" id="wpb-${e.id}" style="width:${pct}%"></div>
         <div class="wk-info">
-          <div class="wk-badges">
+          <div class="wk-badges" id="wkb-${e.id}">
             <span class="badge bw">${e.week}</span>
             <span class="badge b-${e.type}">${e.type.toUpperCase()}</span>
             ${volBadge}
+            ${memoBadge}
           </div>
           <div class="wk-title">${stripEmoji(e.title)}</div>
           <div class="wk-sub">${e.dates}${e.pages?' · '+e.pages:''}</div>
@@ -1223,6 +1506,149 @@ function renderVolumes() {
 }
 
 // ══════════════════════════════════════════════════════════
+// RENDER — MEMOIRE
+// ══════════════════════════════════════════════════════════
+function renderMemoire() {
+  let h = '';
+
+  MEMO_PHASES.forEach(p => {
+    const total = p.tasks.length;
+    const done  = p.tasks.filter(t => isDone(t.id)).length;
+    const pct   = total ? Math.round(done/total*100) : 0;
+    const isAll = done === total;
+    const isMp3c = p.id === 'mp3c';
+
+    h += `<div class="memo-phase${isAll?' done-all':''}${isMp3c?' mp3c':''}" id="mp-${p.id}">
+      <div class="mp-head" onclick="toggleMemoPhase('${p.id}')">
+        <div class="mp-pbar" id="mppb-${p.id}" style="width:${pct}%"></div>
+        <div class="mp-info">
+          <div class="mp-badges">
+            <span class="badge bw">${p.label}</span>
+            <span class="badge b-memo-phase">${p.parallelPortfolio}</span>
+          </div>
+          <div class="mp-title">${p.title}</div>
+          ${isMp3c?'<div class="mp-sub-continu">Collecte continue</div>':''}
+        </div>
+        <span class="mp-head-pct" id="mppp-${p.id}">${pct}%</span>
+        <span class="chev">▾</span>
+      </div>
+      <div class="mp-tasks" id="mpt-${p.id}">
+        ${p.tasks.map((t,i) => {
+          const showPortfolioOk = t.portfolioLink && isWeekDone(t.portfolioLink) && !isDone(t.id);
+          return `
+          <div class="task-step${isDone(t.id)?' done':''}" id="ts-${t.id}"
+            onclick="memoTaskClick('${t.id}','${p.id}')">
+            <div class="step-num${isDone(t.id)?' done':''}"
+              data-num="${String(i+1).padStart(2,'0')}" id="sn-${t.id}">
+              ${isDone(t.id)?'✓':String(i+1).padStart(2,'0')}
+            </div>
+            <div class="step-body">
+              <div class="step-txt">${t.txt}</div>
+              ${showPortfolioOk?`<span class="memo-portfolio-ok" id="mpok-${t.id}">Portfolio ${t.portfolioLink.toUpperCase()} terminé — peut écrire</span>`:''}
+            </div>
+          </div>`;
+        }).join('')}
+        ${p.note?`<div class="mp-note">${p.note}</div>`:''}
+      </div>
+    </div>`;
+  });
+
+  document.getElementById('memoCont').innerHTML = h;
+}
+
+// ══════════════════════════════════════════════════════════
+// MEMOIRE — INTERACTIONS
+// ══════════════════════════════════════════════════════════
+function toggleMemoPhase(id) {
+  document.getElementById('mp-'+id).classList.toggle('open');
+}
+
+function memoTaskClick(taskId, phaseId) {
+  const newVal = !isDone(taskId);
+  setDone(taskId, newVal);
+
+  const row = document.getElementById('ts-'+taskId);
+  if (row) {
+    row.classList.toggle('done', newVal);
+    const num = document.getElementById('sn-'+taskId);
+    if (num) {
+      num.textContent = newVal ? '✓' : num.dataset.num;
+      num.classList.toggle('done', newVal);
+      num.classList.add('popping');
+      setTimeout(() => num.classList.remove('popping'), 300);
+    }
+  }
+
+  updateMemoPhaseUI(phaseId);
+  updateMemoGlobalProg();
+
+  if (MEMO_LINKS[taskId]) updateWeekMemoBadge(MEMO_LINKS[taskId]);
+
+  calcMemoAlertCount();
+}
+
+function updateMemoPhaseUI(phaseId) {
+  const p = MEMO_PHASES.find(x => x.id === phaseId);
+  if (!p) return;
+  const total = p.tasks.length;
+  const done  = p.tasks.filter(t => isDone(t.id)).length;
+  const pct   = total ? Math.round(done/total*100) : 0;
+  const isAll = done === total;
+
+  const card = document.getElementById('mp-'+phaseId);
+  const pbar = document.getElementById('mppb-'+phaseId);
+  const ppct = document.getElementById('mppp-'+phaseId);
+  if (pbar) pbar.style.width = pct+'%';
+  if (ppct) ppct.textContent = pct+'%';
+  if (card) card.classList.toggle('done-all', isAll);
+
+  // Mettre à jour les badges "portfolio OK" des tâches de cette phase
+  p.tasks.forEach(t => {
+    const badge = document.getElementById('mpok-'+t.id);
+    const show = t.portfolioLink && isWeekDone(t.portfolioLink) && !isDone(t.id);
+    if (show && !badge) {
+      const body = document.querySelector(`#ts-${t.id} .step-body`);
+      if (body) body.insertAdjacentHTML('beforeend',
+        `<span class="memo-portfolio-ok" id="mpok-${t.id}">Portfolio ${t.portfolioLink.toUpperCase()} terminé — peut écrire</span>`);
+    } else if (!show && badge) {
+      badge.remove();
+    }
+  });
+}
+
+function updateMemoGlobalProg() {
+  const allMemoTasks = MEMO_PHASES.flatMap(p => p.tasks);
+  const doneMemo = allMemoTasks.filter(t => isDone(t.id)).length;
+  const pctMemo = allMemoTasks.length ? Math.round(doneMemo / allMemoTasks.length * 100) : 0;
+
+  const currentPhase = MEMO_PHASES.find(p => p.tasks.some(t => !isDone(t.id)));
+
+  const fill = document.getElementById('mFill');
+  const pct  = document.getElementById('mPct');
+  const lbl  = document.getElementById('mLabel');
+  const plbl = document.getElementById('mPhaseLabel');
+  if (fill) fill.style.width = pctMemo + '%';
+  if (pct)  pct.textContent = pctMemo + '%';
+  if (lbl)  lbl.textContent = doneMemo + ' / ' + allMemoTasks.length + ' tâches';
+  if (plbl) plbl.textContent = currentPhase ? currentPhase.label + ' — ' + currentPhase.title : 'Mémoire terminé';
+
+  calcMemoAlertCount();
+}
+
+function calcMemoAlertCount() {
+  const count = Object.entries(MEMO_LINKS)
+    .filter(([memoId, weekId]) => isWeekDone(weekId) && !isDone(memoId))
+    .length;
+
+  const badge = document.getElementById('memoAlertBadge');
+  if (badge) {
+    badge.textContent = count > 0 ? count : '';
+    badge.classList.toggle('show', count > 0);
+  }
+  return count;
+}
+
+// ══════════════════════════════════════════════════════════
 // INTERACTIONS
 // ══════════════════════════════════════════════════════════
 function toggleWk(id) {
@@ -1256,6 +1682,31 @@ function taskClick(tid, wid) {
   // Mettre à jour la page Volumes si elle est active
   const active = document.querySelector('.tab-page.active');
   if (active && active.id === 'page-volumes') renderVolumes();
+
+  // Rafraîchir les badges "portfolio OK" des tâches mémoire liées à cette semaine
+  (weekToMemoTasks[wid] || []).forEach(memoId => {
+    const phase = MEMO_PHASES.find(p => p.tasks.some(t => t.id === memoId));
+    if (phase) updateMemoPhaseUI(phase.id);
+  });
+  calcMemoAlertCount();
+}
+
+function memoBadgeHtml(weekEntryId) {
+  const linked = WEEK_MEMO_LINKS[weekEntryId] || [];
+  if (!linked.length) return '';
+  const allDone = linked.every(id => isDone(id));
+  return allDone
+    ? `<span class="badge b-memo-done" id="memob-${weekEntryId}">MÉMO ✓</span>`
+    : `<span class="badge b-memo-linked" id="memob-${weekEntryId}">MÉMO →</span>`;
+}
+
+function updateWeekMemoBadge(weekEntryId) {
+  if (!WEEK_MEMO_LINKS[weekEntryId]) return;
+  const badges = document.getElementById('wkb-' + weekEntryId);
+  if (!badges) return;
+  const existing = document.getElementById('memob-' + weekEntryId);
+  if (existing) existing.remove();
+  badges.insertAdjacentHTML('beforeend', memoBadgeHtml(weekEntryId));
 }
 
 function updateWeekUI(wid) {
@@ -1316,9 +1767,25 @@ function switchTab(tab) {
   document.getElementById('page-'+tab).classList.add('active');
   const btn = document.querySelector(`.bnav-btn[data-tab="${tab}"]`);
   if (btn) btn.classList.add('active');
+
+  const sliderPositions = { planning: '4px', volumes: 'calc(33.333%)', memoire: 'calc(66.666%)' };
   const slider = document.getElementById('bnavSlider');
-  if (slider) slider.style.left = tab === 'planning' ? '4px' : '50%';
+  if (slider) slider.style.left = sliderPositions[tab];
+
+  const title = document.querySelector('.hdr-title');
+  if (title) {
+    title.textContent = tab === 'memoire' ? 'MÉMOIRE' : 'PORTFOLIO';
+    title.style.color = tab === 'memoire' ? '#E09820' : 'var(--tx2)';
+  }
+
+  const heroMemo = document.getElementById('hdrHeroMemo');
+  if (heroMemo) heroMemo.style.display = tab === 'memoire' ? 'block' : 'none';
+
   if (tab === 'volumes') renderVolumes();
+  if (tab === 'memoire') {
+    if (!document.getElementById('memoCont').children.length) renderMemoire();
+    updateMemoGlobalProg();
+  }
 }
 
 // ══════════════════════════════════════════════════════════
@@ -1326,9 +1793,11 @@ function switchTab(tab) {
 // ══════════════════════════════════════════════════════════
 state = loadLocal();
 buildTaskVolMap(); // Construire la carte tâche→volume avant tout rendu
+buildWeekMemoMap();
 setSyncDot('syncing');
 renderPlanning();
 updateGlobalProg();
+updateMemoGlobalProg();
 
 const _cur = findCurrentWeek();
 if (_cur) {
@@ -1351,6 +1820,8 @@ loadFromGS().then(ok => {
   const curId = findCurrentWeek();
   if (curId) { const c = document.getElementById('wk-'+curId); if (c) c.classList.add('open'); }
   if (document.querySelector('#page-volumes.active')) renderVolumes();
+  if (document.getElementById('memoCont').children.length) renderMemoire();
+  updateMemoGlobalProg();
 });
 </script>
 <script>
