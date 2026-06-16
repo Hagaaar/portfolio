@@ -1234,7 +1234,8 @@ function buildWeekMemoMap() {
 // ══════════════════════════════════════════════════════════
 // STATE
 // ══════════════════════════════════════════════════════════
-const GS_URL = 'https://script.google.com/macros/s/AKfycbzcEMTmWpc-x0XUpxu8KlY71xWQoVHO_SsR46sXo-m9VHEGlUqdvrAED_6H2sToCjQwkA/exec';
+const GS_URL   = 'https://script.google.com/macros/s/AKfycbyfbn-CTbvLfoOKnD1S9obFLJSbzfc0uN2Dvouq_vuNM7BjN4QX5P3m7ZTBbn_4TBV2/exec';
+const GS_TOKEN = 'hj-portfolio-2026-sync';
 const LS_KEY = 'portfolio_v7_state';
 const CIRC_C = (2 * Math.PI * 16).toFixed(2); // ≈ 100.53
 
@@ -1261,7 +1262,7 @@ function scheduleRemoteSave() {
   saveTimer = setTimeout(async () => {
     try {
       setSyncDot('syncing');
-      await fetch(GS_URL, { method:'POST', mode:'no-cors', body:JSON.stringify(state) });
+      await fetch(GS_URL, { method:'POST', mode:'no-cors', body:JSON.stringify({ token:GS_TOKEN, state }) });
       setSyncDot('ok');
     } catch { setSyncDot('offline'); }
   }, 800);
@@ -1270,7 +1271,7 @@ function scheduleRemoteSave() {
 async function loadFromGS() {
   try {
     setSyncDot('syncing');
-    const r = await fetch(GS_URL);
+    const r = await fetch(GS_URL + '?token=' + GS_TOKEN);
     const remote = await r.json();
     if (remote && Object.keys(remote).length > 0)
       Object.keys(remote).forEach(k => { if (remote[k]) state[k] = true; });
