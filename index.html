@@ -70,10 +70,10 @@ body {
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
 
 /* Hero progress bar */
-.hdr-hero { padding: 10px 14px 0; }
+.hdr-hero { padding: 10px 0 0; }
 .hero-bar {
   position: relative; height: 64px;
-  background: var(--s1); border-radius: 14px; overflow: hidden;
+  background: var(--s1); border-radius: 0; overflow: hidden;
 }
 .hero-bar-fill {
   position: absolute; left: 0; top: 0; bottom: 0;
@@ -100,10 +100,9 @@ body {
 }
 
 /* Memo hero bar */
-.hdr-hero-memo { padding: 6px 14px 0; }
+.hdr-hero-memo { padding: 6px 0 0; }
 .hero-bar-memo {
-  position: relative; height: 48px;
-  background: var(--s1); border-radius: 14px; overflow: hidden;
+  height: 64px;
 }
 .hero-bar-fill-memo {
   position: absolute; left: 0; top: 0; bottom: 0;
@@ -632,7 +631,7 @@ body {
         <span class="hero-pct" id="mPct">0%</span>
         <div class="hero-stats">
           <div class="hero-tasks" id="mLabel">0 / 0 tâches</div>
-          <div class="hero-pages" id="mPhaseLabel">Phase 0 — Style</div>
+          <div class="hero-pages" id="mPhaseLabel">Extraction du style</div>
         </div>
       </div>
     </div>
@@ -652,8 +651,8 @@ body {
 <nav class="bottom-nav" id="bottomNav">
   <div class="bnav-slider" id="bnavSlider"></div>
   <button class="bnav-btn active" data-tab="planning" onclick="switchTab('planning')">Planning</button>
-  <button class="bnav-btn" data-tab="volumes" onclick="switchTab('volumes')">Volumes</button>
   <button class="bnav-btn" data-tab="memoire" onclick="switchTab('memoire')">Mémoire<span class="memo-alert-badge" id="memoAlertBadge"></span></button>
+  <button class="bnav-btn" data-tab="volumes" onclick="switchTab('volumes')">Volumes</button>
 </nav>
 
 <script>
@@ -1560,7 +1559,6 @@ function renderMemoire() {
         <div class="mp-pbar" id="mppb-${p.id}" style="width:${pct}%"></div>
         <div class="mp-info">
           <div class="mp-badges">
-            <span class="badge bw">${p.label}</span>
             <span class="badge b-memo-phase">${p.parallelPortfolio}</span>
           </div>
           <div class="mp-title">${p.title}</div>
@@ -1676,7 +1674,7 @@ function updateMemoGlobalProg() {
   if (fill) fill.style.width = pctMemo + '%';
   if (pct)  pct.textContent = pctMemo + '%';
   if (lbl)  lbl.textContent = doneMemo + ' / ' + allMemoTasks.length + ' tâches';
-  if (plbl) plbl.textContent = currentPhase ? currentPhase.label + ' — ' + currentPhase.title : 'Mémoire terminé';
+  if (plbl) plbl.textContent = currentPhase ? currentPhase.title : 'Mémoire terminé';
 
   calcMemoAlertCount();
 }
@@ -1814,7 +1812,7 @@ function switchTab(tab) {
   const btn = document.querySelector(`.bnav-btn[data-tab="${tab}"]`);
   if (btn) btn.classList.add('active');
 
-  const sliderPositions = { planning: '5px', volumes: 'calc(33.333%)', memoire: 'calc(66.666%)' };
+  const sliderPositions = { planning: '5px', memoire: 'calc(33.333%)', volumes: 'calc(66.666%)' };
   const sliderColors    = { planning: 'var(--c2)', volumes: 'var(--c3)', memoire: 'var(--amber)' };
   const slider = document.getElementById('bnavSlider');
   if (slider) { slider.style.left = sliderPositions[tab]; slider.style.background = sliderColors[tab]; }
